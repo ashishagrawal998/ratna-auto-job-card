@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ratna Auto – Job Card</title>
+<meta name="theme-color" content="#b5121b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#b5121b;--red-d:#8e0e15;--ink:#1d1d1f;--mut:#6b6b70;--line:#e4e4e7;--bg:#f5f5f4;--card:#fff;--ok:#1f7a3f;--warn:#b26b00}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans Devanagari",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px}
+  header{background:var(--red);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5;min-height:52px}
+  header h1{font-size:18px;margin:0;font-weight:700}
+  header small{opacity:.85;font-size:12px}
+  .lang{margin-left:auto;display:flex;background:rgba(255,255,255,.18);border-radius:20px;padding:3px}
+  .lang button{border:0;background:none;color:#fff;font:inherit;font-size:13px;padding:5px 12px;border-radius:16px;cursor:pointer}
+  .lang button.on{background:#fff;color:var(--red);font-weight:600}
+  nav{display:flex;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
+  nav button{flex:1;border:0;background:none;padding:11px 8px;font:inherit;font-size:14px;color:var(--mut);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+  nav button.on{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+  main{max-width:860px;margin:0 auto;padding:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+  h2{font-size:16px;margin:0 0 10px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer}
+  .stat b{display:block;font-size:24px;color:var(--red)}
+  .stat span{font-size:12px;color:var(--mut)}
+  input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid #cfcfd4;border-radius:8px;background:#fff}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--red);border-color:transparent}
+  label{display:block;font-size:13px;color:var(--mut);margin:8px 0 4px}
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row>*{flex:1}
+  .btn{border:0;border-radius:8px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;background:var(--red);color:#fff}
+  .btn:hover{background:var(--red-d)}
+  .btn.ghost{background:#fff;color:var(--red);border:1px solid var(--red)}
+  .btn.gray{background:#ececee;color:var(--ink)}
+  .btn.ok{background:var(--ok)}
+  .btn.sm{padding:6px 10px;font-size:13px}
+  .btn.block{width:100%}
+  .list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .list-item:first-child{border-top:0}
+  .clickable{cursor:pointer}
+  .clickable:hover{background:#fafafa}
+  .mut{color:var(--mut);font-size:13px}
+  .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:#eee}
+  .tag.open{background:#fff1d6;color:var(--warn)}
+  .tag.closed{background:#dcf2e3;color:var(--ok)}
+  .tag.due{background:#fde2e3;color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
+  th{font-size:12px;color:var(--mut);font-weight:600}
+  td.num,th.num{text-align:right;white-space:nowrap}
+  .dd{position:relative}
+  .dd-list{position:absolute;left:0;right:0;top:100%;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.1);max-height:240px;overflow:auto;z-index:10}
+  .dd-list div{padding:9px 10px;cursor:pointer;border-top:1px solid #f0f0f0}
+  .dd-list div:hover,.dd-list div.hi{background:#fff4f4}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+  .total{font-size:18px;font-weight:700;text-align:right;margin-top:8px}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+  .modal{background:#fff;width:100%;max-width:520px;border-radius:14px 14px 0 0;padding:16px;max-height:90vh;overflow:auto}
+  @media(min-width:600px){.modal-bg{align-items:center}.modal{border-radius:14px}}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;z-index:30}
+  .slip{background:#fff;border:1px dashed #999;padding:18px;font-size:14px}
+  .slip h3{text-align:center;margin:0}
+  .slip .c{text-align:center}
+  .empty{color:var(--mut);text-align:center;padding:16px}
+  .back{background:none;border:0;color:var(--red);font:inherit;font-weight:600;cursor:pointer;padding:0;margin-bottom:10px}
+  @media print{header,nav,.noprint{display:none!important}main{padding:0}.slip{border:0}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1 id="h-title"></h1><small id="h-sub"></small></div>
+  <div class="lang"><button data-l="en">English</button><button data-l="ne">नेपाली</button></div>
+</header>
+<nav id="nav">
+  <button data-v="home"></button>
+  <button data-v="jobs"></button>
+  <button data-v="reminders"></button>
+  <button data-v="history"></button>
+</nav>
+<main id="app"></main>
+<div id="modal"></div>
+<div class="noprint" style="text-align:center;padding:10px 0 24px"><button class="btn gray sm" id="reset-btn" onclick="resetDemo()"></button></div>
+
+<script>
+// ---------- अनुवाद / Translations ----------
+const I18N={
+ en:{
+  firm:"Ratna Auto",title:"Job Card",sub:"Authorised Massey Ferguson Dealer · Lahan",
+  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Past Jobs",
+  st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
+  search_h:"Find customer",search_ph:"Enter phone, engine or chassis number…",
+  not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",try_:"Try:",
+  active_h:"Active job cards",closed_h:"Completed job cards",no_jobs:"No jobs.",
+  open:"Active",done:"Done",mech:"Mechanic",since:"ago",parts_n:"parts",
+  name:"Name",phone:"Phone",tractor:"Tractor",address:"Address",engine:"Engine No.",chassis:"Chassis No.",
+  cust_rec:"Customer record",next_srv:"Next service",open_job:"Open active job",start_new:"▶ Start new job card",
+  history:"Service history",back:"‹ Back",home_b:"‹ Home",
+  started:"Started",hours:"Hour meter",complaint:"Complaint / work",
+  add_parts:"Add parts",search_prod:"Search product",prod_ph:"Name or code… (e.g. oil, filter)",qty:"Qty",
+  selected:"Selected",rate:"Rate",add_part:"+ Add part",part:"Part",amount:"Amount",
+  no_parts:"No parts taken yet.",parts_tot:"Parts",total:"Total",
+  labour_h:"Labour charges",lab_desc:"Work description",no_labour:"No labour added yet.",
+  close_job:"✔ Work done – close job card",print:"🖨 Print",copy:"Copy",
+  slip_h:"Service Job Card",job_no:"Job No.",finished:"Finished",parts_total:"Parts total",labour:"Labour",
+  grand:"Total amount",next_date:"Next service date",not_bill:"* This is not a bill. Summary for entry into the billing system.",
+  due_h:"Service due (within 7 days or overdue)",
+  due_note:"Every morning this list appears on the owner's and staff dashboard. The WhatsApp button opens a pre-written message.",
+  late:d=>d+" days late",today:"Today",in_days:d=>"in "+d+" days",open_b:"Open",
+  none_due:"No service due right now.",upcoming:"Upcoming services",
+  msg:(n,m,late,dt)=>`Namaste ${n} ji, your ${m} tractor ${late?"is overdue for service":"is due for service"} (${dt}). Please bring your tractor to Ratna Auto (Massey Ferguson), Lahan. Thank you!`,
+  nc_h:"New customer",model:"Tractor model",cancel:"Cancel",save:"Save",
+  need_np:"Name and phone are required",cust_added:"Customer added",
+  nj_h:"New job card",hours_opt:"Hour meter reading (optional)",compl_ph:"e.g. general service, brake noise",
+  auto_time:"Start time will be recorded automatically:",start:"▶ Start",job_started:"Job card started",
+  pick_first:"Select a product first",part_added:"Part added",enter_desc:"Enter a description",
+  nothing_added:"No parts or labour added",close_q:"Close job card?",next_3m:"Next service date (3 months later)",
+  close_b:"✔ Close",job_closed:"Job card closed",print_note:"On the live website this will print directly",
+  copied:"Copied",copy_fail:"Couldn't copy",reset:"Reset demo data",reset_done:"Demo data reset",
+  min:"min",hr:"hr",day:"days",ago:"ago",cur:"Rs",lab_free:"Free service",
+  presets:["Free service","General service","Clutch work","Brake work","Hydraulic work"]
+ },
+ ne:{
+  firm:"रत्न अटो",title:"जब कार्ड",sub:"मेसी फर्गुसन अधिकृत डिलर · लहान",
+  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"पुराना जब",
+  st_open:"चालु जब",st_today:"आज सकिएका",st_due:"सर्भिस बाँकी",
+  search_h:"ग्राहक खोज्नुहोस्",search_ph:"फोन, इन्जिन वा चेसिस नम्बर हाल्नुहोस्…",
+  not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",try_:"प्रयास गर्नुहोस्:",
+  active_h:"चालु जब कार्ड",closed_h:"सकिएका जब कार्ड",no_jobs:"कुनै जब छैन।",
+  open:"चालु",done:"सकियो",mech:"मेकानिक",since:"अगाडि",parts_n:"पार्ट्स",
+  name:"नाम",phone:"फोन",tractor:"ट्र्याक्टर",address:"ठेगाना",engine:"इन्जिन नं.",chassis:"चेसिस नं.",
+  cust_rec:"ग्राहकको विवरण",next_srv:"अर्को सर्भिस",open_job:"चालु जब खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
+  history:"सर्भिस इतिहास",back:"‹ पछाडि",home_b:"‹ होम",
+  started:"सुरु",hours:"आवर मिटर",complaint:"समस्या / गर्नुपर्ने काम",
+  add_parts:"पार्ट्स थप्नुहोस्",search_prod:"सामान खोज्नुहोस्",prod_ph:"नाम वा कोड… (जस्तै तेल, फिल्टर)",qty:"संख्या",
+  selected:"छानिएको",rate:"दर",add_part:"+ पार्ट थप्नुहोस्",part:"पार्ट",amount:"रकम",
+  no_parts:"अहिलेसम्म कुनै पार्ट लगिएको छैन।",parts_tot:"पार्ट्स",total:"जम्मा",
+  labour_h:"ज्याला (लेबर चार्ज)",lab_desc:"कामको विवरण",no_labour:"अहिलेसम्म लेबर थपिएको छैन।",
+  close_job:"✔ काम सकियो – जब कार्ड बन्द गर्नुहोस्",print:"🖨 प्रिन्ट",copy:"कपी गर्नुहोस्",
+  slip_h:"सर्भिस जब कार्ड",job_no:"जब नं.",finished:"सकिएको",parts_total:"पार्ट्स जम्मा",labour:"लेबर",
+  grand:"जम्मा रकम",next_date:"अर्को सर्भिसको मिति",not_bill:"* यो बिल होइन। बिलिङ प्रणालीमा इन्ट्रीका लागि सारांश मात्र।",
+  due_h:"सर्भिस बाँकी (७ दिनभित्र वा ढिलो)",
+  due_note:"हरेक बिहान यो सूची साहु र स्टाफको ड्यासबोर्डमा आउँछ। WhatsApp बटनले सन्देश पहिले नै लेखिएको अवस्थामा खोल्छ।",
+  late:d=>d+" दिन ढिलो",today:"आज",in_days:d=>d+" दिनमा",open_b:"खोल्नुहोस्",
+  none_due:"अहिले कसैको सर्भिस बाँकी छैन।",upcoming:"आउँदै गरेका सर्भिस",
+  msg:(n,m,late,dt)=>`नमस्ते ${n} जी, तपाईंको ${m} ट्र्याक्टरको सर्भिसको समय ${late?"नाघिसकेको छ":"आएको छ"} (${dt})। कृपया रत्न अटो (मेसी फर्गुसन), लहानमा ट्र्याक्टर लिएर आउनुहोला। धन्यवाद!`,
+  nc_h:"नयाँ ग्राहक",model:"ट्र्याक्टर मोडेल",cancel:"रद्द",save:"सेभ गर्नुहोस्",
+  need_np:"नाम र फोन आवश्यक छ",cust_added:"ग्राहक थपियो",
+  nj_h:"नयाँ जब कार्ड",hours_opt:"आवर मिटर रिडिङ (ऐच्छिक)",compl_ph:"जस्तै: जनरल सर्भिस, ब्रेकको आवाज",
+  auto_time:"सुरु समय आफैँ दर्ता हुनेछ:",start:"▶ सुरु गर्नुहोस्",job_started:"जब कार्ड सुरु भयो",
+  pick_first:"पहिले सामान छान्नुहोस्",part_added:"पार्ट थपियो",enter_desc:"विवरण लेख्नुहोस्",
+  nothing_added:"कुनै पार्ट वा लेबर थपिएको छैन",close_q:"जब कार्ड बन्द गर्ने?",next_3m:"अर्को सर्भिसको मिति (३ महिनापछि)",
+  close_b:"✔ बन्द गर्नुहोस्",job_closed:"जब कार्ड बन्द भयो",print_note:"वास्तविक वेबसाइटमा यहाँबाट सिधै प्रिन्ट हुन्छ",
+  copied:"कपी भयो",copy_fail:"कपी हुन सकेन",reset:"डेमो डाटा रिसेट गर्नुहोस्",reset_done:"डेमो डाटा रिसेट भयो",
+  min:"मिनेट",hr:"घण्टा",day:"दिन",ago:"अगाडि",cur:"रु",
+  presets:["निःशुल्क सर्भिस","जनरल सर्भिस","क्लचको काम","ब्रेकको काम","हाइड्रोलिकको काम"]
+ }
+};
+let LANG="en";
+try{LANG=localStorage.getItem("jobcard_lang")||"en"}catch(e){}
+const t=k=>I18N[LANG][k];
+
+// ---------- नमूना डेटा / Sample data ----------
+const today=new Date();
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const addMonths=(d,n)=>{const x=new Date(d);x.setMonth(x.getMonth()+n);return x};
+const iso=d=>new Date(d).toISOString();
+
+const PRODUCTS=[
+ {code:"MF-EO-15W40",en:"Engine Oil 15W40 (1 L)",ne:"इन्जिन तेल 15W40 (1 लिटर)",rate:850,den:"Diesel engine oil",dne:"डिजेल इन्जिन तेल"},
+ {code:"MF-EO-7L",en:"Engine Oil 15W40 (7 L)",ne:"इन्जिन तेल 15W40 (7 लिटर)",rate:5600,den:"Full service pack",dne:"पूरा सर्भिस प्याक"},
+ {code:"MF-OF-1035",en:"Oil Filter – MF 1035",ne:"तेल फिल्टर – MF 1035",rate:650,den:"Spin-on filter",dne:"स्पिन-अन फिल्टर"},
+ {code:"MF-FF-01",en:"Diesel (Fuel) Filter",ne:"डिजेल फिल्टर",rate:480,den:"Primary filter",dne:"प्राइमरी फिल्टर"},
+ {code:"MF-AF-01",en:"Air Filter Element",ne:"एयर फिल्टर",rate:1350,den:"Outer element",dne:"बाहिरी एलिमेन्ट"},
+ {code:"MF-HO-20",en:"Hydraulic / Transmission Oil (1 L)",ne:"हाइड्रोलिक / ट्रान्समिसन तेल (1 लिटर)",rate:720,den:"UTTO oil",dne:"UTTO तेल"},
+ {code:"MF-CP-11",en:"Clutch Plate 11\"",ne:"क्लच प्लेट 11 इन्च",rate:6200,den:"Single clutch",dne:"सिंगल क्लच"},
+ {code:"MF-BS-01",en:"Brake Shoe Set",ne:"ब्रेक सु सेट",rate:2400,den:"One pair",dne:"एक जोडी"},
+ {code:"MF-FB-01",en:"Fan Belt",ne:"फ्यान बेल्ट",rate:550,den:"V-belt",dne:"V-बेल्ट"},
+ {code:"MF-GR-01",en:"Grease (500 g)",ne:"ग्रिज (500 ग्राम)",rate:380,den:"Lithium grease",dne:"लिथियम ग्रिज"},
+ {code:"MF-WP-01",en:"Water Pump Assembly",ne:"वाटर पम्प एसेम्ब्ली",rate:4800,den:"With gasket",dne:"ग्यास्केट सहित"},
+ {code:"MF-HL-01",en:"Headlight Bulb 12V",ne:"हेडलाइट बल्ब 12V",rate:250,den:"Halogen",dne:"ह्यालोजन"},
+ {code:"MF-BT-75",en:"Battery 75Ah",ne:"ब्याट्री 75Ah",rate:14500,den:"12V",dne:"12V"},
+ {code:"MF-CO-01",en:"Coolant (1 L)",ne:"कुलेन्ट (1 लिटर)",rate:420,den:"Radiator coolant",dne:"रेडिएटर कुलेन्ट"}
+];
+const PRESET_AMT=[0,1500,2500,1200,1800];
+
+const SEED={
+  mechanics:["Rambabu Yadav","Suresh Mahato","Dinesh Sah","Manoj Chaudhary"],
+  customers:[
+    {id:1,name:"Rameshwar Yadav",phone:"9842012345",address:"Lahan-5, Siraha",model:"MF 1035 DI",engine:"S325A12345",chassis:"MEA1035D221",nextService:iso(addDays(today,-4))},
+    {id:2,name:"Shivnarayan Sah",phone:"9807654321",address:"Mirchaiya, Siraha",model:"MF 241 DI",engine:"S325B67890",chassis:"MEA241D3345",nextService:iso(addDays(today,2))},
+    {id:3,name:"Gopal Mahato",phone:"9815566778",address:"Golbazar, Siraha",model:"MF 7250 Power",engine:"S433C11223",chassis:"MEA7250P778",nextService:iso(addDays(today,5))},
+    {id:4,name:"Sunil Chaudhary",phone:"9852233445",address:"Rajbiraj, Saptari",model:"MF 9500",engine:"S433D44556",chassis:"MEA9500S112",nextService:iso(addDays(today,40))},
+    {id:5,name:"Hari Prasad Mandal",phone:"9819988776",address:"Lahan-9, Siraha",model:"MF 1035 DI",engine:"S325A99881",chassis:"MEA1035D556",nextService:iso(addDays(today,-12))}
+  ],
+  jobs:[
+    {id:1,no:"JC-0001",customerId:4,mechanic:"Suresh Mahato",hours:"1840",complaint:"3rd service",startedAt:iso(addMonths(today,-2)),closedAt:iso(addMonths(today,-2)),status:"closed",
+     parts:[{code:"MF-EO-7L",qty:1,rate:5600,at:iso(addMonths(today,-2))},{code:"MF-OF-1035",qty:1,rate:650,at:iso(addMonths(today,-2))}],
+     labour:[{k:1,amount:1500}]},
+    {id:2,no:"JC-0002",customerId:2,mechanic:"Rambabu Yadav",hours:"960",complaint:"Weak brakes + service",startedAt:iso(new Date(today.getTime()-95*60000)),status:"open",
+     parts:[{code:"MF-BS-01",qty:1,rate:2400,at:iso(new Date(today.getTime()-70*60000))}],labour:[]}
+  ],
+  nextJob:3,nextCust:6
+};
+
+// ---------- स्टोरेज / Storage ----------
+const KEY="jobcard_proto_v2";
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S) S=JSON.parse(JSON.stringify(SEED));
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+// ---------- हेल्पर / Helpers ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rs=n=>t("cur")+" "+Number(n||0).toLocaleString("en-IN");
+const fDate=d=>new Date(d).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+const fTime=d=>new Date(d).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+const fDT=d=>fDate(d)+", "+fTime(d);
+const cust=id=>S.customers.find(c=>c.id===id);
+const job=id=>S.jobs.find(j=>j.id===id);
+const prod=code=>PRODUCTS.find(p=>p.code===code);
+const pName=p=>{const x=prod(p.code);return x?x[LANG]:(p.name||p.code)};
+const pDesc=x=>LANG==="ne"?x.dne:x.den;
+const lName=l=>l.k!=null?t("presets")[l.k]:l.desc;
+const partsTotal=j=>j.parts.reduce((a,p)=>a+p.qty*p.rate,0);
+const labourTotal=j=>j.labour.reduce((a,l)=>a+Number(l.amount||0),0);
+const daysTo=d=>Math.ceil((new Date(d).setHours(0,0,0,0)-new Date().setHours(0,0,0,0))/86400000);
+function ago(d){const m=Math.round((Date.now()-new Date(d))/60000);if(m<60)return m+" "+t("min");const h=Math.floor(m/60);if(h<24)return h+" "+t("hr")+" "+(m%60)+" "+t("min");return Math.floor(h/24)+" "+t("day")}
+function toast(x){const el=document.createElement("div");el.className="toast";el.textContent=x;document.body.appendChild(el);setTimeout(()=>el.remove(),2200)}
+function closeModal(){$("#modal").innerHTML=""}
+function modal(html){$("#modal").innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`}
+
+let view="home",param=null,searchQ="";
+function go(v,p){view=v;param=p??null;render();window.scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.l;try{localStorage.setItem("jobcard_lang",LANG)}catch(e){}closeModal();render()});
+
+function dueList(){return S.customers.filter(c=>c.nextService&&daysTo(c.nextService)<=7).sort((a,b)=>new Date(a.nextService)-new Date(b.nextService))}
+
+// ---------- व्यू / Views ----------
+function chrome(){
+  document.documentElement.lang=LANG;
+  document.title=t("firm")+" – "+t("title");
+  $("#h-title").textContent=t("firm");$("#h-sub").textContent=t("title")+" · "+t("sub");
+  const nv={home:"nav_home",jobs:"nav_jobs",reminders:"nav_rem",history:"nav_hist"};
+  document.querySelectorAll("nav button").forEach(b=>{b.textContent=t(nv[b.dataset.v]);b.classList.toggle("on",b.dataset.v===view)});
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l===LANG));
+  $("#reset-btn").textContent=t("reset");
+}
+function render(){
+  chrome();
+  const app=$("#app");
+  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer};
+  app.innerHTML=V[view](param);
+  if(view==="home"){const i=$("#q");i.focus();i.setSelectionRange(i.value.length,i.value.length)}
+}
+
+function vHome(){
+  const open=S.jobs.filter(j=>j.status==="open").length;
+  const todayClosed=S.jobs.filter(j=>j.status==="closed"&&new Date(j.closedAt).toDateString()===new Date().toDateString()).length;
+  const q=searchQ.trim().toLowerCase();
+  const res=q?S.customers.filter(c=>[c.phone,c.engine,c.chassis,c.name].some(v=>String(v).toLowerCase().includes(q))):[];
+  return `
+  <div class="stats">
+    <div class="stat" onclick="go('jobs')"><b>${open}</b><span>${t("st_open")}</span></div>
+    <div class="stat" onclick="go('history')"><b>${todayClosed}</b><span>${t("st_today")}</span></div>
+    <div class="stat" onclick="go('reminders')"><b>${dueList().length}</b><span>${t("st_due")}</span></div>
+  </div>
+  <div class="card">
+    <h2>${t("search_h")}</h2>
+    <input id="q" placeholder="${t("search_ph")}" value="${esc(searchQ)}" oninput="searchQ=this.value;render()">
+    <div style="margin-top:6px">
+      ${q?(res.length?res.map(c=>`
+        <div class="list-item clickable" onclick="go('customer',${c.id})">
+          <div><b>${esc(c.name)}</b> · ${esc(c.model)}<div class="mut">📞 ${esc(c.phone)} · ${t("engine")} ${esc(c.engine)} · ${t("chassis")} ${esc(c.chassis)}</div></div>
+          <span>›</span>
+        </div>`).join(""):`<div class="empty">${t("not_found")}<br><br><button class="btn" onclick="newCustomer()">${t("add_new")}</button></div>`)
+      :`<p class="mut">${t("try_")} <a href="#" onclick="searchQ='9842';render();return false">9842</a> · <a href="#" onclick="searchQ='S325B';render();return false">S325B</a></p>`}
+    </div>
+    <button class="btn ghost block" style="margin-top:8px" onclick="newCustomer()">${t("new_cust_btn")}</button>
+  </div>
+  <div class="card"><h2>${t("active_h")}</h2>${jobRows(S.jobs.filter(j=>j.status==="open"))}</div>`;
+}
+
+function jobRows(list){
+  if(!list.length) return `<div class="empty">${t("no_jobs")}</div>`;
+  return list.map(j=>{const c=cust(j.customerId);return `
+    <div class="list-item clickable" onclick="go('${j.status==="open"?"job":"slip"}',${j.id})">
+      <div><b>${j.no}</b> · ${esc(c.name)} <span class="tag ${j.status}">${j.status==="open"?t("open"):t("done")}</span>
+        <div class="mut">${esc(c.model)} · ${t("mech")}: ${esc(j.mechanic)} · ${j.status==="open"?ago(j.startedAt)+" "+t("since"):fDate(j.closedAt)}</div></div>
+      <div style="text-align:right"><b>${rs(partsTotal(j)+labourTotal(j))}</b><div class="mut">${j.parts.length} ${t("parts_n")}</div></div>
+    </div>`}).join("");
+}
+function vJobs(){return `<div class="card"><h2>${t("active_h")}</h2>${jobRows(S.jobs.filter(j=>j.status==="open"))}</div>`}
+function vHistory(){return `<div class="card"><h2>${t("closed_h")}</h2>${jobRows(S.jobs.filter(j=>j.status==="closed").sort((a,b)=>new Date(b.closedAt)-new Date(a.closedAt)))}</div>`}
+
+function custBlock(c){return `
+  <div class="grid2">
+    <div><span class="mut">${t("name")}</span><br><b>${esc(c.name)}</b></div>
+    <div><span class="mut">${t("phone")}</span><br>${esc(c.phone)}</div>
+    <div><span class="mut">${t("tractor")}</span><br>${esc(c.model)}</div>
+    <div><span class="mut">${t("address")}</span><br>${esc(c.address)}</div>
+    <div><span class="mut">${t("engine")}</span><br>${esc(c.engine)}</div>
+    <div><span class="mut">${t("chassis")}</span><br>${esc(c.chassis)}</div>
+  </div>`}
+
+function vCustomer(id){
+  const c=cust(id);const hist=S.jobs.filter(j=>j.customerId===id);
+  const openJob=hist.find(j=>j.status==="open");
+  return `<button class="back" onclick="go('home')">${t("back")}</button>
+  <div class="card"><h2>${t("cust_rec")}</h2>${custBlock(c)}
+    <p class="mut">${t("next_srv")}: <b>${c.nextService?fDate(c.nextService):"—"}</b></p>
+    ${openJob?`<button class="btn block" onclick="go('job',${openJob.id})">${t("open_job")} ${openJob.no}</button>`
+      :`<button class="btn block" onclick="startJob(${c.id})">${t("start_new")}</button>`}
+  </div>
+  <div class="card"><h2>${t("history")}</h2>${jobRows(hist.sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)))}</div>`;
+}
+
+function vJob(id){
+  const j=job(id);const c=cust(j.customerId);
+  return `<button class="back" onclick="go('home')">${t("back")}</button>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">${j.no}</h2><span class="tag open">${t("open")}</span></div>
+    <p class="mut" style="margin:6px 0 10px">${t("mech")}: <b>${esc(j.mechanic)}</b> · ${t("started")}: ${fDT(j.startedAt)} (${ago(j.startedAt)} ${t("ago")})${j.hours?` · ${t("hours")}: ${esc(j.hours)}`:""}</p>
+    ${custBlock(c)}
+    ${j.complaint?`<p class="mut" style="margin-bottom:0">${t("complaint")}: ${esc(j.complaint)}</p>`:""}
+  </div>
+  <div class="card">
+    <h2>${t("add_parts")}</h2>
+    <div class="row">
+      <div class="dd" style="flex:3">
+        <label>${t("search_prod")}</label>
+        <input id="ps" placeholder="${t("prod_ph")}" autocomplete="off" oninput="psSearch()" onkeydown="psKey(event)">
+        <div id="psl"></div>
+      </div>
+      <div style="flex:1"><label>${t("qty")}</label><input id="pq" type="number" min="1" value="1"></div>
+    </div>
+    <div id="psel" class="mut" style="margin:8px 0"></div>
+    <button class="btn block" onclick="addPart(${j.id})">${t("add_part")}</button>
+    <table style="margin-top:12px">
+      <tr><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th><th></th></tr>
+      ${j.parts.length?j.parts.map((p,i)=>`<tr><td>${esc(pName(p))}<div class="mut">${esc(p.code)} · ${fTime(p.at)}</div></td><td class="num">${p.qty}</td><td class="num">${rs(p.rate)}</td><td class="num">${rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delPart(${j.id},${i})">✕</button></td></tr>`).join("")
+        :`<tr><td colspan="5" class="empty">${t("no_parts")}</td></tr>`}
+    </table>
+    <div class="total">${t("parts_tot")}: ${rs(partsTotal(j))}</div>
+  </div>
+  <div class="card">
+    <h2>${t("labour_h")}</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+      ${t("presets").map((n,i)=>`<button class="btn ghost sm" onclick="addLabourPreset(${j.id},${i})">${esc(n)} ${PRESET_AMT[i]?rs(PRESET_AMT[i]):""}</button>`).join("")}
+    </div>
+    <div class="row">
+      <div style="flex:2"><input id="ld" placeholder="${t("lab_desc")}"></div>
+      <div><input id="la" type="number" placeholder="${t("amount")}"></div>
+      <button class="btn" style="flex:0 0 auto" onclick="addLabour(${j.id})">+</button>
+    </div>
+    <table style="margin-top:10px">
+      ${j.labour.length?j.labour.map((l,i)=>`<tr><td>${esc(lName(l))}</td><td class="num">${rs(l.amount)}</td><td style="width:40px"><button class="btn gray sm" onclick="delLabour(${j.id},${i})">✕</button></td></tr>`).join("")
+        :`<tr><td class="empty">${t("no_labour")}</td></tr>`}
+    </table>
+    <div class="total">${t("total")}: ${rs(partsTotal(j)+labourTotal(j))}</div>
+  </div>
+  <button class="btn ok block" style="padding:14px" onclick="closeJobDlg(${j.id})">${t("close_job")}</button>`;
+}
+
+function vSlip(id){
+  const j=job(id);const c=cust(j.customerId);
+  return `<div class="noprint" style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button class="back" style="margin:0" onclick="go('home')">${t("home_b")}</button>
+      <span style="flex:1"></span>
+      <button class="btn sm" onclick="tryPrint()">${t("print")}</button>
+      <button class="btn ghost sm" onclick="copySlip(${j.id})">${t("copy")}</button>
+    </div>
+  <div class="slip">
+    <h3 style="font-size:20px">${t("firm")}</h3>
+    <p class="c mut" style="margin:2px 0 4px">${t("sub")}</p>
+    <p class="c" style="margin:0 0 12px;font-weight:600">${t("slip_h")}</p>
+    <div class="grid2" style="margin-bottom:10px">
+      <div>${t("job_no")}: <b>${j.no}</b></div><div>${t("mech")}: ${esc(j.mechanic)}</div>
+      <div>${t("started")}: ${fDT(j.startedAt)}</div><div>${t("finished")}: ${fDT(j.closedAt)}</div>
+    </div>
+    ${custBlock(c)}
+    <table style="margin-top:12px">
+      <tr><th>#</th><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th></tr>
+      ${j.parts.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(pName(p))}<div class="mut">${esc(p.code)}</div></td><td class="num">${p.qty}</td><td class="num">${rs(p.rate)}</td><td class="num">${rs(p.qty*p.rate)}</td></tr>`).join("")}
+      <tr><td></td><td colspan="3"><b>${t("parts_total")}</b></td><td class="num"><b>${rs(partsTotal(j))}</b></td></tr>
+      ${j.labour.map(l=>`<tr><td></td><td colspan="3">${t("labour")}: ${esc(lName(l))}</td><td class="num">${rs(l.amount)}</td></tr>`).join("")}
+    </table>
+    <div class="total">${t("grand")}: ${rs(partsTotal(j)+labourTotal(j))}</div>
+    <p class="mut">${t("next_date")}: <b>${fDate(c.nextService)}</b></p>
+    <p class="mut" style="font-size:12px">${t("not_bill")}</p>
+  </div>`;
+}
+
+function vReminders(){
+  const due=dueList();
+  const later=S.customers.filter(c=>c.nextService&&daysTo(c.nextService)>7).sort((a,b)=>new Date(a.nextService)-new Date(b.nextService));
+  const row=c=>{const d=daysTo(c.nextService);
+    const msg=t("msg")(c.name,c.model,d<0,fDate(c.nextService));
+    return `<div class="list-item">
+      <div><b>${esc(c.name)}</b> <span class="tag ${d<0?"due":"open"}">${d<0?t("late")(Math.abs(d)):d===0?t("today"):t("in_days")(d)}</span>
+        <div class="mut">${esc(c.model)} · 📞 ${esc(c.phone)} · ${fDate(c.nextService)}</div></div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <a class="btn ok sm" style="text-decoration:none" href="https://wa.me/977${c.phone}?text=${encodeURIComponent(msg)}" target="_blank">WhatsApp</a>
+        <button class="btn ghost sm" onclick="go('customer',${c.id})">${t("open_b")}</button>
+      </div></div>`};
+  return `<div class="card"><h2>${t("due_h")}</h2>
+    <p class="mut">${t("due_note")}</p>
+    ${due.length?due.map(row).join(""):`<div class="empty">${t("none_due")}</div>`}</div>
+  <div class="card"><h2>${t("upcoming")}</h2>${later.length?later.map(row).join(""):`<div class="empty">—</div>`}</div>`;
+}
+
+// ---------- एक्शन / Actions ----------
+function newCustomer(){
+  modal(`<h2>${t("nc_h")}</h2>
+    <label>${t("name")}</label><input id="nc-name">
+    <label>${t("phone")}</label><input id="nc-phone" inputmode="tel" value="${/^\d+$/.test(searchQ)?esc(searchQ):""}">
+    <label>${t("address")}</label><input id="nc-addr">
+    <label>${t("model")}</label><input id="nc-model" placeholder="MF 1035 DI">
+    <div class="row"><div><label>${t("engine")}</label><input id="nc-eng"></div><div><label>${t("chassis")}</label><input id="nc-ch"></div></div>
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveCustomer()">${t("save")}</button></div>`);
+  $("#nc-name").focus();
+}
+function saveCustomer(){
+  const v=k=>$("#nc-"+k).value.trim();
+  if(!v("name")||!v("phone")){toast(t("need_np"));return}
+  const c={id:S.nextCust++,name:v("name"),phone:v("phone"),address:v("addr"),model:v("model"),engine:v("eng"),chassis:v("ch"),nextService:null};
+  S.customers.push(c);save();closeModal();searchQ="";toast(t("cust_added"));go("customer",c.id);
+}
+function startJob(cid){
+  const c=cust(cid);
+  modal(`<h2>${t("nj_h")}</h2>
+    <p class="mut">${esc(c.name)} · ${esc(c.model)}</p>
+    <label>${t("mech")}</label><select id="sj-m">${S.mechanics.map(m=>`<option>${esc(m)}</option>`).join("")}</select>
+    <label>${t("hours_opt")}</label><input id="sj-h" type="number">
+    <label>${t("complaint")}</label><textarea id="sj-c" rows="2" placeholder="${t("compl_ph")}"></textarea>
+    <p class="mut">${t("auto_time")} <b>${fDT(new Date())}</b></p>
+    <div class="row"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="doStartJob(${cid})">${t("start")}</button></div>`);
+}
+function doStartJob(cid){
+  const id=S.nextJob++;
+  S.jobs.push({id,no:"JC-"+String(id).padStart(4,"0"),customerId:cid,mechanic:$("#sj-m").value,hours:$("#sj-h").value,complaint:$("#sj-c").value.trim(),startedAt:iso(new Date()),status:"open",parts:[],labour:[]});
+  save();closeModal();toast(t("job_started"));go("job",id);
+}
+
+let selProd=null,hiIdx=0,psMatches=[];
+function psSearch(){
+  const q=$("#ps").value.trim().toLowerCase();selProd=null;$("#psel").innerHTML="";
+  psMatches=q?PRODUCTS.filter(p=>[p.en,p.ne,p.code,p.den,p.dne].join(" ").toLowerCase().includes(q)).slice(0,8):[];hiIdx=0;
+  $("#psl").innerHTML=psMatches.length?`<div class="dd-list">${psMatches.map((p,i)=>`<div class="${i===0?"hi":""}" onmousedown="pickProd('${p.code}')"><b>${esc(p[LANG])}</b><br><span class="mut">${esc(p.code)} · ${rs(p.rate)} · ${esc(pDesc(p))}</span></div>`).join("")}</div>`:"";
+}
+function psKey(e){
+  if(!psMatches.length)return;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();hiIdx=(hiIdx+(e.key==="ArrowDown"?1:-1)+psMatches.length)%psMatches.length;
+    document.querySelectorAll(".dd-list div").forEach((d,i)=>d.classList.toggle("hi",i===hiIdx))}
+  if(e.key==="Enter"){e.preventDefault();pickProd(psMatches[hiIdx].code)}
+}
+function pickProd(code){
+  selProd=prod(code);psMatches=[];
+  $("#ps").value=selProd[LANG];$("#psl").innerHTML="";
+  $("#psel").innerHTML=`${t("selected")}: <b>${esc(selProd[LANG])}</b> · ${t("rate")} ${rs(selProd.rate)} · ${esc(pDesc(selProd))}`;
+  $("#pq").focus();$("#pq").select();
+}
+function addPart(jid){
+  if(!selProd){toast(t("pick_first"));$("#ps").focus();return}
+  const q=Math.max(1,parseInt($("#pq").value)||1);
+  job(jid).parts.push({code:selProd.code,qty:q,rate:selProd.rate,at:iso(new Date())});
+  selProd=null;save();render();toast(t("part_added"));$("#ps").focus();
+}
+function delPart(jid,i){job(jid).parts.splice(i,1);save();render()}
+function addLabourPreset(jid,i){job(jid).labour.push({k:i,amount:PRESET_AMT[i]});save();render()}
+function addLabour(jid){const d=$("#ld").value.trim(),a=Number($("#la").value);if(!d){toast(t("enter_desc"));return}job(jid).labour.push({desc:d,amount:a||0});save();render()}
+function delLabour(jid,i){job(jid).labour.splice(i,1);save();render()}
+
+function closeJobDlg(jid){
+  const j=job(jid);
+  if(!j.parts.length&&!j.labour.length){toast(t("nothing_added"));return}
+  const nd=addMonths(new Date(),3).toISOString().slice(0,10);
+  modal(`<h2>${t("close_q")}</h2>
+    <p>${j.parts.length} ${t("parts_n")} · ${j.labour.length} ${t("labour")} · ${t("total")} <b>${rs(partsTotal(j)+labourTotal(j))}</b></p>
+    <label>${t("next_3m")}</label><input id="cj-next" type="date" value="${nd}">
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn ok" onclick="doCloseJob(${jid})">${t("close_b")}</button></div>`);
+}
+function doCloseJob(jid){
+  const j=job(jid);j.status="closed";j.closedAt=iso(new Date());
+  const nv=$("#cj-next").value;cust(j.customerId).nextService=nv?iso(nv+"T09:00:00"):iso(addMonths(new Date(),3));
+  save();closeModal();toast(t("job_closed"));go("slip",jid);
+}
+function tryPrint(){try{window.print()}catch(e){}setTimeout(()=>toast(t("print_note")),300)}
+function copySlip(jid){
+  const j=job(jid),c=cust(j.customerId);
+  const txt=[t("firm")+" – "+t("sub"),`${t("slip_h")} ${j.no}`,`${t("name")}: ${c.name} (${c.phone})`,`${t("tractor")}: ${c.model} | ${t("engine")}: ${c.engine} | ${t("chassis")}: ${c.chassis}`,`${t("mech")}: ${j.mechanic}`,`${t("started")}: ${fDT(j.startedAt)} | ${t("finished")}: ${fDT(j.closedAt)}`,"",
+    ...j.parts.map((p,i)=>`${i+1}. ${pName(p)} [${p.code}] x${p.qty} @ ${p.rate} = ${p.qty*p.rate}`),
+    ...j.labour.map(l=>`${t("labour")}: ${lName(l)} = ${l.amount}`),"",`${t("grand")}: ${partsTotal(j)+labourTotal(j)}`,`${t("next_date")}: ${fDate(c.nextService)}`].join("\n");
+  navigator.clipboard.writeText(txt).then(()=>toast(t("copied"))).catch(()=>toast(t("copy_fail")));
+}
+function resetDemo(){S=JSON.parse(JSON.stringify(SEED));save();searchQ="";go("home");toast(t("reset_done"))}
+
+render();
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+</body>
+</html>
