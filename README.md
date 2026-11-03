@@ -1,5 +1,7 @@
 # Ratna Auto – Job Card (Demo)
 
-Demo of the workshop job card system for Ratna Auto, Massey Ferguson dealer, Lahan.
-Static site: open `index.html`, or deploy to Vercel (no build step needed).
-Demo data is stored only in the viewer's browser.
+Workshop job card system for Ratna Auto, Massey Ferguson dealer, Padariya Chowk, Lahan-1.
+
+- `index.html` – the app (English / Nepali). Static, no build step; deployed on Vercel.
+- `parts.json` – real parts MRP list (part no, description, MRP). Dealer prices (NDP) are not published here.
+- Demo customers are generated sample data. Real customer data lives only in Supabase, behind login.
