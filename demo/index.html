@@ -118,7 +118,7 @@ const I18N={
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
   problems:"Problems reported",observ:"Observations",action:"Action taken",remarks:"Workshop incharge remarks",
   add_parts:"Parts issued (Material Issue Note)",search_prod:"Search part no. or description",prod_ph:"e.g. 2654408 or oil filter",
-  loading:"Loading parts list…",qty:"Qty",foc:"FOC (free)",manual:"+ Item not in list",
+  loading:"Loading parts list…",qty:"Qty",foc:"Under warranty",wty:"Under warranty",manual:"+ Item not in list",
   selected:"Selected",rate:"MRP",add_part:"+ Add part",part:"Description",part_no:"Part No.",amount:"Value",
   no_parts:"No parts issued yet.",parts_tot:"Parts",total:"Total",
   labour_h:"Labour",lab_desc:"Work description",outside:"Outside repair",no_labour:"No labour added yet.",
@@ -164,7 +164,7 @@ const I18N={
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
   problems:"भनिएका समस्या",observ:"जाँचमा देखिएको",action:"गरिएको काम",remarks:"वर्कसप इन्चार्जको टिप्पणी",
   add_parts:"दिइएका पार्ट्स (सामान निकासा)",search_prod:"पार्ट नं. वा विवरण खोज्नुहोस्",prod_ph:"जस्तै: 2654408 वा oil filter",
-  loading:"पार्ट्सको सूची लोड हुँदैछ…",qty:"संख्या",foc:"FOC (निःशुल्क)",manual:"+ सूचीमा नभएको सामान",
+  loading:"पार्ट्सको सूची लोड हुँदैछ…",qty:"संख्या",foc:"वारेन्टी अन्तर्गत",wty:"वारेन्टी अन्तर्गत",manual:"+ सूचीमा नभएको सामान",
   selected:"छानिएको",rate:"MRP",add_part:"+ पार्ट थप्नुहोस्",part:"विवरण",part_no:"पार्ट नं.",amount:"रकम",
   no_parts:"अहिलेसम्म कुनै पार्ट दिइएको छैन।",parts_tot:"पार्ट्स",total:"जम्मा",
   labour_h:"ज्याला",lab_desc:"कामको विवरण",outside:"बाहिरी मर्मत",no_labour:"अहिलेसम्म ज्याला थपिएको छैन।",
@@ -433,7 +433,7 @@ function vJob(id){
     <button class="btn ghost sm" style="margin-top:8px" onclick="manualItem(${j.id})">${t("manual")}</button>
     <table style="margin-top:12px">
       <tr><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th><th></th></tr>
-      ${j.parts.length?j.parts.map((p,i)=>`<tr><td>${esc(p.desc)}<div class="mut">${esc(p.pn||"—")} · ${fTime(p.at)}${p.foc?" · FOC":""}</div></td><td class="num">${p.qty}</td><td class="num">${rs(p.rate)}</td><td class="num">${p.foc?"FOC":rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delPart(${j.id},${i})">✕</button></td></tr>`).join("")
+      ${j.parts.length?j.parts.map((p,i)=>`<tr><td>${esc(p.desc)}<div class="mut">${esc(p.pn||"—")} · ${fTime(p.at)}${p.foc?" · "+t("wty"):""}</div></td><td class="num">${p.qty}</td><td class="num">${rs(p.rate)}</td><td class="num">${p.foc?t("wty"):rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delPart(${j.id},${i})">✕</button></td></tr>`).join("")
         :`<tr><td colspan="5" class="empty">${t("no_parts")}</td></tr>`}
     </table>
     <div class="total">${t("parts_tot")}: ${rs(partsTotal(j))}</div>
@@ -487,7 +487,7 @@ function vSlip(id){
     <div class="sec">${t("mat_note")}</div>
     <table>
       <tr><th>#</th><th>${t("part")}</th><th>${t("part_no")}</th><th class="num">${t("qty")}</th><th class="num">${t("amount")}</th></tr>
-      ${j.parts.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.desc)}</td><td>${esc(p.pn||"—")}</td><td class="num">${p.qty}</td><td class="num">${p.foc?"FOC":rs(p.qty*p.rate)}</td></tr>`).join("")||`<tr><td colspan="5">—</td></tr>`}
+      ${j.parts.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.desc)}</td><td>${esc(p.pn||"—")}</td><td class="num">${p.qty}</td><td class="num">${p.foc?t("wty"):rs(p.qty*p.rate)}</td></tr>`).join("")||`<tr><td colspan="5">—</td></tr>`}
       ${j.labour.map(l=>`<tr><td></td><td colspan="3">${l.outside?t("outside"):t("labour_h")}: ${esc(lName(l))}</td><td class="num">${rs(l.amount)}</td></tr>`).join("")}
     </table>
     <div class="sec">${t("billing")}</div>
@@ -640,7 +640,7 @@ function copySlip(jid){
   const j=job(jid),c=cust(j.customerId),tr=trac(j.tractorId);
   const txt=[`${t("firm")} – ${t("slip_h")} ${j.no}`,`${t("name")}: ${c.name} (${c.phone})`,`${t("tractor")}: ${tr.model} | ${t("engine")}: ${tr.engine} | ${t("chassis")}: ${tr.chassis}`,
     `${t("type_job")}: ${t("jt")[j.type]} | ${t("hours_run")}: ${j.hours||"-"} | ${t("mech")}: ${j.mechanic}`,`${t("date_in")}: ${fDT(j.dateIn)} | ${t("date_out")}: ${fDT(j.dateOut)}`,"",
-    ...j.parts.map((p,i)=>`${i+1}. ${p.desc} [${p.pn||"-"}] x${p.qty} @ ${p.rate} = ${p.foc?"FOC":p.qty*p.rate}`),
+    ...j.parts.map((p,i)=>`${i+1}. ${p.desc} [${p.pn||"-"}] x${p.qty} @ ${p.rate} = ${p.foc?t("wty"):p.qty*p.rate}`),
     ...j.labour.map(l=>`${t("labour_h")}: ${lName(l)} = ${l.amount}`),"",`${t("grand")}: ${partsTotal(j)+labourTotal(j)}`,`${t("next_date")}: ${t("slot")(j.nextSlot||tr.nextSlot)} – ${fDate(j.nextDue||tr.nextDue)}`].join("\n");
   navigator.clipboard.writeText(txt).then(()=>toast(t("copied"))).catch(()=>toast(t("copy_fail")));
 }
