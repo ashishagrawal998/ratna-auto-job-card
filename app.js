@@ -3,6 +3,7 @@
 // =====================================================================
 const SB_URL="https://johrhczthangldtrakmr.supabase.co";
 const SB_KEY="sb_publishable_-UMTRJ6z-L4qY6c7818nJw_z2rGfl-V";
+const DEFAULT_FIRM="Ratna Auto"; // shown before login on a device that has never logged in
 
 // ---------------------------------------------------------------------
 // Translations
@@ -203,7 +204,7 @@ const WHO=()=>ls.get("jobcard_who");
 async function loadCtx(){
   const [role,dealers,staff,rates]=await Promise.all([rpc("my_role"),get("dealers?select=id,name,address,phone"),get("mechanics?select=*&order=name"),get("labour_rates?select=*&order=id")]);
   if(!role||!dealers.length)throw Object.assign(new Error(t("no_dealer")),{nodealer:true});
-  CTX={role,dealer:dealers[0],staff,rates};
+  CTX={role,dealer:dealers[0],staff,rates};ls.set("jobcard_dealer",JSON.stringify({name:CTX.dealer.name,address:CTX.dealer.address||""}));
 }
 const isAdmin=()=>CTX&&CTX.role==="owner";
 const mechanics=()=>CTX.staff.filter(s=>s.active&&s.role==="mechanic");
@@ -224,10 +225,11 @@ let view="home",param=null,searchQ="",rtok=0;
 function go(v,p){view=v;param=p??null;render();window.scrollTo(0,0)}
 function chrome(){
   document.documentElement.lang=LANG;
-  const firm=CTX?CTX.dealer.name:"";
-  document.title=(firm?firm+" – ":"")+t("title");
-  $("#h-title").textContent=firm?firm+" · "+t("title"):t("title");
-  $("#h-sub").innerHTML=CTX?`${esc(CTX.dealer.address||"")}`:"";
+  let saved=null;try{saved=JSON.parse(ls.get("jobcard_dealer"))}catch(e){}
+  const D=CTX?CTX.dealer:(saved||{name:DEFAULT_FIRM,address:""});
+  document.title=D.name+" – "+t("title");
+  $("#h-title").textContent=D.name+" – "+t("title");
+  $("#h-sub").textContent=D.address||"";
   document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l===LANG));
   const nav=$("#nav");
   if(!CTX){nav.style.display="none";$("#bar").style.display="none";return}
@@ -256,7 +258,7 @@ function after(){
 function showLogin(msg){
   chrome();
   $("#app").innerHTML=`<div class="card" style="max-width:380px;margin:30px auto">
-    <h2>${t("login_h")}</h2>
+    <h2 style="margin-bottom:2px">${esc($("#h-title").textContent)}</h2><p class="mut" style="margin:0 0 8px">${t("login_h")}</p>
     <form onsubmit="doLogin(event)">
       <label>${t("email")}</label><input id="li-e" type="email" autocomplete="username" value="${esc(ls.get("jobcard_last_email")||"")}" required>
       <label>${t("password")}</label><input id="li-p" type="password" autocomplete="current-password" required>
