@@ -13,7 +13,7 @@ const I18N={
   title:"Job Card",
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
-  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",
+  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Warranty parts (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",r_due:"Service due now",r_daily:"Per day",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
@@ -63,7 +63,7 @@ const I18N={
   title:"जब कार्ड",
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
-  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",
+  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
@@ -234,7 +234,7 @@ function chrome(){
   const nav=$("#nav");
   if(!CTX){nav.style.display="none";$("#bar").style.display="none";return}
   nav.style.display="flex";$("#bar").style.display="flex";
-  const items=[["home","nav_home"],["jobs","nav_jobs"],["reminders","nav_rem"],["history","nav_hist"]];if(isAdmin())items.push(["settings","nav_set"]);
+  const items=[["home","nav_home"],["jobs","nav_jobs"],["reminders","nav_rem"],["history","nav_hist"]];if(isAdmin())items.push(["reports","nav_rep"],["settings","nav_set"]);
   nav.innerHTML=items.map(([v,k])=>`<button class="${v===view?"on":""}" onclick="go('${v}')">${t(k)}</button>`).join("");
   $("#bar").innerHTML=`<span>👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button></span>
     <span class="mut">${esc(SESS&&SESS.email||"")} · ${isAdmin()?t("admin"):t("staff_login")} · <a href="#" onclick="logout();return false">${t("logout")}</a></span>`;
@@ -243,7 +243,7 @@ async function render(){
   chrome();
   if(!CTX)return;
   const my=++rtok;const app=$("#app");
-  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings};
+  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports};
   app.innerHTML=`<div class="empty">${t("loading")}</div>`;
   try{const html=await V[view](param);if(my!==rtok)return;app.innerHTML=html;after()}
   catch(e){if(my!==rtok)return;console.error(e);app.innerHTML=`<div class="card empty">${t("err")}: ${esc(e.message)}<br><br><button class="btn" onclick="render()">↻</button></div>`}
@@ -702,6 +702,56 @@ async function vReminders(){
   <div class="card"><h2>${t("upcoming")}</h2>${later.length?later.map(row).join(""):`<div class="empty">—</div>`}</div>`;
 }
 
+
+// ---------------------------------------------------------------------
+// Reports (admin only)
+// ---------------------------------------------------------------------
+function periodRange(p){
+  const n=new Date(),d0=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  if(p==="today")return [d0,new Date(d0.getTime()+DAY)];
+  if(p==="7")return [new Date(d0.getTime()-6*DAY),new Date(d0.getTime()+DAY)];
+  if(p==="last")return [new Date(n.getFullYear(),n.getMonth()-1,1),new Date(n.getFullYear(),n.getMonth(),1)];
+  return [new Date(n.getFullYear(),n.getMonth(),1),new Date(d0.getTime()+DAY)];
+}
+const fDur=ms=>{const h=ms/3600000;return h<24?h.toFixed(1)+" "+t("hr"):(h/24).toFixed(1)+" "+t("day")};
+async function vReports(p){
+  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
+  p=p||"month";const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString());
+  const [opened,closed,openNow,due]=await Promise.all([
+    get(`job_cards?select=id,job_type,date_in,entered_by_name&date_in=gte.${A}&date_in=lt.${B}&status=neq.cancelled&order=date_in`),
+    get(`job_cards?select=id,job_type,date_in,date_out,mechanic_id,mechanics(name)&status=eq.closed&date_out=gte.${A}&date_out=lt.${B}`),
+    get("job_cards?select=id&status=eq.open"),get("service_due?select=tractor_id")]);
+  const ids=closed.map(j=>j.id);
+  let tot=[],lines=[];
+  if(ids.length){
+    for(let i=0;i<ids.length;i+=150){const part=ids.slice(i,i+150).join(",");
+      const [t1,l1]=await Promise.all([get(`job_card_totals?job_card_id=in.(${part})`),get(`job_card_parts?select=part_no,description,qty,rate,mrp_at_issue,is_foc&job_card_id=in.(${part})`)]);
+      tot=tot.concat(t1);lines=lines.concat(l1)}
+  }
+  const sum=(arr,f)=>arr.reduce((x,y)=>x+Number(f(y)||0),0);
+  const P=sum(tot,x=>x.parts_total),L=sum(tot,x=>x.labour_total),O=sum(tot,x=>x.outside_total);
+  const markup=sum(lines.filter(l=>!l.is_foc&&l.mrp_at_issue!=null),l=>(l.rate-l.mrp_at_issue)*l.qty);
+  const wty=sum(lines.filter(l=>l.is_foc),l=>l.qty*l.rate);
+  const count=(arr,key)=>{const m={};arr.forEach(x=>{const k=key(x);m[k]=(m[k]||0)+1});return Object.entries(m).sort((x,y)=>y[1]-x[1])};
+  const mech={};closed.forEach(j=>{const k=j.mechanics?j.mechanics.name:"—";(mech[k]=mech[k]||{n:0,ms:0}).n++;mech[k].ms+=new Date(j.date_out)-new Date(j.date_in)});
+  const top={};lines.forEach(l=>{const k=l.part_no||l.description;(top[k]=top[k]||{d:l.description,pn:l.part_no,q:0,v:0}).q+=Number(l.qty);if(!l.is_foc)top[k].v+=l.qty*l.rate});
+  const daily=count(opened,j=>ymd(j.date_in)).sort((x,y)=>x[0]<y[0]?-1:1);
+  const tile=(n,l)=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`;
+  const table=(head,rows)=>rows.length?`<table><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
+  return `<div class="chips" style="margin-bottom:12px">${[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]].map(([k,l])=>`<button class="chip ${k===p?"on":""}" onclick="go('reports','${k}')">${t(l)}</button>`).join("")}</div>
+  <p class="mut" style="margin-top:-4px">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</p>
+  <div class="stats">${tile(opened.length,t("r_opened"))}${tile(closed.length,t("r_closed"))}${tile(openNow.length,t("r_open_now"))}</div>
+  <div class="card"><h2>${t("r_income")}</h2>
+    <div class="total" style="text-align:left;font-size:24px;margin:0 0 8px">${rs(P+L+O)}</div>
+    ${table(["",t("amount")],[[t("r_parts"),rs(P)],[t("r_labour"),rs(L)],[t("r_outside"),rs(O)],[`<span class="mut">${t("r_markup")}</span>`,`<span class="mut">${rs(markup)}</span>`],[`<span class="mut">${t("r_wty")}</span>`,`<span class="mut">${rs(wty)}</span>`]])}
+  </div>
+  <div class="card"><h2>${t("r_mech")}</h2>${table([t("mech"),t("r_jobs"),t("r_avg")],Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>[esc(k),v.n,fDur(v.ms/v.n)]))}</div>
+  <div class="card"><h2>${t("r_types")}</h2>${table([t("type_job"),t("r_jobs")],count(opened,j=>j.job_type).map(([k,n])=>[t("jt")[k],n]))}</div>
+  <div class="card"><h2>${t("r_top")}</h2>${table([t("part"),t("qty"),t("amount")],Object.values(top).sort((x,y)=>y.q-x.q).slice(0,15).map(x=>[`${esc(x.d)}<div class="mut">${esc(x.pn||"—")}</div>`,x.q,rs(x.v)]))}</div>
+  <div class="card"><h2>${t("r_daily")}</h2>${table([t("date"),t("r_opened")],daily.map(([d,n])=>[fDate(d),n]))}</div>
+  <div class="card"><h2>${t("r_entry")}</h2>${table([t("name"),t("r_jobs")],count(opened,j=>j.entered_by_name||"—").map(([k,n])=>[esc(k),n]))}</div>
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center"><span>${t("r_due")}: <b>${due.length}</b></span><button class="btn ghost sm" onclick="go('reminders')">${t("open_b")}</button></div>`;
+}
 // ---------------------------------------------------------------------
 // Settings (admin only): staff list and labour rates
 // ---------------------------------------------------------------------
