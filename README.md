@@ -1,7 +1,8 @@
-# Ratna Auto – Job Card (Demo)
+# Workshop Job Card
 
-Workshop job card system for Ratna Auto, Massey Ferguson dealer, Padariya Chowk, Lahan-1.
+Job card system for tractor workshops (first dealer: Ratna Auto, Massey Ferguson, Lahan-1).
 
-- `index.html` – the app (English / Nepali). Static, no build step; deployed on Vercel.
-- `parts.json` – real parts MRP list (part no, description, MRP). Dealer prices (NDP) are not published here.
-- Demo customers are generated sample data. Real customer data lives only in Supabase, behind login.
+- `/` – live app (login required). Talks to Supabase directly; all data rules (who sees what) are enforced in the database with row-level security.
+- `/demo/` – demo with sample customers and the real MRP parts list, no login.
+- `app.js` – the app. Supabase URL + publishable key are public by design; never commit the secret key.
+- Real customer data lives only in Supabase, never in this repo.
