@@ -28,8 +28,8 @@ const I18N={
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
   problems:"Problems reported",observ:"Observations",action:"Action taken",remarks:"Workshop incharge remarks",entered_by:"Entered by",
   add_parts:"Parts issued (Material Issue Note)",search_prod:"Search part no. or description",prod_ph:"e.g. 2654408 or oil filter",
-  qty:"Qty",foc:"FOC (free)",manual:"+ Item not in list",
-  selected:"Selected",rate:"MRP",add_part:"+ Add part",part:"Description",part_no:"Part No.",amount:"Value",
+  qty:"Qty",foc:"Warranty (no charge)",wty:"Warranty",mrp:"MRP",min_mrp:x=>"Rate cannot be below MRP ("+x+")",edit_rate:"Change rate",markup:"Increase",new_rate:"New rate",manual:"+ Item not in list",
+  selected:"Selected",rate:"Rate",add_part:"+ Add part",part:"Description",part_no:"Part No.",amount:"Value",
   no_parts:"No parts issued yet.",parts_tot:"Parts",total:"Total",
   labour_h:"Labour",lab_desc:"Work description",outside:"Outside repair",no_labour:"No labour added yet.",
   close_job:"✔ Work done – close job card",print:"🖨 Print",copy:"Copy",
@@ -78,8 +78,8 @@ const I18N={
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
   problems:"भनिएका समस्या",observ:"जाँचमा देखिएको",action:"गरिएको काम",remarks:"वर्कसप इन्चार्जको टिप्पणी",entered_by:"इन्ट्री गर्ने",
   add_parts:"दिइएका पार्ट्स (सामान निकासा)",search_prod:"पार्ट नं. वा विवरण खोज्नुहोस्",prod_ph:"जस्तै: 2654408 वा oil filter",
-  qty:"संख्या",foc:"FOC (निःशुल्क)",manual:"+ सूचीमा नभएको सामान",
-  selected:"छानिएको",rate:"MRP",add_part:"+ पार्ट थप्नुहोस्",part:"विवरण",part_no:"पार्ट नं.",amount:"रकम",
+  qty:"संख्या",foc:"वारेन्टी (शुल्क नलाग्ने)",wty:"वारेन्टी",mrp:"MRP",min_mrp:x=>"दर MRP ("+x+") भन्दा कम हुन सक्दैन",edit_rate:"दर बदल्नुहोस्",markup:"बढाउनुहोस्",new_rate:"नयाँ दर",manual:"+ सूचीमा नभएको सामान",
+  selected:"छानिएको",rate:"दर",add_part:"+ पार्ट थप्नुहोस्",part:"विवरण",part_no:"पार्ट नं.",amount:"रकम",
   no_parts:"अहिलेसम्म कुनै पार्ट दिइएको छैन।",parts_tot:"पार्ट्स",total:"जम्मा",
   labour_h:"ज्याला",lab_desc:"कामको विवरण",outside:"बाहिरी मर्मत",no_labour:"अहिलेसम्म ज्याला थपिएको छैन।",
   close_job:"✔ काम सकियो – जब कार्ड बन्द गर्नुहोस्",print:"🖨 प्रिन्ट",copy:"कपी गर्नुहोस्",
@@ -483,15 +483,20 @@ async function vJob(id){
       <div id="psl"></div>
     </div>
     <div id="psel" class="mut" style="margin:8px 0"></div>
-    <div class="row" style="align-items:center">
-      <div style="flex:0 0 90px"><input id="pq" type="number" min="0.01" step="any" value="1" aria-label="${t("qty")}"></div>
+    <div class="row">
+      <div style="flex:0 0 80px"><label>${t("qty")}</label><input id="pq" type="number" min="0.01" step="any" value="1"></div>
+      <div><label>${t("rate")} (${t("cur")})</label><input id="pr" type="number" step="any" disabled></div>
+    </div>
+    <div class="chips" id="mkup" style="margin-top:6px;display:none"><span class="mut" style="align-self:center">${t("markup")}:</span>
+      ${[5,10,15,20].map(x=>`<button class="chip" onclick="markup(${x})">+${x}%</button>`).join("")}<button class="chip" onclick="markup(0)">MRP</button></div>
+    <div class="row" style="align-items:center;margin-top:8px">
       <label class="chk" style="flex:0 0 auto"><input type="checkbox" id="pfoc" ${j.job_type==="WTY"?"checked":""}> ${t("foc")}</label>
       <button class="btn" onclick="addPart(${j.id},this)">${t("add_part")}</button>
     </div>
     <button class="btn ghost sm" style="margin-top:8px" onclick="manualItem(${j.id})">${t("manual")}</button>
     <table style="margin-top:12px">
       <tr><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th><th></th></tr>
-      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_foc?" · FOC":""}</div></td><td class="num">${Number(p.qty)}</td><td class="num">${rs(p.rate)}</td><td class="num">${p.is_foc?"FOC":rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></td></tr>`).join("")
+      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_foc?" · "+t("wty"):""}</div></td><td class="num">${Number(p.qty)}</td><td class="num"><a href="#" onclick="editRate_(${p.id},${p.rate},${p.mrp_at_issue??"null"});return false" title="${t("edit_rate")}">${rs(p.rate)} ✎</a>${p.mrp_at_issue!=null&&Number(p.rate)>Number(p.mrp_at_issue)?`<div class="mut">${t("mrp")} ${rs(p.mrp_at_issue)}</div>`:""}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></td></tr>`).join("")
         :`<tr><td colspan="5" class="empty">${t("no_parts")}</td></tr>`}
     </table>
     <div class="total">${t("parts_tot")}: ${rs(partsTotal(parts))}</div>
@@ -519,7 +524,7 @@ async function vJob(id){
 // parts search (server side, over the dealer's own price list)
 let selProd=null,hiIdx=0,psMatches=[],ptok=0;
 async function psSearch(){
-  const q=clean($("#ps").value);selProd=null;$("#psel").innerHTML="";
+  const q=clean($("#ps").value);selProd=null;$("#psel").innerHTML="";{const pr=$("#pr");pr.value="";pr.disabled=true;$("#mkup").style.display="none"}
   const box=$("#psl");if(q.length<2){box.innerHTML="";psMatches=[];return}
   const my=++ptok;
   try{
@@ -541,13 +546,29 @@ function pickProd(i){
   const p=psMatches[i];selProd=p;psMatches=[];
   $("#ps").value=p.description;$("#psl").innerHTML="";
   $("#psel").innerHTML=`${t("selected")}: <b>${esc(p.description)}</b> · ${esc(p.part_no)} · MRP ${rs(p.mrp)}`;
+  const r=$("#pr");r.disabled=false;r.value=Number(p.mrp);r.min=Number(p.mrp);$("#mkup").style.display="flex";
   $("#pq").focus();$("#pq").select();
+}
+function markup(pct){if(!selProd)return;$("#pr").value=Math.round(Number(selProd.mrp)*(1+pct/100)*100)/100}
+function editRate_(id,rate,mrp){
+  modal(`<h2>${t("edit_rate")}</h2>${mrp!=null?`<p class="mut">${t("mrp")}: <b>${rs(mrp)}</b></p>`:""}
+    <label>${t("new_rate")} (${t("cur")})</label><input id="er" type="number" step="any" value="${rate}" ${mrp!=null?`min="${mrp}"`:""}>
+    ${mrp!=null?`<div class="chips" style="margin-top:6px">${[5,10,15,20].map(x=>`<button class="chip" onclick="erMark(${mrp},${x})">+${x}%</button>`).join("")}<button class="chip" onclick="erMark(${mrp},0)">MRP</button></div>`:""}
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveRate_(${id},${mrp},this)">${t("save")}</button></div>`);
+  $("#er").select();
+}
+function erMark(m,x){$("#er").value=Math.round(m*(1+x/100)*100)/100}
+function saveRate_(id,mrp,btn){
+  const r=parseFloat($("#er").value);if(isNaN(r)||(mrp!=null&&r<mrp)){toast(t("min_mrp")(rs(mrp)));return}
+  guard(async()=>{await patch(`job_card_parts?id=eq.${id}`,{rate:Math.round(r*100)/100});closeModal();render()},btn);
 }
 function addPart(jid,btn){
   if(!selProd){toast(t("pick_first"));$("#ps").focus();return}
   needWho(()=>guard(async()=>{
     const q=parseFloat($("#pq").value);
-    await post("job_card_parts",{job_card_id:jid,part_no:selProd.part_no,description:selProd.description,qty:q>0?q:1,rate:Number(selProd.mrp)||0,is_foc:$("#pfoc").checked,issued_by_name:WHO()});
+    const mrp=Number(selProd.mrp)||0,rate=parseFloat($("#pr").value);
+    if(isNaN(rate)||rate<mrp){toast(t("min_mrp")(rs(mrp)));$("#pr").value=mrp;return}
+    await post("job_card_parts",{job_card_id:jid,part_no:selProd.part_no,description:selProd.description,qty:q>0?q:1,rate:Math.round(rate*100)/100,is_foc:$("#pfoc").checked,issued_by_name:WHO()});
     selProd=null;toast(t("part_added"));await render();const ps=$("#ps");if(ps)ps.focus();
   },btn));
 }
@@ -633,7 +654,7 @@ async function vSlip(id){
     <div class="sec">${t("mat_note")}</div>
     <table>
       <tr><th>#</th><th>${t("part")}</th><th>${t("part_no")}</th><th class="num">${t("qty")}</th><th class="num">${t("amount")}</th></tr>
-      ${parts.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.description)}</td><td>${esc(p.part_no||"—")}</td><td class="num">${Number(p.qty)}</td><td class="num">${p.is_foc?"FOC":rs(p.qty*p.rate)}</td></tr>`).join("")||`<tr><td colspan="5">—</td></tr>`}
+      ${parts.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.description)}</td><td>${esc(p.part_no||"—")}</td><td class="num">${Number(p.qty)}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td></tr>`).join("")||`<tr><td colspan="5">—</td></tr>`}
       ${lab.map(l=>`<tr><td></td><td colspan="3">${l.is_outside?t("outside"):t("labour_h")}: ${esc(l.description)}</td><td class="num">${rs(l.amount)}</td></tr>`).join("")}
     </table>
     <div class="sec">${t("billing")}</div>
@@ -652,7 +673,7 @@ function copySlip(){
   const {j,parts,lab}=window._slip,c=j.customers,tr=j.tractors;
   const txt=[`${CTX.dealer.name} – ${t("slip_h")} ${j.job_no}`,`${t("name")}: ${c.name} (${c.phone||"-"})`,`${t("tractor")}: ${tr.model} | ${t("engine")}: ${tr.engine_no||"-"} | ${t("chassis")}: ${tr.chassis_no||"-"}`,
     `${t("type_job")}: ${t("jt")[j.job_type]} | ${t("hours_run")}: ${j.hours_run??"-"} | ${t("mech")}: ${j.mechanics?j.mechanics.name:"-"}`,`${t("date_in")}: ${fDT(j.date_in)} | ${t("date_out")}: ${fDT(j.date_out)}`,"",
-    ...parts.map((p,i)=>`${i+1}. ${p.description} [${p.part_no||"-"}] x${Number(p.qty)} @ ${p.rate} = ${p.is_foc?"FOC":Number(p.qty)*Number(p.rate)}`),
+    ...parts.map((p,i)=>`${i+1}. ${p.description} [${p.part_no||"-"}] x${Number(p.qty)} @ ${p.rate} = ${p.is_foc?t("wty"):Number(p.qty)*Number(p.rate)}`),
     ...lab.map(l=>`${t("labour_h")}: ${l.description} = ${l.amount}`),"",`${t("grand")}: ${partsTotal(parts)+labTotal(lab)}`,
     j.status==="closed"?`${t("next_date")}: ${t("slot")(j.next_service_slot)} – ${fDate(j.next_service_due)}`:""].join("\n");
   navigator.clipboard.writeText(txt).then(()=>toast(t("copied"))).catch(()=>toast(t("copy_fail")));
