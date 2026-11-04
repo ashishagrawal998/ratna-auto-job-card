@@ -10,7 +10,7 @@ const DEFAULT_FIRM="Ratna Auto"; // shown before login on a device that has neve
 // ---------------------------------------------------------------------
 const I18N={
  en:{
-  title:"Job Card",
+  title:"Job Card",kind:"Card type",mstw:"MSTW",jc:"Job Card",mstw_d:"Home service",jc_d:"Showroom service",pick_kind:"Choose MSTW or Job Card first",slip_mstw:"MSTW JOB CARD",slip_jc:"JOB CARD",edit_details:"✎ Edit details",closed_banner:"This card is closed. As admin you can still change it.",done_edit:"✔ Done editing",edit_card:"✎ Edit (admin)",hist30:"Completed – last 30 days",find_cards:"Search MSTW / Job Cards (all time)",find_ph:"Card no., customer, phone, model, engine, chassis…",all:"All",results:"Results",r_kind:"By card type",r_back:"‹ Reports",r_xl:"⬇ Excel",r_click:"Tap any number or row to see the details behind it.",extra:"Extra",income_all:"All closed cards",rem_rule:"Reminder goes 7 days before the service due date.",rem_auto:x=>`Automatic SMS from ${x}: not switched on yet (preview). Nothing is sent unless someone taps SMS or WhatsApp and sends it from the phone.`,rem_send_h:"Send now (due within 7 days, or overdue)",rem_sched:d=>"Reminder on "+d,sms:"SMS",wa:"WhatsApp",not_sent:"not sent",sent_on:(d,n)=>"sent "+d+(n?" · "+n:""),sent_q:"Did the message go?",yes_sent:"Yes, it was sent",no_sent:"No",logged:"Marked as sent",set_sms:"Reminder SMS",sms_from:"SMS sender (mobile number)",auto_sms:"Automatic sending",auto_off:"Off – will be switched on later",next_due_edit:"Next service due",
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
@@ -18,7 +18,7 @@ const I18N={
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
   not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",
-  active_h:"Active job cards",closed_h:"Completed job cards (last 50)",no_jobs:"No job cards.",
+  active_h:"Active job cards",closed_h:"Completed – last 30 days",no_jobs:"No job cards.",
   open:"Active",done:"Done",mech:"Mechanic",ago:"ago",parts_n:"part(s)",loading:"Loading…",saving:"Saving…",err:"Something went wrong",
   name:"Name",phone:"Phone",phone2:"Second phone",tractor:"Model",address:"Address",district:"District",engine:"Engine No.",chassis:"Tractor Sl. No.",reg:"Regn. No.",doi:"Date of Inst.",
   hours_run:"Hours run",last_srv:"Last service",next_srv:"Next service",
@@ -60,7 +60,7 @@ const I18N={
   slot:s=>!s?"—":s.startsWith("FS")?`Free service ${s[2]} (${SLOT_H[s]} hrs)`:s.startsWith("PAID")?`Paid service ${s[4]} (${SLOT_H[s]} hrs)`:`${parseInt(s)} hrs service`
  },
  ne:{
-  title:"जब कार्ड",
+  title:"जब कार्ड",kind:"कार्डको प्रकार",mstw:"MSTW",jc:"जब कार्ड",mstw_d:"घरमै सर्भिस",jc_d:"शोरुममा सर्भिस",pick_kind:"पहिले MSTW वा जब कार्ड छान्नुहोस्",slip_mstw:"MSTW जब कार्ड",slip_jc:"जब कार्ड",edit_details:"✎ विवरण बदल्नुहोस्",closed_banner:"यो कार्ड बन्द भइसकेको छ। एडमिनले अझै बदल्न सक्नुहुन्छ।",done_edit:"✔ बदल्ने काम सकियो",edit_card:"✎ बदल्नुहोस् (एडमिन)",hist30:"सम्पन्न – पछिल्ला ३० दिन",find_cards:"MSTW / जब कार्ड खोज्नुहोस् (सबै समय)",find_ph:"कार्ड नं., ग्राहक, फोन, मोडेल, इन्जिन, चेसिस…",all:"सबै",results:"नतिजा",r_kind:"कार्डको प्रकार अनुसार",r_back:"‹ रिपोर्ट",r_xl:"⬇ एक्सेल",r_click:"विवरण हेर्न कुनै पनि अंक वा लाइनमा थिच्नुहोस्।",extra:"थप",income_all:"सबै बन्द कार्ड",rem_rule:"सर्भिसको मितिभन्दा ७ दिन अघि रिमाइन्डर जान्छ।",rem_auto:x=>`${x} बाट स्वचालित SMS: अहिले बन्द छ (नमुना)। कसैले SMS वा WhatsApp थिचेर फोनबाट नपठाएसम्म केही जाँदैन।`,rem_send_h:"अहिले पठाउनुहोस् (७ दिनभित्र वा नाघेका)",rem_sched:d=>d+" मा रिमाइन्डर",sms:"SMS",wa:"WhatsApp",not_sent:"पठाइएको छैन",sent_on:(d,n)=>d+" मा पठाइयो"+(n?" · "+n:""),sent_q:"सन्देश गयो?",yes_sent:"हो, पठाइयो",no_sent:"होइन",logged:"पठाइएको भनी राखियो",set_sms:"रिमाइन्डर SMS",sms_from:"SMS पठाउने नम्बर",auto_sms:"स्वचालित पठाउने",auto_off:"बन्द – पछि खोलिनेछ",next_due_edit:"अर्को सर्भिसको मिति",
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
@@ -68,7 +68,7 @@ const I18N={
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
   not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",
-  active_h:"चालु जब कार्डहरू",closed_h:"सम्पन्न जब कार्डहरू (पछिल्ला ५०)",no_jobs:"कुनै जब कार्ड छैन।",
+  active_h:"चालु जब कार्डहरू",closed_h:"सम्पन्न – पछिल्ला ३० दिन",no_jobs:"कुनै जब कार्ड छैन।",
   open:"चालु",done:"सम्पन्न",mech:"मेकानिक",ago:"अघि",parts_n:"वटा पार्ट",loading:"लोड हुँदैछ…",saving:"सेभ हुँदैछ…",err:"केही गडबड भयो",
   name:"नाम",phone:"फोन",phone2:"अर्को फोन",tractor:"मोडेल",address:"ठेगाना",district:"जिल्ला",engine:"इन्जिन नं.",chassis:"ट्र्याक्टर क्र.सं. (चेसिस)",reg:"दर्ता नं.",doi:"जडान मिति",
   hours_run:"चलेको घण्टा",last_srv:"पछिल्लो सर्भिस",next_srv:"अर्को सर्भिस",
@@ -202,7 +202,7 @@ async function guard(fn,btn){busy(btn,true);try{return await fn()}catch(e){conso
 let CTX=null;
 const WHO=()=>ls.get("jobcard_who");
 async function loadCtx(){
-  const [role,dealers,staff,rates]=await Promise.all([rpc("my_role"),get("dealers?select=id,name,address,phone"),get("mechanics?select=*&order=name"),get("labour_rates?select=*&order=id")]);
+  const [role,dealers,staff,rates]=await Promise.all([rpc("my_role"),get("dealers?select=*"),get("mechanics?select=*&order=name"),get("labour_rates?select=*&order=id")]);
   if(!role||!dealers.length)throw Object.assign(new Error(t("no_dealer")),{nodealer:true});
   CTX={role,dealer:dealers[0],staff,rates};ls.set("jobcard_dealer",JSON.stringify({name:CTX.dealer.name,address:CTX.dealer.address||""}));
 }
@@ -223,6 +223,9 @@ function needWho(fn){if(WHO())return fn();toast(t("who_need"));pickWho(fn)}
 // ---------------------------------------------------------------------
 let view="home",param=null,searchQ="",rtok=0;
 function go(v,p){view=v;param=p??null;render();window.scrollTo(0,0)}
+function openCard(id,status){window._back={v:view,p:param};go(status==="open"?"job":"slip",id)}
+function goBack(){const b=window._back;window._back=null;b?go(b.v,b.p):go("home")}
+const kindTag=k=>`<span class="tag ${k==="MSTW"?"MSTW":"JC"}">${k==="MSTW"?t("mstw"):t("jc")}</span>`;
 function chrome(){
   document.documentElement.lang=LANG;
   let saved=null;try{saved=JSON.parse(ls.get("jobcard_dealer"))}catch(e){}
@@ -243,13 +246,14 @@ async function render(){
   chrome();
   if(!CTX)return;
   const my=++rtok;const app=$("#app");
-  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports};
+  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports,rdetail:vRDetail,jobedit:id=>vJob(id,true)};
   app.innerHTML=`<div class="empty">${t("loading")}</div>`;
   try{const html=await V[view](param);if(my!==rtok)return;app.innerHTML=html;after()}
   catch(e){if(my!==rtok)return;console.error(e);app.innerHTML=`<div class="card empty">${t("err")}: ${esc(e.message)}<br><br><button class="btn" onclick="render()">↻</button></div>`}
 }
 function after(){
   if(view==="home"){const i=$("#q");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);if(searchQ)doSearch()}}
+  if(view==="history"&&HQ)cardSearch();
 }
 
 // ---------------------------------------------------------------------
@@ -283,7 +287,7 @@ async function doLogin(e){
 // Home + search
 // ---------------------------------------------------------------------
 async function openJobs(){
-  const jobs=await get("job_cards?select=id,job_no,job_type,date_in,status,mechanic_id,customers(name),tractors(model),mechanics(name)&status=eq.open&order=date_in.desc");
+  const jobs=await get("job_cards?select=id,job_no,card_kind,job_type,date_in,status,mechanic_id,customers(name),tractors(model),mechanics(name)&status=eq.open&order=date_in.desc");
   return withTotals(jobs);
 }
 async function withTotals(jobs){
@@ -297,8 +301,8 @@ async function withTotals(jobs){
 function jobRows(list){
   if(!list.length)return `<div class="empty">${t("no_jobs")}</div>`;
   return list.map(j=>`
-    <div class="list-item clickable" onclick="go('${j.status==="open"?"job":"slip"}',${j.id})">
-      <div><b>${esc(j.job_no)}</b> · ${esc(j.customers&&j.customers.name)} <span class="tag ${j.status}">${j.status==="open"?t("open"):t("done")}</span> <span class="tag type">${t("jt")[j.job_type]}</span>
+    <div class="list-item clickable krow k${j.card_kind==="MSTW"?"MSTW":"JC"}" onclick="openCard(${j.id},'${j.status}')">
+      <div><b>${esc(j.job_no)}</b> ${kindTag(j.card_kind)} · ${esc(j.customers&&j.customers.name)} <span class="tag ${j.status}">${j.status==="open"?t("open"):t("done")}</span> <span class="tag type">${t("jt")[j.job_type]}</span>
         <div class="mut">${esc(j.tractors&&j.tractors.model)} · ${t("mech")}: ${esc(j.mechanics?j.mechanics.name:"—")} · ${j.status==="open"?ago(j.date_in)+" "+t("ago"):fDate(j.date_out)}</div></div>
       <div style="text-align:right"><b>${rs(j.total)}</b><div class="mut">${j.nparts||0} ${t("parts_n")}</div></div>
     </div>`).join("");
@@ -340,11 +344,33 @@ async function doSearch(){
   }catch(e){if(my===stok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
 }
 async function vJobs(){return `<div class="card"><h2>${t("active_h")}</h2>${jobRows(await openJobs())}</div>`}
+const JSEL="id,job_no,card_kind,job_type,date_in,date_out,status,customers(name),tractors(model),mechanics(name)";
+let HQ="",HK="";
 async function vHistory(){
-  const jobs=await withTotals(await get("job_cards?select=id,job_no,job_type,date_in,date_out,status,customers(name),tractors(model),mechanics(name)&status=eq.closed&order=date_out.desc&limit=50"));
-  return `<div class="card"><h2>${t("closed_h")}</h2>${jobRows(jobs)}</div>`;
+  const kf=HK?`&card_kind=eq.${HK}`:"";
+  const since=enc(new Date(Date.now()-30*DAY).toISOString());
+  const jobs=await withTotals(await get(`job_cards?select=${JSEL}&status=eq.closed&date_out=gte.${since}${kf}&order=date_out.desc`));
+  return `<div class="card"><h2>${t("find_cards")}</h2>
+    <input id="hq" placeholder="${t("find_ph")}" value="${esc(HQ)}" oninput="HQ=this.value;clearTimeout(window._ht);window._ht=setTimeout(cardSearch,350)">
+    <div class="chips" style="margin-top:8px">${[["","all"],["MSTW","mstw"],["JC","jc"]].map(([k,l])=>`<button class="chip ${HK===k?"on":""}" onclick="HK='${k}';render()">${t(l)}</button>`).join("")}</div>
+    <div id="hres" style="margin-top:6px"></div></div>
+  <div class="card"><h2>${t("hist30")} (${jobs.length})</h2>${jobRows(jobs)}</div>`;
 }
-
+let htok=0;
+async function cardSearch(){
+  const box=$("#hres");if(!box)return;const q=clean(HQ);
+  if(q.length<2){box.innerHTML="";return}
+  const my=++htok;box.innerHTML=`<p class="mut">${t("loading")}</p>`;
+  try{
+    const like=enc(`*${q}*`);
+    const [cs,trs]=await Promise.all([get(`customers?select=id&or=(phone.ilike.${like},phone_alt.ilike.${like},name.ilike.${like})&limit=200`),
+      get(`tractors?select=id&or=(model.ilike.${like},engine_no.ilike.${like},chassis_no.ilike.${like},reg_no.ilike.${like})&limit=300`)]);
+    const orq=[`job_no.ilike.${like}`];if(cs.length)orq.push(`customer_id.in.(${cs.map(c=>c.id).join(",")})`);if(trs.length)orq.push(`tractor_id.in.(${trs.map(x=>x.id).join(",")})`);
+    const jobs=await withTotals(await get(`job_cards?select=${JSEL}&or=(${orq.join(",")})${HK?`&card_kind=eq.${HK}`:""}&order=date_in.desc&limit=60`));
+    if(my!==htok)return;
+    box.innerHTML=`<p class="mut">${t("results")}: ${jobs.length}</p>`+jobRows(jobs);
+  }catch(e){if(my===htok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
+}
 // ---------------------------------------------------------------------
 // Customer / tractor
 // ---------------------------------------------------------------------
@@ -425,14 +451,17 @@ async function createCustomer(f){
 // ---------------------------------------------------------------------
 // Job card
 // ---------------------------------------------------------------------
-let pickedType="PAID";
+let pickedType="PAID",pickedKind=null;
 async function startJob(tid){
   needWho(async()=>{
     const [[tr],openJ]=await Promise.all([get(`tractors?select=*,customers(name)&id=eq.${tid}`),get("job_cards?select=mechanic_id&status=eq.open")]);
     const busyMap={};openJ.forEach(x=>{if(x.mechanic_id)busyMap[x.mechanic_id]=(busyMap[x.mechanic_id]||0)+1});
-    pickedType=tr.next_service_slot&&tr.next_service_slot.startsWith("FS")?tr.next_service_slot:"PAID";
+    pickedType=tr.next_service_slot&&tr.next_service_slot.startsWith("FS")?tr.next_service_slot:"PAID";pickedKind=null;
     modal(`<h2>${t("nj_h")}</h2>
       <p class="mut">${esc(tr.customers.name)} · ${esc(tr.model)} · ${t("next_srv")}: ${t("slot")(tr.next_service_slot)}</p>
+      <label>${t("kind")} *</label>
+      <div class="kpick" id="kp"><button class="kbtn MSTW" data-k="MSTW" onclick="pickKind('MSTW')"><b>${t("mstw")}</b><small>${t("mstw_d")}</small></button>
+        <button class="kbtn JC" data-k="JC" onclick="pickKind('JC')"><b>${t("jc")}</b><small>${t("jc_d")}</small></button></div>
       <label>${t("type_job")}</label>
       <div class="chips" id="jt">${JOB_TYPES.map(k=>`<button class="chip ${k===pickedType?"on":""}" data-k="${k}" onclick="pickType('${k}')">${t("jt")[k]}</button>`).join("")}</div>
       <div id="prfbox" style="display:${pickedType==="WTY"?"block":"none"}"><label>${t("prf")}</label><input id="sj-prf"></div>
@@ -448,11 +477,13 @@ function mechChips(busy){
     .map(({m,n})=>`<button class="chip mech ${n===0?"m0":n===1?"m1":"m2"}" data-id="${m.id}" onclick="pickMech(${m.id})">${esc(m.name)} <small>· ${n===0?t("free"):t("n_jobs")(n)}</small></button>`).join("");
 }
 function pickMech(id){const cur=$("#sj-m");cur.value=cur.value==String(id)?"":id;document.querySelectorAll("#mk .chip").forEach(b=>b.classList.toggle("on",b.dataset.id===String(cur.value)))}
+function pickKind(k){pickedKind=k;document.querySelectorAll("#kp .kbtn").forEach(b=>b.classList.toggle("on",b.dataset.k===k))}
 function pickType(k){pickedType=k;document.querySelectorAll("#jt .chip").forEach(b=>b.classList.toggle("on",b.dataset.k===k));$("#prfbox").style.display=k==="WTY"?"block":"none"}
 function doStartJob(tid,cid,btn){
+  if(!pickedKind){toast(t("pick_kind"));return}
   guard(async()=>{
     const h=parseInt($("#sj-h").value);
-    const [j]=await post("job_cards",{tractor_id:tid,customer_id:cid,mechanic_id:$("#sj-m").value?+$("#sj-m").value:null,job_type:pickedType,
+    const [j]=await post("job_cards",{card_kind:pickedKind,tractor_id:tid,customer_id:cid,mechanic_id:$("#sj-m").value?+$("#sj-m").value:null,job_type:pickedType,
       warranty_prf_no:pickedType==="WTY"?($("#sj-prf").value.trim()||null):null,hours_run:isNaN(h)?null:h,problems_reported:$("#sj-c").value.trim()||null,entered_by_name:WHO()});
     closeModal();toast(t("job_started")+" "+j.job_no);go("job",j.id);
   },btn);
@@ -464,13 +495,14 @@ async function loadJob(id){
     get(`job_card_labour?select=*&job_card_id=eq.${id}&order=id`)]);
   return {j,parts,lab};
 }
-async function vJob(id){
+async function vJob(id,adminEdit){
   const {j,parts,lab}=await loadJob(id);
-  if(j.status!=="open"){view="slip";return vSlip(id)}
-  const c=j.customers,tr=j.tractors;
-  return `<button class="back" onclick="go('home')">${t("back")}</button>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2 style="margin:0">${esc(j.job_no)}</h2><span><span class="tag type">${t("jt")[j.job_type]}</span> <span class="tag open">${t("open")}</span></span></div>
+  const closed=j.status!=="open";
+  if(closed&&!(adminEdit&&isAdmin())){view="slip";return vSlip(id)}
+  const c=j.customers,tr=j.tractors,K=j.card_kind==="MSTW"?"MSTW":"JC";
+  return `${closed?`<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>${t("closed_banner")}</span><button class="btn ok sm" onclick="go('slip',${j.id})">${t("done_edit")}</button></div>`:`<button class="back" onclick="goBack()">${t("back")}</button>`}
+  <div class="card k${K}">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${esc(j.job_no)} ${kindTag(K)}</h2><span><span class="tag type">${t("jt")[j.job_type]}</span> <span class="tag ${j.status}">${closed?t("done"):t("open")}</span> <button class="btn ghost sm" onclick="editJob(${j.id})">${t("edit_details")}</button></span></div>
     <p class="mut" style="margin:6px 0 10px">${t("mech")}: <b>${esc(j.mechanics?j.mechanics.name:"—")}</b> · ${t("date_in")}: ${fDT(j.date_in)} (${ago(j.date_in)} ${t("ago")}) · ${t("hours_run")}: <b>${j.hours_run??"—"}</b>${j.warranty_prf_no?` · ${t("prf")}: ${esc(j.warranty_prf_no)}`:""}${j.entered_by_name?` · ${t("entered_by")}: ${esc(j.entered_by_name)}`:""}</p>
     ${custBlock(c,tr)}
     ${j.problems_reported?`<p style="margin-bottom:0"><span class="mut">${t("problems")}:</span> ${esc(j.problems_reported)}</p>`:""}
@@ -518,7 +550,7 @@ async function vJob(id){
     </table>
     <div class="total">${t("total")}: ${rs(partsTotal(parts)+labTotal(lab))}</div>
   </div>
-  <button class="btn ok block" style="padding:14px" onclick="closeJobDlg(${j.id})">${t("close_job")}</button>`;
+  ${closed?`<button class="btn ok block" style="padding:14px" onclick="go('slip',${j.id})">${t("done_edit")}</button>`:`<button class="btn ok block" style="padding:14px" onclick="closeJobDlg(${j.id})">${t("close_job")}</button>`}`;
 }
 
 // parts search (server side, over the dealer's own price list)
@@ -594,6 +626,35 @@ function addLabour(jid,rateId,btn){
   guard(async()=>{await post("job_card_labour",{job_card_id:jid,...row});render()},btn);
 }
 function delRow(table,id,btn){guard(async()=>{await del(`${table}?id=eq.${id}`);render()},btn)}
+async function editJob(id){
+  const {j}=await loadJob(id);const closed=j.status!=="open";
+  if(closed&&!isAdmin()){toast(t("admin_only"));return}
+  pickedType=j.job_type;window._ej=j;
+  modal(`<h2>${t("edit_details")} – ${esc(j.job_no)}</h2>
+    <p class="mut">${t("kind")}: ${kindTag(j.card_kind)}</p>
+    <label>${t("type_job")}</label>
+    <div class="chips" id="jt">${JOB_TYPES.map(k=>`<button class="chip ${k===j.job_type?"on":""}" data-k="${k}" onclick="pickType('${k}')">${t("jt")[k]}</button>`).join("")}</div>
+    <div id="prfbox" style="display:${j.job_type==="WTY"?"block":"none"}"><label>${t("prf")}</label><input id="ej-prf" value="${esc(j.warranty_prf_no||"")}"></div>
+    <div class="row"><div><label>${t("mech")}</label><select id="ej-m"><option value="">—</option>${CTX.staff.filter(m=>m.role==="mechanic"&&(m.active||m.id===j.mechanic_id)).map(m=>`<option value="${m.id}" ${m.id===j.mechanic_id?"selected":""}>${esc(m.name)}</option>`).join("")}</select></div>
+      <div><label>${t("hours_run")}</label><input id="ej-h" type="number" value="${j.hours_run??""}"></div></div>
+    <label>${t("problems")}</label><textarea id="ej-p" rows="2">${esc(j.problems_reported||"")}</textarea>
+    <label>${t("observ")}</label><textarea id="ej-o" rows="2">${esc(j.observations||"")}</textarea>
+    <label>${t("action")}</label><textarea id="ej-a" rows="2">${esc(j.action_taken||"")}</textarea>
+    <label>${t("remarks")}</label><input id="ej-r" value="${esc(j.remarks||"")}">
+    ${closed?`<label>${t("next_due_edit")}</label><input id="ej-n" type="date" value="${j.next_service_due||""}">`:""}
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveJob(this)">${t("save")}</button></div>`);
+}
+function saveJob(btn){
+  const j=window._ej,h=parseInt($("#ej-h").value),v=k=>$("#ej-"+k).value.trim()||null;
+  const row={job_type:pickedType,warranty_prf_no:pickedType==="WTY"?v("prf"):null,mechanic_id:$("#ej-m").value?+$("#ej-m").value:null,hours_run:isNaN(h)?null:h,
+    problems_reported:v("p"),observations:v("o"),action_taken:v("a"),remarks:v("r")};
+  const nd=$("#ej-n")?$("#ej-n").value:null;if(nd)row.next_service_due=nd;
+  guard(async()=>{
+    await patch(`job_cards?id=eq.${j.id}`,row);
+    if(nd&&nd!==j.next_service_due)await patch(`tractors?id=eq.${j.tractor_id}`,{next_service_due:nd});
+    closeModal();toast(t("saved"));render();
+  },btn);
+}
 
 async function closeJobDlg(jid){
   const {j,parts,lab}=await loadJob(jid);
@@ -628,14 +689,16 @@ async function vSlip(id){
   const {j,parts,lab}=await loadJob(id);window._slip={j,parts,lab};
   const c=j.customers,tr=j.tractors,D=CTX.dealer;
   const inn=labTotal(lab.filter(l=>!l.is_outside)),out=labTotal(lab.filter(l=>l.is_outside));
+  const K=j.card_kind==="MSTW"?"MSTW":"JC";
   return `<div class="noprint" style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-      <button class="back" style="margin:0" onclick="go('home')">${t("home_b")}</button><span style="flex:1"></span>
+      <button class="back" style="margin:0" onclick="goBack()">${t("back")}</button><span style="flex:1"></span>
+      ${isAdmin()&&j.status==="closed"?`<button class="btn ghost sm" onclick="go('jobedit',${j.id})">${t("edit_card")}</button>`:""}
       <button class="btn sm" onclick="window.print()">${t("print")}</button>
       <button class="btn ghost sm" onclick="copySlip()">${t("copy")}</button>
     </div>
-  <div class="slip">
+  <div class="slip ${K}">
     <div class="hd">
-      <div><b style="font-size:15px">${t("slip_h")}</b></div>
+      <div><b style="font-size:15px">${K==="MSTW"?t("slip_mstw"):t("slip_jc")}</b></div>
       <div style="text-align:center"><h3>${esc(D.name)}</h3><div>${esc(D.address||"")}</div></div>
       <div style="text-align:right"><span class="mut">${t("job_no")}</span><br><b style="font-size:15px">${esc(j.job_no)}</b></div>
     </div>
@@ -671,7 +734,7 @@ async function vSlip(id){
 }
 function copySlip(){
   const {j,parts,lab}=window._slip,c=j.customers,tr=j.tractors;
-  const txt=[`${CTX.dealer.name} – ${t("slip_h")} ${j.job_no}`,`${t("name")}: ${c.name} (${c.phone||"-"})`,`${t("tractor")}: ${tr.model} | ${t("engine")}: ${tr.engine_no||"-"} | ${t("chassis")}: ${tr.chassis_no||"-"}`,
+  const txt=[`${CTX.dealer.name} – ${j.card_kind==="MSTW"?t("slip_mstw"):t("slip_jc")} ${j.job_no}`,`${t("name")}: ${c.name} (${c.phone||"-"})`,`${t("tractor")}: ${tr.model} | ${t("engine")}: ${tr.engine_no||"-"} | ${t("chassis")}: ${tr.chassis_no||"-"}`,
     `${t("type_job")}: ${t("jt")[j.job_type]} | ${t("hours_run")}: ${j.hours_run??"-"} | ${t("mech")}: ${j.mechanics?j.mechanics.name:"-"}`,`${t("date_in")}: ${fDT(j.date_in)} | ${t("date_out")}: ${fDT(j.date_out)}`,"",
     ...parts.map((p,i)=>`${i+1}. ${p.description} [${p.part_no||"-"}] x${Number(p.qty)} @ ${p.rate} = ${p.is_foc?t("wty"):Number(p.qty)*Number(p.rate)}`),
     ...lab.map(l=>`${t("labour_h")}: ${l.description} = ${l.amount}`),"",`${t("grand")}: ${partsTotal(parts)+labTotal(lab)}`,
@@ -686,23 +749,41 @@ async function vReminders(){
   const a=ymd(new Date(Date.now()+8*DAY)),b=ymd(new Date(Date.now()+30*DAY));
   const [due,later]=await Promise.all([get("service_due?select=*&order=next_service_due"),
     get(`tractors?select=id,model,next_service_slot,next_service_due,customers(name,phone)&next_service_due=gte.${a}&next_service_due=lte.${b}&order=next_service_due`)]);
-  const D=CTX.dealer;
-  const row=x=>{const d=daysTo(x.next_service_due),name=x.name||x.customers.name,phone=x.phone||(x.customers&&x.customers.phone)||"";
+  const ids=[...due.map(x=>x.tractor_id),...later.map(x=>x.id)];
+  const logs=ids.length?await get(`reminder_log?select=tractor_id,due_date,channel,created_at,sent_by_name&tractor_id=in.(${ids.join(",")})&order=created_at.desc`):[];
+  const D=CTX.dealer;window._rem={};
+  const row=(x,soon)=>{const tid=x.tractor_id||x.id,d=daysTo(x.next_service_due),name=x.name||x.customers.name,phone=x.phone||(x.customers&&x.customers.phone)||"";
     const msg=t("msg")(name,x.model,t("slot")(x.next_service_slot),d<0,fDate(x.next_service_due),D.name,D.address);
-    const wa=phone.replace(/\D/g,"").slice(-10);
-    return `<div class="list-item">
+    const num=phone.replace(/\D/g,"").slice(-10);window._rem[tid]={msg,num,due:x.next_service_due};
+    const st=ch=>{const l=logs.find(g=>g.tractor_id===tid&&g.due_date===x.next_service_due&&g.channel===ch);
+      return `<span class="tag ${l?"closed":""}">${ch==="sms"?"📩 "+t("sms"):"💬 "+t("wa")}: ${l?t("sent_on")(fDate(l.created_at),l.sent_by_name):t("not_sent")}</span>`};
+    return `<div class="list-item" style="align-items:flex-start">
       <div><b>${esc(name)}</b> <span class="tag ${d<0?"due":"open"}">${d<0?t("late")(-d):d===0?t("today"):d===1?t("tomorrow"):t("in_days")(d)}</span>
-        <div class="mut">${esc(x.model)} · ${t("slot")(x.next_service_slot)} · ${fDate(x.next_service_due)}<br>📞 ${esc(phone||"—")}</div></div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
-        ${wa.length===10?`<a class="btn ok sm" style="text-decoration:none" href="https://wa.me/977${wa}?text=${enc(msg)}" target="_blank" rel="noopener">WhatsApp</a>`:""}
-        <button class="btn ghost sm" onclick="go('customer',${x.tractor_id||x.id})">${t("open_b")}</button>
+        <div class="mut">${esc(x.model)} · ${t("slot")(x.next_service_slot)} · ${fDate(x.next_service_due)}<br>📞 ${esc(phone||"—")}${soon?"":` · ${t("rem_sched")(fDate(new Date(pd(x.next_service_due).getTime()-7*DAY)))}`}</div>
+        <div class="chips" style="margin-top:4px">${st("sms")} ${st("whatsapp")}</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        ${num.length===10?`<button class="btn sm" onclick="remSend(${tid},'sms')">📩 ${t("sms")}</button><button class="btn ok sm" onclick="remSend(${tid},'whatsapp')">💬 ${t("wa")}</button>`:""}
+        <button class="btn ghost sm" onclick="go('customer',${tid})">${t("open_b")}</button>
       </div></div>`};
-  return `<div class="card"><h2>${t("due_h")}</h2><p class="mut">${t("due_note")}</p>
-    ${due.length?due.map(row).join(""):`<div class="empty">${t("none_due")}</div>`}</div>
-  <div class="card"><h2>${t("upcoming")}</h2>${later.length?later.map(row).join(""):`<div class="empty">—</div>`}</div>`;
+  return `<div class="note">ℹ️ ${t("rem_rule")}<br>${t("rem_auto")(esc(D.sms_from||"—"))}</div>
+  <div class="card"><h2>${t("rem_send_h")} (${due.length})</h2>
+    ${due.length?due.map(x=>row(x,true)).join(""):`<div class="empty">${t("none_due")}</div>`}</div>
+  <div class="card"><h2>${t("upcoming")} (${later.length})</h2>${later.length?later.map(x=>row(x,false)).join(""):`<div class="empty">—</div>`}</div>`;
 }
-
-
+function remSend(tid,ch){
+  needWho(()=>{
+    const r=window._rem[tid];if(!r)return;
+    const url=ch==="sms"?`sms:+977${r.num}?&body=${enc(r.msg)}`:`https://wa.me/977${r.num}?text=${enc(r.msg)}`;
+    if(ch==="sms")location.href=url;else window.open(url,"_blank","noopener");
+    setTimeout(()=>modal(`<h2>${t("sent_q")}</h2><p class="mut">${ch==="sms"?t("sms"):t("wa")} · +977 ${esc(r.num)}</p>
+      <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("no_sent")}</button>
+      <button class="btn ok" onclick="remLog(${tid},'${ch}',this)">${t("yes_sent")}</button></div>`),600);
+  });
+}
+function remLog(tid,ch,btn){
+  const r=window._rem[tid];
+  guard(async()=>{await post("reminder_log",{tractor_id:tid,due_date:r.due,channel:ch,status:"sent",phone:r.num,message:r.msg,sent_by_name:WHO()});closeModal();toast(t("logged"));render()},btn);
+}
 // ---------------------------------------------------------------------
 // Minimal .xlsx writer (no library): sheets = [{name, rows:[[cell,...],...], widths:[..]}]
 // Cells: number -> number, string -> text, {v,b:true} -> bold text
@@ -764,50 +845,112 @@ function periodRange(p){
   return [new Date(n.getFullYear(),n.getMonth(),1),new Date(d0.getTime()+DAY)];
 }
 const fDur=ms=>{const h=ms/3600000;return h<24?h.toFixed(1)+" "+t("hr"):(h/24).toFixed(1)+" "+t("day")};
-async function vReports(p){
-  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
-  p=p||"month";const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString());
+let RP={p:"month",k:""};
+async function repData(p,k){
+  const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString()),kf=k?`&card_kind=eq.${k}`:"";
+  const sel="id,job_no,card_kind,job_type,status,date_in,date_out,entered_by_name,mechanic_id,tractor_id,customers(name,phone),tractors(model),mechanics(name)";
   const [opened,closed,openNow,due]=await Promise.all([
-    get(`job_cards?select=id,job_type,date_in,entered_by_name&date_in=gte.${A}&date_in=lt.${B}&status=neq.cancelled&order=date_in`),
-    get(`job_cards?select=id,job_type,date_in,date_out,mechanic_id,mechanics(name)&status=eq.closed&date_out=gte.${A}&date_out=lt.${B}`),
-    get("job_cards?select=id&status=eq.open"),get("service_due?select=tractor_id")]);
-  const ids=closed.map(j=>j.id);
-  let tot=[],lines=[];
-  if(ids.length){
-    for(let i=0;i<ids.length;i+=150){const part=ids.slice(i,i+150).join(",");
-      const [t1,l1]=await Promise.all([get(`job_card_totals?job_card_id=in.(${part})`),get(`job_card_parts?select=part_no,description,qty,rate,mrp_at_issue,is_foc&job_card_id=in.(${part})`)]);
-      tot=tot.concat(t1);lines=lines.concat(l1)}
-  }
+    get(`job_cards?select=${sel}&date_in=gte.${A}&date_in=lt.${B}&status=neq.cancelled${kf}&order=date_in`),
+    get(`job_cards?select=${sel}&status=eq.closed&date_out=gte.${A}&date_out=lt.${B}${kf}&order=date_out`),
+    get(`job_cards?select=${sel}&status=eq.open${kf}&order=date_in`),get("service_due?select=tractor_id")]);
+  const J={};[...opened,...closed,...openNow].forEach(j=>J[j.id]=j);
+  const all=Object.keys(J),cids=closed.map(j=>j.id);let tot=[],lines=[],lab=[];
+  for(let i=0;i<all.length;i+=150){tot=tot.concat(await get(`job_card_totals?job_card_id=in.(${all.slice(i,i+150).join(",")})`))}
+  for(let i=0;i<cids.length;i+=150){const q=cids.slice(i,i+150).join(",");
+    const [l1,b1]=await Promise.all([get(`job_card_parts?select=*&job_card_id=in.(${q})&order=issued_at`),get(`job_card_labour?select=*&job_card_id=in.(${q})&order=id`)]);
+    lines=lines.concat(l1);lab=lab.concat(b1)}
+  const T={};tot.forEach(x=>T[x.job_card_id]=Number(x.parts_total||0)+Number(x.labour_total||0)+Number(x.outside_total||0));
+  Object.values(J).forEach(j=>j.total=T[j.id]||0);
+  return {a,b,opened,closed,openNow,due,tot:tot.filter(x=>cids.includes(x.job_card_id)),lines,lab,J};
+}
+function repChips(view_,extra){
+  return `<div class="chips" style="margin-bottom:6px">${[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]].map(([k,l])=>`<button class="chip ${k===RP.p?"on":""}" onclick="RP.p='${k}';go('${view_}',${extra})">${t(l)}</button>`).join("")}</div>
+  <div class="chips" style="margin-bottom:10px">${[["","all"],["MSTW","mstw"],["JC","jc"]].map(([k,l])=>`<button class="chip ${k===RP.k?"on":""}" onclick="RP.k='${k}';go('${view_}',${extra})">${t(l)}</button>`).join("")}</div>`;
+}
+const det=(m,key)=>`go('rdetail',{m:'${m}',key:${JSON.stringify(key===undefined?"":String(key)).replace(/"/g,"&quot;")}})`;
+async function vReports(){
+  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
+  const R=await repData(RP.p,RP.k),{a,b,opened,closed,openNow,due,tot,lines,lab}=R;
   const sum=(arr,f)=>arr.reduce((x,y)=>x+Number(f(y)||0),0);
   const P=sum(tot,x=>x.parts_total),L=sum(tot,x=>x.labour_total),O=sum(tot,x=>x.outside_total);
   const markup=sum(lines.filter(l=>!l.is_foc&&l.mrp_at_issue!=null),l=>(l.rate-l.mrp_at_issue)*l.qty);
   const wty=sum(lines.filter(l=>l.is_foc),l=>l.qty*l.rate);
   const count=(arr,key)=>{const m={};arr.forEach(x=>{const k=key(x);m[k]=(m[k]||0)+1});return Object.entries(m).sort((x,y)=>y[1]-x[1])};
-  const mech={};closed.forEach(j=>{const k=j.mechanics?j.mechanics.name:"—";(mech[k]=mech[k]||{n:0,ms:0}).n++;mech[k].ms+=new Date(j.date_out)-new Date(j.date_in)});
+  const mech={};closed.forEach(j=>{const k=j.mechanics?j.mechanics.name:"—";(mech[k]=mech[k]||{n:0,ms:0,v:0}).n++;mech[k].ms+=new Date(j.date_out)-new Date(j.date_in);mech[k].v+=j.total});
   const top={};lines.forEach(l=>{const k=l.part_no||l.description;(top[k]=top[k]||{d:l.description,pn:l.part_no,q:0,v:0}).q+=Number(l.qty);if(!l.is_foc)top[k].v+=l.qty*l.rate});
   const daily=count(opened,j=>ymd(j.date_in)).sort((x,y)=>x[0]<y[0]?-1:1);
-  const tile=(n,l)=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`;
-  const table=(head,rows)=>rows.length?`<table><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
-  return `<div class="chips" style="margin-bottom:12px">${[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]].map(([k,l])=>`<button class="chip ${k===p?"on":""}" onclick="go('reports','${k}')">${t(l)}</button>`).join("")}</div>
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 10px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><button class="btn sm" onclick="exportReport('${p}',this)">${t("export")}</button></div>
-  <div class="stats">${tile(opened.length,t("r_opened"))}${tile(closed.length,t("r_closed"))}${tile(openNow.length,t("r_open_now"))}</div>
+  const tile=(n,l,m)=>`<div class="stat" onclick="${det(m)}"><b>${n}</b><span>${l} ›</span></div>`;
+  const table=(head,rows)=>rows.length?`<table class="rtab"><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr class="clickable" onclick="${r.go}">${r.c.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
+  return `${repChips("reports","null")}
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><button class="btn sm" onclick="exportReport(this)">${t("export")}</button></div>
+  <p class="mut" style="margin:0 0 10px">👆 ${t("r_click")}</p>
+  <div class="stats">${tile(opened.length,t("r_opened"),"opened")}${tile(closed.length,t("r_closed"),"closed")}${tile(openNow.length,t("r_open_now"),"open")}</div>
   <div class="card"><h2>${t("r_income")}</h2>
-    <div class="total" style="text-align:left;font-size:24px;margin:0 0 8px">${rs(P+L+O)}</div>
-    ${table(["",t("amount")],[[t("r_parts"),rs(P)],[t("r_labour"),rs(L)],[t("r_outside"),rs(O)],[`<span class="mut">${t("r_markup")}</span>`,`<span class="mut">${rs(markup)}</span>`],[`<span class="mut">${t("r_wty")}</span>`,`<span class="mut">${rs(wty)}</span>`]])}
+    <div class="total clickable" style="text-align:left;font-size:24px;margin:0 0 8px" onclick="${det("closed")}">${rs(P+L+O)} ›</div>
+    ${table(["",t("amount")],[{c:[t("r_parts"),rs(P)+" ›"],go:det("parts")},{c:[t("r_labour"),rs(L)+" ›"],go:det("labour")},{c:[t("r_outside"),rs(O)+" ›"],go:det("outside")},
+      {c:[`<span class="mut">${t("r_markup")}</span>`,`<span class="mut">${rs(markup)} ›</span>`],go:det("markup")},{c:[`<span class="mut">${t("r_wty")}</span>`,`<span class="mut">${rs(wty)} ›</span>`],go:det("wty")}])}
   </div>
-  <div class="card"><h2>${t("r_mech")}</h2>${table([t("mech"),t("r_jobs"),t("r_avg")],Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>[esc(k),v.n,fDur(v.ms/v.n)]))}</div>
-  <div class="card"><h2>${t("r_types")}</h2>${table([t("type_job"),t("r_jobs")],count(opened,j=>j.job_type).map(([k,n])=>[t("jt")[k],n]))}</div>
-  <div class="card"><h2>${t("r_top")}</h2>${table([t("part"),t("qty"),t("amount")],Object.values(top).sort((x,y)=>y.q-x.q).slice(0,15).map(x=>[`${esc(x.d)}<div class="mut">${esc(x.pn||"—")}</div>`,x.q,rs(x.v)]))}</div>
-  <div class="card"><h2>${t("r_daily")}</h2>${table([t("date"),t("r_opened")],daily.map(([d,n])=>[fDate(d),n]))}</div>
-  <div class="card"><h2>${t("r_entry")}</h2>${table([t("name"),t("r_jobs")],count(opened,j=>j.entered_by_name||"—").map(([k,n])=>[esc(k),n]))}</div>
+  <div class="card"><h2>${t("r_kind")}</h2>${table([t("kind"),t("r_opened"),t("r_closed")],["MSTW","JC"].map(k=>({c:[kindTag(k),opened.filter(j=>j.card_kind===k).length,closed.filter(j=>j.card_kind===k).length+" ›"],go:det("kind",k)})))}</div>
+  <div class="card"><h2>${t("r_mech")}</h2>${table([t("mech"),t("r_jobs"),t("total"),t("r_avg")],Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>({c:[esc(k),v.n,rs(v.v),fDur(v.ms/v.n)+" ›"],go:det("mech",k)})))}</div>
+  <div class="card"><h2>${t("r_types")}</h2>${table([t("type_job"),t("r_jobs")],count(opened,j=>j.job_type).map(([k,n])=>({c:[t("jt")[k],n+" ›"],go:det("type",k)})))}</div>
+  <div class="card"><h2>${t("r_top")}</h2>${table([t("part"),t("qty"),t("amount")],Object.entries(top).sort((x,y)=>y[1].q-x[1].q).slice(0,15).map(([k,x])=>({c:[`${esc(x.d)}<div class="mut">${esc(x.pn||"—")}</div>`,x.q,rs(x.v)+" ›"],go:det("part",k)})))}</div>
+  <div class="card"><h2>${t("r_daily")}</h2>${table([t("date"),t("r_opened")],daily.map(([d,n])=>({c:[fDate(d),n+" ›"],go:det("day",d)})))}</div>
+  <div class="card"><h2>${t("r_entry")}</h2>${table([t("name"),t("r_jobs")],count(opened,j=>j.entered_by_name||"—").map(([k,n])=>({c:[esc(k),n+" ›"],go:det("entry",k)})))}</div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center"><span>${t("r_due")}: <b>${due.length}</b></span><button class="btn ghost sm" onclick="go('reminders')">${t("open_b")}</button></div>`;
 }
-
-async function exportReport(p,btn){
-  btn.disabled=true;const lbl=btn.textContent;btn.textContent=t("exporting");
+// Build the record list behind one metric: {title, head, rows:[{c:[display cells], x:[excel cells], id, st}]}
+function detailOf(R,m,key){
+  const N=v=>Math.round(Number(v||0)*100)/100;
+  const jobsT=(list,title)=>({title,head:[t("job_no"),t("kind"),t("date_in"),t("date_out"),t("name"),t("tractor"),t("type_job"),t("mech"),t("total")],
+    rows:list.map(j=>({id:j.id,st:j.status,c:[`<b>${esc(j.job_no)}</b>`,kindTag(j.card_kind),fDate(j.date_in),fDate(j.date_out),esc(j.customers&&j.customers.name),esc(j.tractors&&j.tractors.model),t("jt")[j.job_type],esc(j.mechanics?j.mechanics.name:"—"),rs(j.total)],
+      x:[j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),fDT(j.date_in),j.date_out?fDT(j.date_out):"",j.customers&&j.customers.name,j.tractors&&j.tractors.model,t("jt")[j.job_type],j.mechanics?j.mechanics.name:"",N(j.total)]}))});
+  const jn=id=>(R.J[id]||{}).job_no||"",js=id=>(R.J[id]||{}).status;
+  const partsT=(list,title,withExtra)=>({title,head:[t("job_no"),t("date"),t("part_no"),t("part"),t("qty"),t("mrp"),t("rate"),t("amount"),...(withExtra?[t("extra")]:[])],
+    rows:list.map(l=>{const v=l.is_foc?0:l.qty*l.rate,ex=l.mrp_at_issue!=null?(l.rate-l.mrp_at_issue)*l.qty:0;
+      return {id:l.job_card_id,st:js(l.job_card_id),c:[`<b>${esc(jn(l.job_card_id))}</b>`,fDate(l.issued_at),esc(l.part_no||"—"),esc(l.description),Number(l.qty),l.mrp_at_issue!=null?rs(l.mrp_at_issue):"—",rs(l.rate),l.is_foc?t("wty"):rs(v),...(withExtra?[rs(ex)]:[])],
+        x:[jn(l.job_card_id),fDT(l.issued_at),l.part_no||"",l.description,N(l.qty),l.mrp_at_issue!=null?N(l.mrp_at_issue):"",N(l.rate),N(v),...(withExtra?[N(ex)]:[])]}})});
+  const labT=(list,title)=>({title,head:[t("job_no"),t("lab_desc"),t("amount")],rows:list.map(l=>({id:l.job_card_id,st:js(l.job_card_id),c:[`<b>${esc(jn(l.job_card_id))}</b>`,esc(l.description),rs(l.amount)],x:[jn(l.job_card_id),l.description,N(l.amount)]}))});
+  switch(m){
+    case "opened":return jobsT(R.opened,t("r_opened"));
+    case "closed":return jobsT(R.closed,t("r_closed"));
+    case "open":return jobsT(R.openNow,t("r_open_now"));
+    case "parts":return partsT(R.lines.filter(l=>!l.is_foc),t("r_parts"));
+    case "labour":return labT(R.lab.filter(l=>!l.is_outside),t("r_labour"));
+    case "outside":return labT(R.lab.filter(l=>l.is_outside),t("r_outside"));
+    case "markup":return partsT(R.lines.filter(l=>!l.is_foc&&l.mrp_at_issue!=null&&Number(l.rate)>Number(l.mrp_at_issue)),t("r_markup"),true);
+    case "wty":return partsT(R.lines.filter(l=>l.is_foc),t("r_wty"));
+    case "kind":return jobsT(R.closed.filter(j=>j.card_kind===key),`${t("r_closed")} – ${key==="MSTW"?t("mstw"):t("jc")}`);
+    case "mech":return jobsT(R.closed.filter(j=>(j.mechanics?j.mechanics.name:"—")===key),`${t("mech")}: ${key}`);
+    case "type":return jobsT(R.opened.filter(j=>j.job_type===key),`${t("type_job")}: ${t("jt")[key]}`);
+    case "part":return partsT(R.lines.filter(l=>(l.part_no||l.description)===key),`${t("part")}: ${key}`);
+    case "day":return jobsT(R.opened.filter(j=>ymd(j.date_in)===key),`${t("date")}: ${fDate(key)}`);
+    case "entry":return jobsT(R.opened.filter(j=>(j.entered_by_name||"—")===key),`${t("entered_by")}: ${key}`);
+  }
+  return {title:"",head:[],rows:[]};
+}
+async function vRDetail(q){
+  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
+  const R=await repData(RP.p,RP.k),D=detailOf(R,q.m,q.key);window._det=D;
+  const qs=JSON.stringify(q).replace(/"/g,"&quot;");
+  return `<button class="back" onclick="go('reports')">${t("r_back")}</button>
+  ${repChips("rdetail",qs)}
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2 style="margin:0">${esc(D.title)} (${D.rows.length})</h2><button class="btn sm" onclick="exportDetail()">${t("r_xl")}</button></div>
+    <p class="mut">${fDate(R.a)} – ${fDate(new Date(R.b.getTime()-1))}${RP.k?" · "+(RP.k==="MSTW"?t("mstw"):t("jc")):""}</p>
+    ${D.rows.length?`<div style="overflow-x:auto"><table class="rtab"><tr>${D.head.map(h=>`<th>${h}</th>`).join("")}</tr>
+      ${D.rows.map(r=>`<tr class="clickable" onclick="openCard(${r.id},'${r.st}')">${r.c.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`:`<div class="empty">${t("r_none")}</div>`}
+  </div>`;
+}
+function exportDetail(){
+  const D=window._det,[a,b]=periodRange(RP.p);
+  const blob=XLSX_W([{name:D.title.slice(0,31)||"Detail",rows:[D.head.map(h=>({v:h,b:true})),...D.rows.map(r=>r.x)],widths:D.head.map(()=>16)}]);
+  const fn=`${CTX.dealer.name} - ${D.title.replace(/[\\/:*?"<>|]/g,"")} - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
+  const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast(t("exported"));
+}
+async function exportReport(btn){
+  const p=RP.p;btn.disabled=true;const lbl=btn.textContent;btn.textContent=t("exporting");
   try{
     const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString()),D=CTX.dealer;
-    const jobs=await get(`job_cards?select=*,customers(name,phone,address),tractors(model,engine_no,chassis_no,reg_no),mechanics(name)&or=(and(date_in.gte.${A},date_in.lt.${B}),and(date_out.gte.${A},date_out.lt.${B}))&status=neq.cancelled&order=date_in`);
+    const jobs=await get(`job_cards?select=*,customers(name,phone,address),tractors(model,engine_no,chassis_no,reg_no),mechanics(name)&or=(and(date_in.gte.${A},date_in.lt.${B}),and(date_out.gte.${A},date_out.lt.${B}))&status=neq.cancelled${RP.k?`&card_kind=eq.${RP.k}`:""}&order=date_in`);
     const ids=jobs.map(j=>j.id);let tot=[],parts=[],lab=[];
     for(let i=0;i<ids.length;i+=150){const q=ids.slice(i,i+150).join(",");
       const [t1,p1,l1]=await Promise.all([get(`job_card_totals?job_card_id=in.(${q})`),get(`job_card_parts?select=*&job_card_id=in.(${q})&order=issued_at`),get(`job_card_labour?select=*&job_card_id=in.(${q})&order=id`)]);
@@ -821,7 +964,7 @@ async function exportReport(p,btn){
     const mech={};closed.forEach(j=>{const k=j.mechanics?j.mechanics.name:"—";(mech[k]=mech[k]||{n:0,ms:0,v:0}).n++;mech[k].ms+=new Date(j.date_out)-new Date(j.date_in);const x=T[j.id]||{};mech[k].v+=Number(x.parts_total||0)+Number(x.labour_total||0)+Number(x.outside_total||0)});
     const types={};jobs.filter(j=>inPer(j.date_in)).forEach(j=>types[j.job_type]=(types[j.job_type]||0)+1);
     const per=`${fDate(a)} – ${fDate(new Date(b.getTime()-1))}`;
-    const summary=[[H(`${D.name} – ${t("rp_h")}`)],[per],[],
+    const summary=[[H(`${D.name} – ${t("rp_h")}`)],[per+(RP.k?" · "+(RP.k==="MSTW"?t("mstw"):t("jc")):"")],[],
       [H(t("r_opened")),jobs.filter(j=>inPer(j.date_in)).length],[H(t("r_closed")),closed.length],[],
       [H(t("r_income"))],[t("r_parts"),sum(cT,x=>x.parts_total)],[t("r_labour"),sum(cT,x=>x.labour_total)],[t("r_outside"),sum(cT,x=>x.outside_total)],
       [H(t("total")),sum(cT,x=>Number(x.parts_total)+Number(x.labour_total)+Number(x.outside_total))],
@@ -829,13 +972,13 @@ async function exportReport(p,btn){
       [H(t("r_mech")),H(t("r_jobs")),H(t("total")),H(t("r_avg")+" ("+t("hr")+")")],
       ...Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>[k,v.n,N(v.v),N(v.ms/v.n/3600000)]),[],
       [H(t("r_types")),H(t("r_jobs"))],...Object.entries(types).map(([k,n])=>[t("jt")[k],n])];
-    const jobRows=[[t("job_no"),t("date_in"),t("date_out"),"Status",t("type_job"),t("name"),t("phone"),t("address"),t("tractor"),t("engine"),t("chassis"),t("reg"),t("mech"),t("hours_run"),t("entered_by"),t("r_parts"),t("r_labour"),t("r_outside"),t("total"),t("problems"),t("observ"),t("action"),t("remarks")].map(H),
+    const jobRows=[[t("job_no"),t("kind"),t("date_in"),t("date_out"),"Status",t("type_job"),t("name"),t("phone"),t("address"),t("tractor"),t("engine"),t("chassis"),t("reg"),t("mech"),t("hours_run"),t("entered_by"),t("r_parts"),t("r_labour"),t("r_outside"),t("total"),t("problems"),t("observ"),t("action"),t("remarks")].map(H),
       ...jobs.map(j=>{const x=T[j.id]||{},c=j.customers||{},tr=j.tractors||{};const P=N(x.parts_total),L=N(x.labour_total),O=N(x.outside_total);
-        return [j.job_no,dt(j.date_in),dt(j.date_out),j.status==="open"?t("open"):t("done"),t("jt")[j.job_type],c.name,c.phone,c.address,tr.model,tr.engine_no,tr.chassis_no,tr.reg_no,j.mechanics?j.mechanics.name:"",j.hours_run??"",j.entered_by_name,P,L,O,N(P+L+O),j.problems_reported,j.observations,j.action_taken,j.remarks]})];
+        return [j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),dt(j.date_in),dt(j.date_out),j.status==="open"?t("open"):t("done"),t("jt")[j.job_type],c.name,c.phone,c.address,tr.model,tr.engine_no,tr.chassis_no,tr.reg_no,j.mechanics?j.mechanics.name:"",j.hours_run??"",j.entered_by_name,P,L,O,N(P+L+O),j.problems_reported,j.observations,j.action_taken,j.remarks]})];
     const partRows=[[t("job_no"),t("date"),t("part_no"),t("part"),t("qty"),t("mrp"),t("rate"),t("amount"),t("foc"),t("entered_by")].map(H),
       ...parts.map(l=>[(J[l.job_card_id]||{}).job_no,dt(l.issued_at),l.part_no||"",l.description,N(l.qty),l.mrp_at_issue!=null?N(l.mrp_at_issue):"",N(l.rate),l.is_foc?0:N(l.qty*l.rate),l.is_foc?"✓":"",l.issued_by_name||""])];
     const labRows=[[t("job_no"),t("lab_desc"),t("amount"),t("outside")].map(H),...lab.map(l=>[(J[l.job_card_id]||{}).job_no,l.description,N(l.amount),l.is_outside?"✓":""])];
-    const blob=XLSX_W([{name:t("rp_h"),widths:[34,14,14,14],rows:summary},{name:"Job cards",widths:[11,18,18,9,20,24,13,22,16,16,16,14,18,9,16,11,11,11,11,30,30,30,24],rows:jobRows},
+    const blob=XLSX_W([{name:t("rp_h"),widths:[34,14,14,14],rows:summary},{name:"Job cards",widths:[11,10,18,18,9,20,24,13,22,16,16,16,14,18,9,16,11,11,11,11,30,30,30,24],rows:jobRows},
       {name:"Parts",widths:[11,18,16,40,7,11,11,11,14,16],rows:partRows},{name:"Labour",widths:[11,34,11,14],rows:labRows}]);
     const fn=`${D.name} - ${t("rp_h")} - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
     const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
@@ -859,7 +1002,11 @@ async function vSettings(){
     <table><tr><th>${t("name_en")}</th><th>${t("name_ne")}</th><th class="num">${t("amount")}</th><th></th></tr>
     ${rates.map(r=>`<tr style="${r.active?"":"opacity:.5"}"><td>${esc(r.name_en)}</td><td>${esc(r.name_ne||"—")}</td><td class="num">${rs(r.amount)}</td>
       <td><div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end"><button class="btn ghost sm" onclick="editRate(${r.id})">${t("edit")}</button> <button class="btn gray sm" onclick="toggleRow('labour_rates',${r.id},${!r.active},this)">${r.active?t("inactive"):t("active")}</button></div></td></tr>`).join("")}
-    </table><button class="btn ghost" style="margin-top:10px" onclick="editRate()">${t("add_rate")}</button></div>`;
+    </table><button class="btn ghost" style="margin-top:10px" onclick="editRate()">${t("add_rate")}</button></div>
+  <div class="card"><h2>${t("set_sms")}</h2>
+    <label>${t("sms_from")}</label><div class="row"><input id="sf-sms" value="${esc(CTX.dealer.sms_from||"")}" inputmode="tel"><button class="btn" style="flex:0 0 auto" onclick="saveSms(this)">${t("save")}</button></div>
+    <label class="chk" style="margin-top:10px;opacity:.6"><input type="checkbox" disabled ${CTX.dealer.auto_sms?"checked":""}> ${t("auto_sms")}: ${t("auto_off")}</label>
+    <p class="mut">${t("rem_rule")}</p></div>`;
 }
 function editStaff(id){
   const s=id?CTX.staff.find(x=>x.id===id):{name:"",phone:"",role:"mechanic"};
@@ -886,6 +1033,7 @@ function saveRate(id,btn){
   guard(async()=>{id?await patch(`labour_rates?id=eq.${id}`,row):await post("labour_rates",row);closeModal();toast(t("saved"));render()},btn);
 }
 function toggleRow(table,id,val,btn){guard(async()=>{await patch(`${table}?id=eq.${id}`,{active:val});render()},btn)}
+function saveSms(btn){const v=$("#sf-sms").value.trim();guard(async()=>{const [d]=await patch(`dealers?id=eq.${CTX.dealer.id}`,{sms_from:v||null});CTX.dealer=d||CTX.dealer;toast(t("saved"))},btn)}
 
 // ---------------------------------------------------------------------
 // Start
