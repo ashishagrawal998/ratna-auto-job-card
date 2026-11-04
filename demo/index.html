@@ -268,10 +268,10 @@ function seed(){
   tr4.lastDate=iso(now-40*DAY);tr4.lastHours=h4[1]+12;tr4.lastSlotHours=h4[1];planNext(tr4);
   S.jobs.push({id:1,no:"JC-00001",tractorId:4,customerId:4,mechanic:"Suresh Mahato",type:"PAID",hours:String(tr4.lastHours),nextSlot:tr4.nextSlot,nextDue:tr4.nextDue,dateIn:iso(now-40*DAY),dateOut:iso(now-40*DAY+5*3600000),status:"closed",
     problems:"General service",observ:"Air filter dirty",action:"Service done, filters changed",remarks:"",
-    parts:[{pn:"2654408",desc:"LUB OIL FILTER WITH ORING",qty:1,rate:207,foc:false,at:iso(now-40*DAY)},{pn:"",desc:"Engine oil 15W40 (7 L)",qty:1,rate:5600,foc:false,at:iso(now-40*DAY)}],labour:[{k:1,amount:1500,outside:false}]});
+    parts:[{pn:"2654408",desc:"LUB OIL FILTER WITH ORING",qty:1,rate:471.32,foc:false,at:iso(now-40*DAY)},{pn:"",desc:"Engine oil 15W40 (7 L)",qty:1,rate:5600,foc:false,at:iso(now-40*DAY)}],labour:[{k:1,amount:1500,outside:false}]});
   S.jobs.push({id:2,no:"JC-00002",tractorId:2,customerId:2,mechanic:"Rambabu Yadav",type:"PAID",hours:String((tr2.lastHours||500)+290),dateIn:iso(now-95*60000),status:"open",
     problems:"Brakes weak, general service",observ:"",action:"",remarks:"",
-    parts:[{pn:"1200040S01",desc:"TAFE SUPERIOR PLUS GREASE 1KG",qty:1,rate:651,foc:false,at:iso(now-70*60000)}],labour:[]});
+    parts:[{pn:"1200040S01",desc:"TAFE SUPERIOR PLUS GREASE 1KG",qty:1,rate:1477.9,foc:false,at:iso(now-70*60000)}],labour:[]});
   return S;
 }
 
