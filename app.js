@@ -13,7 +13,7 @@ const I18N={
   title:"Job Card",
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
-  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",r_due:"Service due now",r_daily:"Per day",
+  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
@@ -63,7 +63,7 @@ const I18N={
   title:"जब कार्ड",
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
-  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
+  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
@@ -704,6 +704,56 @@ async function vReminders(){
 
 
 // ---------------------------------------------------------------------
+// Minimal .xlsx writer (no library): sheets = [{name, rows:[[cell,...],...], widths:[..]}]
+// Cells: number -> number, string -> text, {v,b:true} -> bold text
+// ---------------------------------------------------------------------
+const XLSX_W=(()=>{
+  const crcT=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;crcT[n]=c>>>0}
+  const crc32=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=crcT[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
+  const enc=new TextEncoder();
+  function zip(files){ // [{name,data:Uint8Array}] stored, no compression
+    const parts=[],central=[];let off=0;
+    for(const f of files){
+      const nm=enc.encode(f.name),d=f.data,c=crc32(d);
+      const h=new DataView(new ArrayBuffer(30));
+      h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);
+      h.setUint32(14,c,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nm.length,true);
+      parts.push(new Uint8Array(h.buffer),nm,d);
+      const ch=new DataView(new ArrayBuffer(46));
+      ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);
+      ch.setUint32(16,c,true);ch.setUint32(20,d.length,true);ch.setUint32(24,d.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,off,true);
+      central.push(new Uint8Array(ch.buffer),nm);off+=30+nm.length+d.length;
+    }
+    const csize=central.reduce((a,b)=>a+b.length,0),e=new DataView(new ArrayBuffer(22));
+    e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,csize,true);e.setUint32(16,off,true);
+    return new Blob([...parts,...central,new Uint8Array(e.buffer)],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  }
+  const x=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
+  const col=i=>{let s="";i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+  function sheetXml(sh){
+    const cols=(sh.widths||[]).map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("");
+    const rows=sh.rows.map((r,ri)=>`<row r="${ri+1}">${r.map((v,ci)=>{
+      if(v==null||v==="")return "";const ref=col(ci)+(ri+1);
+      if(typeof v==="number"&&isFinite(v))return `<c r="${ref}"><v>${v}</v></c>`;
+      const b=typeof v==="object"&&v.b,s=b?1:0,txt=typeof v==="object"?v.v:v;
+      return `<c r="${ref}" t="inlineStr"${s?' s="1"':""}><is><t xml:space="preserve">${x(txt)}</t></is></c>`}).join("")}</row>`).join("");
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${cols?`<cols>${cols}</cols>`:""}<sheetData>${rows}</sheetData></worksheet>`;
+  }
+  return function(sheets){
+    const f=(n,s)=>({name:n,data:enc.encode(s)});
+    const names=sheets.map(s=>s.name.replace(/[\\\/\?\*\[\]:]/g," ").slice(0,31));
+    return zip([
+      f("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`),
+      f("_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`),
+      f("xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${names.map((n,i)=>`<sheet name="${x(n)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets></workbook>`),
+      f("xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`),
+      f("xl/styles.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="2"><xf fontId="0"/><xf fontId="1" applyFont="1"/></cellXfs></styleSheet>`),
+      ...sheets.map((s,i)=>f(`xl/worksheets/sheet${i+1}.xml`,sheetXml(s)))
+    ]);
+  };
+})();
+
+// ---------------------------------------------------------------------
 // Reports (admin only)
 // ---------------------------------------------------------------------
 function periodRange(p){
@@ -739,7 +789,7 @@ async function vReports(p){
   const tile=(n,l)=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`;
   const table=(head,rows)=>rows.length?`<table><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
   return `<div class="chips" style="margin-bottom:12px">${[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]].map(([k,l])=>`<button class="chip ${k===p?"on":""}" onclick="go('reports','${k}')">${t(l)}</button>`).join("")}</div>
-  <p class="mut" style="margin-top:-4px">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 10px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><button class="btn sm" onclick="exportReport('${p}',this)">${t("export")}</button></div>
   <div class="stats">${tile(opened.length,t("r_opened"))}${tile(closed.length,t("r_closed"))}${tile(openNow.length,t("r_open_now"))}</div>
   <div class="card"><h2>${t("r_income")}</h2>
     <div class="total" style="text-align:left;font-size:24px;margin:0 0 8px">${rs(P+L+O)}</div>
@@ -751,6 +801,47 @@ async function vReports(p){
   <div class="card"><h2>${t("r_daily")}</h2>${table([t("date"),t("r_opened")],daily.map(([d,n])=>[fDate(d),n]))}</div>
   <div class="card"><h2>${t("r_entry")}</h2>${table([t("name"),t("r_jobs")],count(opened,j=>j.entered_by_name||"—").map(([k,n])=>[esc(k),n]))}</div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center"><span>${t("r_due")}: <b>${due.length}</b></span><button class="btn ghost sm" onclick="go('reminders')">${t("open_b")}</button></div>`;
+}
+
+async function exportReport(p,btn){
+  btn.disabled=true;const lbl=btn.textContent;btn.textContent=t("exporting");
+  try{
+    const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString()),D=CTX.dealer;
+    const jobs=await get(`job_cards?select=*,customers(name,phone,address),tractors(model,engine_no,chassis_no,reg_no),mechanics(name)&or=(and(date_in.gte.${A},date_in.lt.${B}),and(date_out.gte.${A},date_out.lt.${B}))&status=neq.cancelled&order=date_in`);
+    const ids=jobs.map(j=>j.id);let tot=[],parts=[],lab=[];
+    for(let i=0;i<ids.length;i+=150){const q=ids.slice(i,i+150).join(",");
+      const [t1,p1,l1]=await Promise.all([get(`job_card_totals?job_card_id=in.(${q})`),get(`job_card_parts?select=*&job_card_id=in.(${q})&order=issued_at`),get(`job_card_labour?select=*&job_card_id=in.(${q})&order=id`)]);
+      tot=tot.concat(t1);parts=parts.concat(p1);lab=lab.concat(l1)}
+    const T=Object.fromEntries(tot.map(x=>[x.job_card_id,x])),J=Object.fromEntries(jobs.map(j=>[j.id,j]));
+    const N=v=>Math.round(Number(v||0)*100)/100,dt=d=>d?fDT(d):"",H=v=>({v,b:true});
+    const inPer=d=>d&&new Date(d)>=a&&new Date(d)<b;
+    const closed=jobs.filter(j=>j.status==="closed"&&inPer(j.date_out)),cIds=new Set(closed.map(j=>j.id));
+    const sum=(arr,f)=>N(arr.reduce((x,y)=>x+Number(f(y)||0),0));
+    const cT=tot.filter(x=>cIds.has(x.job_card_id)),cP=parts.filter(x=>cIds.has(x.job_card_id));
+    const mech={};closed.forEach(j=>{const k=j.mechanics?j.mechanics.name:"—";(mech[k]=mech[k]||{n:0,ms:0,v:0}).n++;mech[k].ms+=new Date(j.date_out)-new Date(j.date_in);const x=T[j.id]||{};mech[k].v+=Number(x.parts_total||0)+Number(x.labour_total||0)+Number(x.outside_total||0)});
+    const types={};jobs.filter(j=>inPer(j.date_in)).forEach(j=>types[j.job_type]=(types[j.job_type]||0)+1);
+    const per=`${fDate(a)} – ${fDate(new Date(b.getTime()-1))}`;
+    const summary=[[H(`${D.name} – ${t("rp_h")}`)],[per],[],
+      [H(t("r_opened")),jobs.filter(j=>inPer(j.date_in)).length],[H(t("r_closed")),closed.length],[],
+      [H(t("r_income"))],[t("r_parts"),sum(cT,x=>x.parts_total)],[t("r_labour"),sum(cT,x=>x.labour_total)],[t("r_outside"),sum(cT,x=>x.outside_total)],
+      [H(t("total")),sum(cT,x=>Number(x.parts_total)+Number(x.labour_total)+Number(x.outside_total))],
+      [t("r_markup"),sum(cP.filter(l=>!l.is_foc&&l.mrp_at_issue!=null),l=>(l.rate-l.mrp_at_issue)*l.qty)],[t("r_wty"),sum(cP.filter(l=>l.is_foc),l=>l.qty*l.rate)],[],
+      [H(t("r_mech")),H(t("r_jobs")),H(t("total")),H(t("r_avg")+" ("+t("hr")+")")],
+      ...Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>[k,v.n,N(v.v),N(v.ms/v.n/3600000)]),[],
+      [H(t("r_types")),H(t("r_jobs"))],...Object.entries(types).map(([k,n])=>[t("jt")[k],n])];
+    const jobRows=[[t("job_no"),t("date_in"),t("date_out"),"Status",t("type_job"),t("name"),t("phone"),t("address"),t("tractor"),t("engine"),t("chassis"),t("reg"),t("mech"),t("hours_run"),t("entered_by"),t("r_parts"),t("r_labour"),t("r_outside"),t("total"),t("problems"),t("observ"),t("action"),t("remarks")].map(H),
+      ...jobs.map(j=>{const x=T[j.id]||{},c=j.customers||{},tr=j.tractors||{};const P=N(x.parts_total),L=N(x.labour_total),O=N(x.outside_total);
+        return [j.job_no,dt(j.date_in),dt(j.date_out),j.status==="open"?t("open"):t("done"),t("jt")[j.job_type],c.name,c.phone,c.address,tr.model,tr.engine_no,tr.chassis_no,tr.reg_no,j.mechanics?j.mechanics.name:"",j.hours_run??"",j.entered_by_name,P,L,O,N(P+L+O),j.problems_reported,j.observations,j.action_taken,j.remarks]})];
+    const partRows=[[t("job_no"),t("date"),t("part_no"),t("part"),t("qty"),t("mrp"),t("rate"),t("amount"),t("foc"),t("entered_by")].map(H),
+      ...parts.map(l=>[(J[l.job_card_id]||{}).job_no,dt(l.issued_at),l.part_no||"",l.description,N(l.qty),l.mrp_at_issue!=null?N(l.mrp_at_issue):"",N(l.rate),l.is_foc?0:N(l.qty*l.rate),l.is_foc?"✓":"",l.issued_by_name||""])];
+    const labRows=[[t("job_no"),t("lab_desc"),t("amount"),t("outside")].map(H),...lab.map(l=>[(J[l.job_card_id]||{}).job_no,l.description,N(l.amount),l.is_outside?"✓":""])];
+    const blob=XLSX_W([{name:t("rp_h"),widths:[34,14,14,14],rows:summary},{name:"Job cards",widths:[11,18,18,9,20,24,13,22,16,16,16,14,18,9,16,11,11,11,11,30,30,30,24],rows:jobRows},
+      {name:"Parts",widths:[11,18,16,40,7,11,11,11,14,16],rows:partRows},{name:"Labour",widths:[11,34,11,14],rows:labRows}]);
+    const fn=`${D.name} - ${t("rp_h")} - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
+    const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+    toast(t("exported"));
+  }catch(e){console.error(e);toast(t("err")+": "+e.message)}
+  finally{btn.disabled=false;btn.textContent=lbl}
 }
 // ---------------------------------------------------------------------
 // Settings (admin only): staff list and labour rates
