@@ -14,7 +14,7 @@ const I18N={
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
-  who:"Working now",who_pick:"Who is working on this device?",who_need:"Pick your name first",change:"Change",
+  who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
   not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",
   active_h:"Active job cards",closed_h:"Completed job cards (last 50)",no_jobs:"No job cards.",
@@ -64,7 +64,7 @@ const I18N={
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
-  who:"अहिले काम गर्ने",who_pick:"यो डिभाइसमा को काम गर्दै हुनुहुन्छ?",who_need:"पहिले आफ्नो नाम छान्नुहोस्",change:"बदल्नुहोस्",
+  who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
   not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",
   active_h:"चालु जब कार्डहरू",closed_h:"सम्पन्न जब कार्डहरू (पछिल्ला ५०)",no_jobs:"कुनै जब कार्ड छैन।",
@@ -209,7 +209,7 @@ const isAdmin=()=>CTX&&CTX.role==="owner";
 const mechanics=()=>CTX.staff.filter(s=>s.active&&s.role==="mechanic");
 
 function pickWho(after){
-  const list=CTX.staff.filter(s=>s.active);
+  const act=CTX.staff.filter(s=>s.active),sales=act.filter(s=>s.role==="sales");const list=sales.length?sales:act;
   modal(`<h2>${t("who_pick")}</h2><div class="chips">${list.map(s=>`<button class="chip ${WHO()===s.name?"on":""}" data-n="${esc(s.name)}" onclick="setWho(this.dataset.n)">${esc(s.name)}</button>`).join("")}</div>
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button></div>`);
   window._afterWho=after;
@@ -426,20 +426,26 @@ async function createCustomer(f){
 let pickedType="PAID";
 async function startJob(tid){
   needWho(async()=>{
-    const [tr]=await get(`tractors?select=*,customers(name)&id=eq.${tid}`);
+    const [[tr],openJ]=await Promise.all([get(`tractors?select=*,customers(name)&id=eq.${tid}`),get("job_cards?select=mechanic_id&status=eq.open")]);
+    const busyMap={};openJ.forEach(x=>{if(x.mechanic_id)busyMap[x.mechanic_id]=(busyMap[x.mechanic_id]||0)+1});
     pickedType=tr.next_service_slot&&tr.next_service_slot.startsWith("FS")?tr.next_service_slot:"PAID";
     modal(`<h2>${t("nj_h")}</h2>
       <p class="mut">${esc(tr.customers.name)} · ${esc(tr.model)} · ${t("next_srv")}: ${t("slot")(tr.next_service_slot)}</p>
       <label>${t("type_job")}</label>
       <div class="chips" id="jt">${JOB_TYPES.map(k=>`<button class="chip ${k===pickedType?"on":""}" data-k="${k}" onclick="pickType('${k}')">${t("jt")[k]}</button>`).join("")}</div>
       <div id="prfbox" style="display:${pickedType==="WTY"?"block":"none"}"><label>${t("prf")}</label><input id="sj-prf"></div>
-      <div class="row"><div><label>${t("mech")}</label><select id="sj-m"><option value="">—</option>${mechanics().map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join("")}</select></div>
-      <div><label>${t("hours_req")}</label><input id="sj-h" type="number" inputmode="numeric" placeholder="${tr.last_service_hours?"> "+tr.last_service_hours:""}"></div></div>
+      <label>${t("mech")}</label><div class="chips" id="mk">${mechChips(busyMap)}</div><input type="hidden" id="sj-m" value="">
+      <div class="row"><div><label>${t("hours_req")}</label><input id="sj-h" type="number" inputmode="numeric" placeholder="${tr.last_service_hours?"> "+tr.last_service_hours:""}"></div></div>
       <label>${t("problems")}</label><textarea id="sj-c" rows="2" placeholder="${t("compl_ph")}"></textarea>
       <p class="mut">${t("auto_time")} · ${t("entered_by")}: <b>${esc(WHO())}</b></p>
       <div class="row"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="doStartJob(${tid},${tr.customer_id},this)">${t("start")}</button></div>`);
   });
 }
+function mechChips(busy){
+  return mechanics().map(m=>({m,n:busy[m.id]||0})).sort((a,b)=>a.n-b.n||a.m.name.localeCompare(b.m.name))
+    .map(({m,n})=>`<button class="chip mech ${n===0?"m0":n===1?"m1":"m2"}" data-id="${m.id}" onclick="pickMech(${m.id})">${esc(m.name)} <small>· ${n===0?t("free"):t("n_jobs")(n)}</small></button>`).join("");
+}
+function pickMech(id){const cur=$("#sj-m");cur.value=cur.value==String(id)?"":id;document.querySelectorAll("#mk .chip").forEach(b=>b.classList.toggle("on",b.dataset.id===String(cur.value)))}
 function pickType(k){pickedType=k;document.querySelectorAll("#jt .chip").forEach(b=>b.classList.toggle("on",b.dataset.k===k));$("#prfbox").style.display=k==="WTY"?"block":"none"}
 function doStartJob(tid,cid,btn){
   guard(async()=>{
