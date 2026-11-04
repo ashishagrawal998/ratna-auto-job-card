@@ -43,7 +43,7 @@ const I18N={
   none_due:"No service due right now.",upcoming:"Coming up (next 8–30 days)",
   msg:(n,m,slot,late,dt,firm,addr)=>`Namaste ${n} ji, your ${m} tractor ${late?"is overdue for":"is due for"} its ${slot} (${dt}). Please bring it to ${firm}${addr?", "+addr:""}. Thank you!`,
   nc_h:"New customer & tractor",model:"Tractor model",cancel:"Cancel",save:"Save",
-  need_np:"Name and phone are required",cust_added:"Customer added",
+  need_np:"Name and phone are required",cust_added:"Customer added",need_eng:"Engine No. is required",bad_phone:"Phone must be 10 digits starting with 9",dup_h:"Already in the system?",dup_phone:"Same phone number",dup_engine:"Same engine number",open_existing:"Open this",save_anyway:"Save as new anyway",
   nj_h:"New job card",hours_req:"Hour meter reading",compl_ph:"e.g. general service, brake noise",
   auto_time:"Date & time in is recorded automatically.",start:"▶ Start",job_started:"Job card started",
   pick_first:"Select a part first",part_added:"Part added",enter_desc:"Enter a description",
@@ -93,7 +93,7 @@ const I18N={
   none_due:"अहिले कसैको सर्भिस गर्नुपर्ने छैन।",upcoming:"आउँदै गरेका (८–३० दिनभित्र)",
   msg:(n,m,slot,late,dt,firm,addr)=>`नमस्ते ${n} ज्यू, तपाईंको ${m} ट्र्याक्टरको ${slot} गर्ने समय ${late?"नाघिसकेको छ":"भएको छ"} (${dt})। कृपया आफ्नो ट्र्याक्टर लिएर ${firm}${addr?", "+addr:""} मा आउनुहोला। धन्यवाद!`,
   nc_h:"नयाँ ग्राहक र ट्र्याक्टर",model:"ट्र्याक्टरको मोडेल",cancel:"रद्द गर्नुहोस्",save:"सेभ गर्नुहोस्",
-  need_np:"नाम र फोन नम्बर अनिवार्य छ",cust_added:"ग्राहक थपियो",
+  need_np:"नाम र फोन नम्बर अनिवार्य छ",cust_added:"ग्राहक थपियो",need_eng:"इन्जिन नं. अनिवार्य छ",bad_phone:"फोन नम्बर ९ बाट सुरु हुने १० अंकको हुनुपर्छ",dup_h:"पहिले नै प्रणालीमा छ?",dup_phone:"उही फोन नम्बर",dup_engine:"उही इन्जिन नम्बर",open_existing:"यो खोल्नुहोस्",save_anyway:"तैपनि नयाँ सेभ गर्नुहोस्",
   nj_h:"नयाँ जब कार्ड",hours_req:"आवर मिटर रिडिङ",compl_ph:"जस्तै: जनरल सर्भिस, ब्रेकबाट आवाज आउने",
   auto_time:"आएको मिति र समय आफैँ दर्ता हुन्छ।",start:"▶ सुरु गर्नुहोस्",job_started:"जब कार्ड सुरु भयो",
   pick_first:"पहिले पार्ट छान्नुहोस्",part_added:"पार्ट थपियो",enter_desc:"विवरण लेख्नुहोस्",
@@ -377,24 +377,47 @@ async function vCustomer(id){
 function newCustomer(){
   const q=clean(searchQ);
   modal(`<h2>${t("nc_h")}</h2>
-    <label>${t("name")}</label><input id="nc-name">
-    <div class="row"><div><label>${t("phone")}</label><input id="nc-phone" inputmode="tel" value="${/^\d+$/.test(q)?esc(q):""}"></div><div><label>${t("phone2")}</label><input id="nc-phone2" inputmode="tel"></div></div>
+    <label>${t("name")} *</label><input id="nc-name">
+    <div class="row"><div><label>${t("phone")} *</label><input id="nc-phone" inputmode="tel" maxlength="10" value="${/^\d+$/.test(q)?esc(q):""}"></div><div><label>${t("phone2")}</label><input id="nc-phone2" inputmode="tel" maxlength="10"></div></div>
     <div class="row"><div><label>${t("address")}</label><input id="nc-addr"></div><div><label>${t("district")}</label><input id="nc-dist"></div></div>
     <label>${t("model")}</label><select id="nc-model">${MODELS.map(m=>`<option>${m}</option>`).join("")}</select>
-    <div class="row"><div><label>${t("engine")}</label><input id="nc-eng"></div><div><label>${t("chassis")}</label><input id="nc-ch"></div></div>
+    <div class="row"><div><label>${t("engine")} *</label><input id="nc-eng" style="text-transform:uppercase"></div><div><label>${t("chassis")}</label><input id="nc-ch"></div></div>
     <div class="row"><div><label>${t("reg")}</label><input id="nc-reg"></div><div><label>${t("doi")}</label><input id="nc-doi" type="date" value="${ymd(new Date())}"></div></div>
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" id="nc-b" onclick="saveCustomer(this)">${t("save")}</button></div>`);
   $("#nc-name").focus();
 }
+const okPhone=p=>/^9\d{9}$/.test(p);
+const digits=p=>p.replace(/\D/g,"");
+let NC=null; // form values kept while the duplicate warning is open
 function saveCustomer(btn){
   const v=k=>$("#nc-"+k).value.trim();
-  if(!v("name")||!v("phone")){toast(t("need_np"));return}
+  const f={name:v("name"),phone:digits(v("phone")),phone2:digits(v("phone2")),addr:v("addr"),dist:v("dist"),model:v("model"),eng:v("eng").toUpperCase(),ch:v("ch").toUpperCase(),reg:v("reg"),doi:v("doi")};
+  if(!f.name||!f.phone){toast(t("need_np"));return}
+  if(!okPhone(f.phone)||(f.phone2&&!okPhone(f.phone2))){toast(t("bad_phone"));return}
+  if(!f.eng){toast(t("need_eng"));$("#nc-eng").focus();return}
   guard(async()=>{
-    const [c]=await post("customers",{name:v("name"),phone:v("phone"),phone_alt:v("phone2")||null,address:v("addr")||null,district:v("dist")||null});
-    const doi=v("doi")||ymd(new Date());
-    const [tr]=await post("tractors",{customer_id:c.id,model:v("model"),engine_no:v("eng")||null,chassis_no:v("ch")||null,reg_no:v("reg")||null,date_of_installation:doi,next_service_slot:"FS1",next_service_hours:100,next_service_due:ymd(new Date(pd(doi).getTime()+35*DAY))});
-    closeModal();searchQ="";toast(t("cust_added"));go("customer",tr.id);
+    const ph=[f.phone,f.phone2].filter(Boolean);
+    const [byPhone,byEng]=await Promise.all([
+      get(`customers?select=id,name,phone,tractors(id,model,engine_no)&or=(${ph.map(p=>`phone.eq.${p},phone_alt.eq.${p}`).join(",")})&limit=10`),
+      get(`tractors?select=id,model,engine_no,customers(name,phone)&engine_no=ilike.${enc(f.eng)}&limit=10`)]);
+    if(byPhone.length||byEng.length){NC=f;return dupWarn(byPhone,byEng)}
+    await createCustomer(f);
   },btn);
+}
+function dupWarn(byPhone,byEng){
+  const rows=[...byEng.map(x=>({tid:x.id,name:x.customers.name,phone:x.customers.phone,model:x.model,eng:x.engine_no,why:t("dup_engine")})),
+    ...byPhone.flatMap(c=>(c.tractors.length?c.tractors:[{}]).map(x=>({tid:x.id,name:c.name,phone:c.phone,model:x.model||"",eng:x.engine_no||"",why:t("dup_phone")})))];
+  const seen=new Set();
+  modal(`<h2>⚠️ ${t("dup_h")}</h2>
+    ${rows.filter(r=>{const k=r.tid+r.why;if(seen.has(k))return false;seen.add(k);return true}).map(r=>`<div class="list-item"><div><span class="tag due">${r.why}</span><br><b>${esc(r.name)}</b> · ${esc(r.model)}<div class="mut">📞 ${esc(r.phone||"—")} · ${t("engine")} ${esc(r.eng||"—")}</div></div>
+      ${r.tid?`<button class="btn ghost sm" onclick="closeModal();searchQ='';go('customer',${r.tid})">${t("open_existing")}</button>`:""}</div>`).join("")}
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="guard(()=>createCustomer(NC),this)">${t("save_anyway")}</button></div>`);
+}
+async function createCustomer(f){
+  const [c]=await post("customers",{name:f.name,phone:f.phone,phone_alt:f.phone2||null,address:f.addr||null,district:f.dist||null});
+  const doi=f.doi||ymd(new Date());
+  const [tr]=await post("tractors",{customer_id:c.id,model:f.model,engine_no:f.eng,chassis_no:f.ch||null,reg_no:f.reg||null,date_of_installation:doi,next_service_slot:"FS1",next_service_hours:100,next_service_due:ymd(new Date(pd(doi).getTime()+35*DAY))});
+  closeModal();searchQ="";NC=null;toast(t("cust_added"));go("customer",tr.id);
 }
 
 // ---------------------------------------------------------------------
