@@ -331,11 +331,11 @@ async function doSearch(){
     const cs=await get(`customers?select=id&or=(phone.ilike.${like},phone_alt.ilike.${like},name.ilike.${like})&limit=60`);
     const ids=cs.map(c=>c.id);
     const orq=[`engine_no.ilike.${like}`,`chassis_no.ilike.${like}`,`reg_no.ilike.${like}`];if(ids.length)orq.push(`customer_id.in.(${ids.join(",")})`);
-    const trs=await get(`tractors?select=id,model,engine_no,reg_no,next_service_due,customers(name,phone)&or=(${orq.join(",")})&limit=25`);
+    const trs=await get(`tractors?select=id,model,engine_no,chassis_no,reg_no,next_service_due,customers(name,phone)&or=(${orq.join(",")})&limit=25`);
     if(my!==stok)return;
     box.innerHTML=trs.length?trs.map(tr=>`
       <div class="list-item clickable" onclick="go('customer',${tr.id})">
-        <div><b>${esc(tr.customers.name)}</b> · ${esc(tr.model)}<div class="mut">📞 ${esc(tr.customers.phone||"—")} · ${t("engine")} ${esc(tr.engine_no||"—")}${tr.reg_no?" · "+esc(tr.reg_no):""}</div></div><span>›</span>
+        <div><b>${esc(tr.customers.name)}</b> · ${esc(tr.model)}<div class="mut">📞 ${esc(tr.customers.phone||"—")} · ${t("engine")} ${esc(tr.engine_no||"—")} · ${t("chassis")} ${esc(tr.chassis_no||"—")}${tr.reg_no?" · "+t("reg")+" "+esc(tr.reg_no):""}</div></div><span>›</span>
       </div>`).join(""):`<div class="empty">${t("not_found")}<br><br><button class="btn" onclick="newCustomer()">${t("add_new")}</button></div>`;
   }catch(e){if(my===stok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
 }
