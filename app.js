@@ -13,7 +13,7 @@ const I18N={
   title:"Job Card",kind:"Card type",mstw:"MSTW",jc:"Job Card",mstw_d:"Home service",jc_d:"Showroom service",pick_kind:"Choose MSTW or Job Card first",slip_mstw:"MSTW JOB CARD",slip_jc:"JOB CARD",edit_details:"✎ Edit details",closed_banner:"This card is closed. As admin you can still change it.",done_edit:"✔ Done editing",edit_card:"✎ Edit (admin)",hist30:"Completed – last 30 days",find_cards:"Search MSTW / Job Cards (all time)",find_ph:"Card no., customer, phone, model, engine, chassis…",all:"All",results:"Results",r_kind:"By card type",r_back:"‹ Reports",r_xl:"⬇ Excel",r_click:"Tap any number or row to see the details behind it.",extra:"Extra",income_all:"All closed cards",rem_rule:"Reminder goes 7 days before the service due date.",rem_auto:x=>`Automatic SMS from ${x}: not switched on yet (preview). Nothing is sent unless someone taps SMS or WhatsApp and sends it from the phone.`,rem_send_h:"Send now (due within 7 days, or overdue)",rem_sched:d=>"Reminder on "+d,sms:"SMS",wa:"WhatsApp",not_sent:"not sent",sent_on:(d,n)=>"sent "+d+(n?" · "+n:""),sent_q:"Did the message go?",yes_sent:"Yes, it was sent",no_sent:"No",logged:"Marked as sent",set_sms:"Reminder SMS",sms_from:"SMS sender (mobile number)",auto_sms:"Automatic sending",auto_off:"Off – will be switched on later",next_due_edit:"Next service due",
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
-  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",p_custom:"Choose dates",d_from:"From",d_to:"To",apply:"Show",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
+  nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",p_custom:"Choose dates",rf_h:"📋 For the monthly report",f_app:"Application (work the tractor does)",f_complaint:"Complaint date & time",f_decision:"Decision date & time",f_appt:"Appointment date (DOR)",f_agg:"Aggregate",f_subagg:"Sub aggregate",f_fail:"Failure statement",f_delay:"Remark if delayed",lube:"Lube / oil",monthly:"⬇ Monthly Workshop Report",d_from:"From",d_to:"To",apply:"Show",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
@@ -56,14 +56,14 @@ const I18N={
   set_staff:"Staff (mechanics & sales)",set_rates:"Labour rates",role:"Role",mechanic:"Mechanic",sales:"Sales",active:"Active",inactive:"Inactive",
   add_staff:"+ Add staff",add_rate:"+ Add labour rate",name_en:"Name (English)",name_ne:"Name (Nepali)",saved:"Saved",admin_only:"Only the admin can change this.",
   edit:"Edit",admin:"Admin",staff_login:"Staff",
-  jt:{PDI:"PDI",DSI:"DSI",FS1:"Free service 100 hrs",FS2:"Free service 300 hrs",FS3:"Free service 600 hrs",FS4:"Free service 1000 hrs",PAID:"Paid service",WTY:"Warranty",OTHERS:"Others"},
+  jt:{PDI:"PDI",DSI:"DSI",FS1:"Free service 100 hrs",FS2:"Free service 300 hrs",FS3:"Free service 600 hrs",FS4:"Free service 1000 hrs",PAID:"Paid service",WTY:"Warranty",OOW:"Out of warranty repair",OTHERS:"Others"},
   slot:s=>!s?"—":s.startsWith("FS")?`Free service ${s[2]} (${SLOT_H[s]} hrs)`:s.startsWith("PAID")?`Paid service ${s[4]} (${SLOT_H[s]} hrs)`:`${parseInt(s)} hrs service`
  },
  ne:{
   title:"जब कार्ड",kind:"कार्डको प्रकार",mstw:"MSTW",jc:"जब कार्ड",mstw_d:"घरमै सर्भिस",jc_d:"शोरुममा सर्भिस",pick_kind:"पहिले MSTW वा जब कार्ड छान्नुहोस्",slip_mstw:"MSTW जब कार्ड",slip_jc:"जब कार्ड",edit_details:"✎ विवरण बदल्नुहोस्",closed_banner:"यो कार्ड बन्द भइसकेको छ। एडमिनले अझै बदल्न सक्नुहुन्छ।",done_edit:"✔ बदल्ने काम सकियो",edit_card:"✎ बदल्नुहोस् (एडमिन)",hist30:"सम्पन्न – पछिल्ला ३० दिन",find_cards:"MSTW / जब कार्ड खोज्नुहोस् (सबै समय)",find_ph:"कार्ड नं., ग्राहक, फोन, मोडेल, इन्जिन, चेसिस…",all:"सबै",results:"नतिजा",r_kind:"कार्डको प्रकार अनुसार",r_back:"‹ रिपोर्ट",r_xl:"⬇ एक्सेल",r_click:"विवरण हेर्न कुनै पनि अंक वा लाइनमा थिच्नुहोस्।",extra:"थप",income_all:"सबै बन्द कार्ड",rem_rule:"सर्भिसको मितिभन्दा ७ दिन अघि रिमाइन्डर जान्छ।",rem_auto:x=>`${x} बाट स्वचालित SMS: अहिले बन्द छ (नमुना)। कसैले SMS वा WhatsApp थिचेर फोनबाट नपठाएसम्म केही जाँदैन।`,rem_send_h:"अहिले पठाउनुहोस् (७ दिनभित्र वा नाघेका)",rem_sched:d=>d+" मा रिमाइन्डर",sms:"SMS",wa:"WhatsApp",not_sent:"पठाइएको छैन",sent_on:(d,n)=>d+" मा पठाइयो"+(n?" · "+n:""),sent_q:"सन्देश गयो?",yes_sent:"हो, पठाइयो",no_sent:"होइन",logged:"पठाइएको भनी राखियो",set_sms:"रिमाइन्डर SMS",sms_from:"SMS पठाउने नम्बर",auto_sms:"स्वचालित पठाउने",auto_off:"बन्द – पछि खोलिनेछ",next_due_edit:"अर्को सर्भिसको मिति",
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
-  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",p_custom:"मिति छान्नुहोस्",d_from:"देखि",d_to:"सम्म",apply:"हेर्नुहोस्",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
+  nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",p_custom:"मिति छान्नुहोस्",rf_h:"📋 मासिक रिपोर्टका लागि",f_app:"प्रयोग (ट्र्याक्टरले गर्ने काम)",f_complaint:"गुनासो आएको मिति र समय",f_decision:"निर्णय मिति र समय",f_appt:"भेटघाट मिति (DOR)",f_agg:"एग्रिगेट (भाग)",f_subagg:"सब-एग्रिगेट",f_fail:"खराबीको विवरण",f_delay:"ढिलाइ भए कारण",lube:"लुब / आयल",monthly:"⬇ मासिक वर्कसप रिपोर्ट",d_from:"देखि",d_to:"सम्म",apply:"हेर्नुहोस्",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
@@ -106,7 +106,7 @@ const I18N={
   set_staff:"कर्मचारी (मेकानिक र सेल्स)",set_rates:"ज्यालाका दर",role:"भूमिका",mechanic:"मेकानिक",sales:"सेल्स",active:"सक्रिय",inactive:"निष्क्रिय",
   add_staff:"+ कर्मचारी थप्नुहोस्",add_rate:"+ ज्याला दर थप्नुहोस्",name_en:"नाम (अंग्रेजी)",name_ne:"नाम (नेपाली)",saved:"सेभ भयो",admin_only:"यो एडमिनले मात्र बदल्न सक्छ।",
   edit:"बदल्नुहोस्",admin:"एडमिन",staff_login:"स्टाफ",
-  jt:{PDI:"PDI",DSI:"DSI",FS1:"निःशुल्क सर्भिस 100 घण्टा",FS2:"निःशुल्क सर्भिस 300 घण्टा",FS3:"निःशुल्क सर्भिस 600 घण्टा",FS4:"निःशुल्क सर्भिस 1000 घण्टा",PAID:"सशुल्क सर्भिस",WTY:"वारेन्टी",OTHERS:"अन्य"},
+  jt:{PDI:"PDI",DSI:"DSI",FS1:"निःशुल्क सर्भिस 100 घण्टा",FS2:"निःशुल्क सर्भिस 300 घण्टा",FS3:"निःशुल्क सर्भिस 600 घण्टा",FS4:"निःशुल्क सर्भिस 1000 घण्टा",PAID:"सशुल्क सर्भिस",WTY:"वारेन्टी",OOW:"वारेन्टी बाहिरको मर्मत",OTHERS:"अन्य"},
   slot:s=>!s?"—":s.startsWith("FS")?`निःशुल्क सर्भिस ${s[2]} (${SLOT_H[s]} घण्टा)`:s.startsWith("PAID")?`सशुल्क सर्भिस ${s[4]} (${SLOT_H[s]} घण्टा)`:`${parseInt(s)} घण्टाको सर्भिस`
  }
 };
@@ -121,7 +121,10 @@ const SLOTS=[["FS1",100],["FS2",300],["FS3",600],["FS4",1000],["PAID1",1300],["P
 for(let h=2500;h<=30000;h+=300)SLOTS.push([h+"HRS",h]);
 const SLOT_H=Object.fromEntries(SLOTS);
 const nextSlot=h=>SLOTS.find(s=>s[1]>h)||SLOTS[SLOTS.length-1];
-const JOB_TYPES=["PDI","DSI","FS1","FS2","FS3","FS4","PAID","WTY","OTHERS"];
+const JOB_TYPES=["PDI","DSI","FS1","FS2","FS3","FS4","PAID","WTY","OOW","OTHERS"];
+const APPS=["Rotavator","Haulage / Trolley","Cultivator","Plough","Harrow","Thresher","Puddling","Others"];
+const AGGS=["Electrical","Engine","Front Axle","RIM and Tyres","Clutch","Rear Axle","Transmission","Accelerator","Hydraulics","Steering","Tractor","PTO","Brake","FIP","Other than above aggregate"];
+const RTYPE=k=>k&&k.startsWith("FS")?"Periodical Service (UW)":k==="PAID"?"Periodical Service (OW)":k==="WTY"?"Under Warranty Job":k==="OOW"?"Out of Warranty Job":"Others";
 const MODELS=["MF 7250 DI","MF 7250 Power Up","MF 7250 NS","MF 7250 PS","MF 1035 DI","MF 8055 MagnaTrak","MF 9000 DI","MF 241 DI","MF 9500","MF 4250 DI"];
 const DAY=86400000;
 
@@ -452,6 +455,18 @@ async function createCustomer(f){
 // Job card
 // ---------------------------------------------------------------------
 let pickedType="PAID",pickedKind=null;
+const dtl=d=>{if(!d)return "";const x=new Date(d);return `${ymd(x)}T${String(x.getHours()).padStart(2,"0")}:${String(x.getMinutes()).padStart(2,"0")}`};
+const RF={application:["f_app","app"],complaint_at:["f_complaint","dt"],decision_at:["f_decision","dt"],appointment_date:["f_appt","date"],aggregate:["f_agg","agg"],sub_aggregate:["f_subagg","text"],failure_statement:["f_fail","text"],delay_reason:["f_delay","text"]};
+function rfBlock(j,keys,open){
+  const inp=k=>{const [l,ty]=RF[k],v=j[k];
+    if(ty==="dt")return `<label>${t(l)}</label><input id="rf-${k}" type="datetime-local" value="${dtl(v)}">`;
+    if(ty==="date")return `<label>${t(l)}</label><input id="rf-${k}" type="date" value="${v||""}">`;
+    if(ty==="agg")return `<label>${t(l)}</label><select id="rf-${k}"><option value="">—</option>${AGGS.map(a=>`<option ${a===v?"selected":""}>${a}</option>`).join("")}</select>`;
+    if(ty==="app")return `<label>${t(l)}</label><input id="rf-${k}" list="rf-apps" value="${esc(v||"")}"><datalist id="rf-apps">${APPS.map(a=>`<option value="${a}">`).join("")}</datalist>`;
+    return `<label>${t(l)}</label><input id="rf-${k}" value="${esc(v||"")}">`};
+  return `<details ${open?"open":""} style="margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:6px 10px"><summary style="cursor:pointer;font-weight:600">${t("rf_h")}</summary>${keys.map(inp).join("")}</details>`;
+}
+function readRF(){const o={};Object.keys(RF).forEach(k=>{const e=$("#rf-"+k);if(!e)return;const v=e.value.trim();o[k]=v?(RF[k][1]==="dt"?new Date(v).toISOString():v):null});return o}
 async function startJob(tid){
   needWho(async()=>{
     const [[tr],openJ]=await Promise.all([get(`tractors?select=*,customers(name)&id=eq.${tid}`),get("job_cards?select=mechanic_id&status=eq.open")]);
@@ -468,6 +483,7 @@ async function startJob(tid){
       <label>${t("mech")}</label><div class="chips" id="mk">${mechChips(busyMap)}</div><input type="hidden" id="sj-m" value="">
       <div class="row"><div><label>${t("hours_req")}</label><input id="sj-h" type="number" inputmode="numeric" placeholder="${tr.last_service_hours?"> "+tr.last_service_hours:""}"></div></div>
       <label>${t("problems")}</label><textarea id="sj-c" rows="2" placeholder="${t("compl_ph")}"></textarea>
+      ${rfBlock({complaint_at:new Date()},["application","complaint_at","decision_at","appointment_date"],false)}
       <p class="mut">${t("auto_time")} · ${t("entered_by")}: <b>${esc(WHO())}</b></p>
       <div class="row"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="doStartJob(${tid},${tr.customer_id},this)">${t("start")}</button></div>`);
   });
@@ -484,7 +500,7 @@ function doStartJob(tid,cid,btn){
   guard(async()=>{
     const h=parseInt($("#sj-h").value);
     const [j]=await post("job_cards",{card_kind:pickedKind,tractor_id:tid,customer_id:cid,mechanic_id:$("#sj-m").value?+$("#sj-m").value:null,job_type:pickedType,
-      warranty_prf_no:pickedType==="WTY"?($("#sj-prf").value.trim()||null):null,hours_run:isNaN(h)?null:h,problems_reported:$("#sj-c").value.trim()||null,entered_by_name:WHO()});
+      warranty_prf_no:pickedType==="WTY"?($("#sj-prf").value.trim()||null):null,hours_run:isNaN(h)?null:h,problems_reported:$("#sj-c").value.trim()||null,entered_by_name:WHO(),...readRF()});
     closeModal();toast(t("job_started")+" "+j.job_no);go("job",j.id);
   },btn);
 }
@@ -528,7 +544,7 @@ async function vJob(id,adminEdit){
     <button class="btn ghost sm" style="margin-top:8px" onclick="manualItem(${j.id})">${t("manual")}</button>
     <table style="margin-top:12px">
       <tr><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th><th></th></tr>
-      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_foc?" · "+t("wty"):""}</div></td><td class="num">${Number(p.qty)}</td><td class="num"><a href="#" onclick="editRate_(${p.id},${p.rate},${p.mrp_at_issue??"null"});return false" title="${t("edit_rate")}">${rs(p.rate)} ✎</a>${p.mrp_at_issue!=null&&Number(p.rate)>Number(p.mrp_at_issue)?`<div class="mut">${t("mrp")} ${rs(p.mrp_at_issue)}</div>`:""}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></td></tr>`).join("")
+      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_lube?" · "+t("lube"):""}${p.is_foc?" · "+t("wty"):""}</div></td><td class="num">${Number(p.qty)}</td><td class="num"><a href="#" onclick="editRate_(${p.id},${p.rate},${p.mrp_at_issue??"null"});return false" title="${t("edit_rate")}">${rs(p.rate)} ✎</a>${p.mrp_at_issue!=null&&Number(p.rate)>Number(p.mrp_at_issue)?`<div class="mut">${t("mrp")} ${rs(p.mrp_at_issue)}</div>`:""}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></td></tr>`).join("")
         :`<tr><td colspan="5" class="empty">${t("no_parts")}</td></tr>`}
     </table>
     <div class="total">${t("parts_tot")}: ${rs(partsTotal(parts))}</div>
@@ -563,9 +579,10 @@ async function psSearch(){
     const words=q.split(/\s+/).filter(Boolean);
     const f=words.length===1?`or=(part_no.ilike.${enc(q+"*")},description.ilike.${enc("*"+q+"*")})`
       :`and=(${words.map(w=>`description.ilike.${enc("*"+w+"*")}`).join(",")})`;
-    const r=await get(`parts?select=part_no,description,mrp&active=eq.true&${f}&order=part_no&limit=30`);
+    const r=await get(`parts?select=part_no,description,mrp,is_lube&active=eq.true&${f}&order=part_no&limit=300`);
     if(my!==ptok)return;
-    psMatches=r.sort((a,b)=>(b.part_no.toLowerCase().startsWith(q.toLowerCase()))-(a.part_no.toLowerCase().startsWith(q.toLowerCase())));hiIdx=0;
+    const ql=q.toLowerCase(),sc=p=>{const d=p.description.toLowerCase(),n=p.part_no.toLowerCase();return (n.startsWith(ql)?0:d.startsWith(ql)?1:d.includes(ql)?2:new RegExp("\\b"+ql.split(/\s+/)[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).test(d)?3:4)*1000+Math.min(d.length,999)};
+    psMatches=r.sort((a,b)=>sc(a)-sc(b)).slice(0,30);hiIdx=0;
     box.innerHTML=psMatches.length?`<div class="dd-list">${psMatches.map((p,i)=>`<div class="${i===0?"hi":""}" onmousedown="pickProd(${i})"><b>${esc(p.description)}</b><br><span class="mut">${esc(p.part_no)} · MRP ${rs(p.mrp)}</span></div>`).join("")}</div>`:`<div class="dd-list"><div class="mut">${t("not_found").replace(/customer|ग्राहक/,"part")}</div></div>`;
   }catch(e){toast(t("err")+": "+e.message)}
 }
@@ -608,14 +625,15 @@ function manualItem(jid){
   modal(`<h2>${t("mi_h")}</h2>
     <label>${t("mi_desc")}</label><input id="mi-d">
     <div class="row"><div><label>${t("qty")}</label><input id="mi-q" type="number" step="any" value="1"></div><div><label>${t("rate")}</label><input id="mi-r" type="number" step="any"></div></div>
+    <label class="chk" style="margin-top:8px"><input type="checkbox" id="mi-lube"> ${t("lube")}</label>
     <label class="chk" style="margin-top:8px"><input type="checkbox" id="mi-foc"> ${t("foc")}</label>
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="doManual(${jid},this)">${t("add")}</button></div>`);
-  $("#mi-d").focus();
+  const d=$("#mi-d");d.focus();d.oninput=()=>{$("#mi-lube").checked=/oil|grease|coolant|lube|utto/i.test(d.value)&&!/filter|seal|pump|pipe/i.test(d.value)};
 }
 function doManual(jid,btn){
   const d=$("#mi-d").value.trim();if(!d){toast(t("enter_desc"));return}
   needWho(()=>guard(async()=>{
-    await post("job_card_parts",{job_card_id:jid,part_no:null,description:d,qty:parseFloat($("#mi-q").value)||1,rate:parseFloat($("#mi-r").value)||0,is_foc:$("#mi-foc").checked,issued_by_name:WHO()});
+    await post("job_card_parts",{job_card_id:jid,part_no:null,description:d,qty:parseFloat($("#mi-q").value)||1,rate:parseFloat($("#mi-r").value)||0,is_foc:$("#mi-foc").checked,is_lube:$("#mi-lube").checked,issued_by_name:WHO()});
     closeModal();toast(t("part_added"));render();
   },btn));
 }
@@ -641,13 +659,14 @@ async function editJob(id){
     <label>${t("observ")}</label><textarea id="ej-o" rows="2">${esc(j.observations||"")}</textarea>
     <label>${t("action")}</label><textarea id="ej-a" rows="2">${esc(j.action_taken||"")}</textarea>
     <label>${t("remarks")}</label><input id="ej-r" value="${esc(j.remarks||"")}">
+    ${rfBlock(j,Object.keys(RF),false)}
     ${closed?`<label>${t("next_due_edit")}</label><input id="ej-n" type="date" value="${j.next_service_due||""}">`:""}
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveJob(this)">${t("save")}</button></div>`);
 }
 function saveJob(btn){
   const j=window._ej,h=parseInt($("#ej-h").value),v=k=>$("#ej-"+k).value.trim()||null;
   const row={job_type:pickedType,warranty_prf_no:pickedType==="WTY"?v("prf"):null,mechanic_id:$("#ej-m").value?+$("#ej-m").value:null,hours_run:isNaN(h)?null:h,
-    problems_reported:v("p"),observations:v("o"),action_taken:v("a"),remarks:v("r")};
+    problems_reported:v("p"),observations:v("o"),action_taken:v("a"),remarks:v("r"),...readRF()};
   const nd=$("#ej-n")?$("#ej-n").value:null;if(nd)row.next_service_due=nd;
   guard(async()=>{
     await patch(`job_cards?id=eq.${j.id}`,row);
@@ -669,13 +688,14 @@ async function closeJobDlg(jid){
     <label>${t("observ")}</label><textarea id="cj-o" rows="2"></textarea>
     <label>${t("action")}</label><textarea id="cj-a" rows="2"></textarea>
     <label>${t("remarks")}</label><input id="cj-r">
+    ${rfBlock(j,["aggregate","sub_aggregate","failure_statement","delay_reason"],true)}
     <label>${t("next_auto")} – ${t("slot")(plan.slot)}</label><input id="cj-next" type="date" value="${plan.due}">
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn ok" onclick="doCloseJob(this)">${t("close_b")}</button></div>`);
 }
 function doCloseJob(btn){
   const {j,plan,slotDone}=window._close;
   guard(async()=>{
-    await patch(`job_cards?id=eq.${j.id}`,{observations:$("#cj-o").value.trim()||null,action_taken:$("#cj-a").value.trim()||null,remarks:$("#cj-r").value.trim()||null});
+    await patch(`job_cards?id=eq.${j.id}`,{observations:$("#cj-o").value.trim()||null,action_taken:$("#cj-a").value.trim()||null,remarks:$("#cj-r").value.trim()||null,...readRF()});
     if(slotDone)await post("service_history",{tractor_id:j.tractor_id,slot:slotDone,slot_hours:SLOT_H[slotDone]||null,service_date:ymd(new Date()),ws_no:j.job_no,hours:j.hours_run,kind:"service",raw_text:"Job card "+j.job_no});
     await rpc("close_job_card",{p_job_card_id:j.id,p_next_slot:plan.slot,p_next_due:$("#cj-next").value||plan.due});
     closeModal();toast(t("job_closed"));go("slip",j.id);
@@ -811,14 +831,40 @@ const XLSX_W=(()=>{
   }
   const x=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
   const col=i=>{let s="";i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+  // Styles: 0 plain · 1 bold · 2 group header (yellow) · 3 column header · 4 text · 5 date · 6 date+time · 7 number 0.0 · 8 money · 9 integer
+  const STY=`<numFmts count="3"><numFmt numFmtId="164" formatCode="mm-dd-yy"/><numFmt numFmtId="165" formatCode="m/d/yy h:mm"/><numFmt numFmtId="166" formatCode="0.0"/></numFmts>
+<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>
+<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFFF00"/><bgColor indexed="64"/></patternFill></fill></fills>
+<borders count="2"><border/><border><left style="thin"/><right style="thin"/><top style="thin"/><bottom style="thin"/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf/></cellStyleXfs>
+<cellXfs count="10"><xf fontId="0"/><xf fontId="1" applyFont="1"/>
+<xf fontId="1" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+<xf fontId="1" borderId="1" applyFont="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+<xf fontId="0" borderId="1" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>
+<xf numFmtId="164" fontId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>
+<xf numFmtId="165" fontId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>
+<xf numFmtId="166" fontId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>
+<xf numFmtId="4" fontId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>
+<xf numFmtId="1" fontId="0" borderId="1" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf></cellXfs>`;
+  // Cell: number | string | {v, b} (bold) | {v|d|f, s} with d = Date (stored as Excel date) and f = formula
+  const xlDate=d=>{d=d instanceof Date?d:new Date(d);return (Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())-Date.UTC(1899,11,30))/864e5};
+  function cellXml(v,ref){
+    if(v==null||v==="")return "";
+    if(typeof v==="number")return isFinite(v)?`<c r="${ref}"><v>${v}</v></c>`:"";
+    if(typeof v==="string")return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${x(v)}</t></is></c>`;
+    const s=v.s!=null?v.s:(v.b?1:0),sa=s?` s="${s}"`:"";
+    if(v.f)return `<c r="${ref}"${sa}><f>${x(v.f)}</f></c>`;
+    if(v.d!=null&&v.d!=="")return `<c r="${ref}"${sa}><v>${xlDate(v.d)}</v></c>`;
+    if(typeof v.v==="number"&&isFinite(v.v))return `<c r="${ref}"${sa}><v>${v.v}</v></c>`;
+    if(v.v==null||v.v==="")return s?`<c r="${ref}"${sa}/>`:"";
+    return `<c r="${ref}" t="inlineStr"${sa}><is><t xml:space="preserve">${x(v.v)}</t></is></c>`;
+  }
   function sheetXml(sh){
     const cols=(sh.widths||[]).map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("");
-    const rows=sh.rows.map((r,ri)=>`<row r="${ri+1}">${r.map((v,ci)=>{
-      if(v==null||v==="")return "";const ref=col(ci)+(ri+1);
-      if(typeof v==="number"&&isFinite(v))return `<c r="${ref}"><v>${v}</v></c>`;
-      const b=typeof v==="object"&&v.b,s=b?1:0,txt=typeof v==="object"?v.v:v;
-      return `<c r="${ref}" t="inlineStr"${s?' s="1"':""}><is><t xml:space="preserve">${x(txt)}</t></is></c>`}).join("")}</row>`).join("");
-    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${cols?`<cols>${cols}</cols>`:""}<sheetData>${rows}</sheetData></worksheet>`;
+    const views=sh.freezeRows?`<sheetViews><sheetView workbookViewId="0"><pane ySplit="${sh.freezeRows}" topLeftCell="A${sh.freezeRows+1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`:"";
+    const rows=sh.rows.map((r,ri)=>{const ht=sh.heights&&sh.heights[ri+1];return `<row r="${ri+1}"${ht?` ht="${ht}" customHeight="1"`:""}>${r.map((v,ci)=>cellXml(v,col(ci)+(ri+1))).join("")}</row>`}).join("");
+    const merges=sh.merges&&sh.merges.length?`<mergeCells count="${sh.merges.length}">${sh.merges.map(m=>`<mergeCell ref="${m}"/>`).join("")}</mergeCells>`:"";
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${views}${cols?`<cols>${cols}</cols>`:""}<sheetData>${rows}</sheetData>${merges}</worksheet>`;
   }
   return function(sheets){
     const f=(n,s)=>({name:n,data:enc.encode(s)});
@@ -826,9 +872,9 @@ const XLSX_W=(()=>{
     return zip([
       f("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`),
       f("_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`),
-      f("xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${names.map((n,i)=>`<sheet name="${x(n)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets></workbook>`),
+      f("xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${names.map((n,i)=>`<sheet name="${x(n)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`),
       f("xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`),
-      f("xl/styles.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="2"><xf fontId="0"/><xf fontId="1" applyFont="1"/></cellXfs></styleSheet>`),
+      f("xl/styles.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${STY}</styleSheet>`),
       ...sheets.map((s,i)=>f(`xl/worksheets/sheet${i+1}.xml`,sheetXml(s)))
     ]);
   };
@@ -889,7 +935,7 @@ async function vReports(){
   const tile=(n,l,m)=>`<div class="stat" onclick="${det(m)}"><b>${n}</b><span>${l} ›</span></div>`;
   const table=(head,rows)=>rows.length?`<table class="rtab"><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr class="clickable" onclick="${r.go}">${r.c.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
   return `${repChips("reports","null")}
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><button class="btn sm" onclick="exportReport(this)">${t("export")}</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn sm" onclick="exportMonthly(this)">${t("monthly")}</button><button class="btn ghost sm" onclick="exportReport(this)">${t("export")}</button></span></div>
   <p class="mut" style="margin:0 0 10px">👆 ${t("r_click")}</p>
   <div class="stats">${tile(opened.length,t("r_opened"),"opened")}${tile(closed.length,t("r_closed"),"closed")}${tile(openNow.length,t("r_open_now"),"open")}</div>
   <div class="card"><h2>${t("r_income")}</h2>
@@ -952,6 +998,42 @@ function exportDetail(){
   const blob=XLSX_W([{name:D.title.slice(0,31)||"Detail",rows:[D.head.map(h=>({v:h,b:true})),...D.rows.map(r=>r.x)],widths:D.head.map(()=>16)}]);
   const fn=`${CTX.dealer.name} - ${D.title.replace(/[\\/:*?"<>|]/g,"")} - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
   const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast(t("exported"));
+}
+
+// Monthly Workshop Report – Bhaiya's format (34 columns, 2 header rows)
+async function exportMonthly(btn){
+  btn.disabled=true;const lbl=btn.textContent;btn.textContent=t("exporting");
+  try{
+    const [a,b]=periodRange(RP.p),A=enc(a.toISOString()),B=enc(b.toISOString()),D=CTX.dealer;
+    const jobs=await get(`job_cards?select=*,customers(name,phone,address),tractors(model,engine_no,chassis_no,date_of_installation),mechanics(name)&date_in=gte.${A}&date_in=lt.${B}&status=neq.cancelled${RP.k?`&card_kind=eq.${RP.k}`:""}&order=date_in`);
+    let parts=[],lab=[];const ids=jobs.map(j=>j.id);
+    for(let i=0;i<ids.length;i+=150){const q=ids.slice(i,i+150).join(",");
+      const [p1,l1]=await Promise.all([get(`job_card_parts?select=job_card_id,qty,rate,is_foc,is_lube&job_card_id=in.(${q})`),get(`job_card_labour?select=job_card_id,amount&job_card_id=in.(${q})`)]);
+      parts=parts.concat(p1);lab=lab.concat(l1)}
+    const N=v=>Math.round(Number(v||0)*100)/100;
+    const G=(v)=>({v,s:2}),H=(v)=>({v,s:3}),T=v=>({v:v==null?"":v,s:4}),Dd=v=>v?{d:pd(v),s:5}:{v:"",s:4},Dt=v=>v?{d:new Date(v),s:6}:{v:"",s:4},M=v=>({v:N(v),s:8}),I=v=>v==null||v===""?{v:"",s:4}:{v:Number(v),s:9};
+    const sumBy=(arr,id,f)=>N(arr.filter(x=>x.job_card_id===id).reduce((s,x)=>s+f(x),0));
+    const grp=["Sr No","Customer Details","","","Tractor Details","","","","","","Customer Concern Data","","","","Visit Details","","","Dealer/Branch/Region Detail","","","Concern Details","","","","","","Revenue","","","","Closing","","Action By",""];
+    const hdr=["Sr No","Customer Name","Village","Contact Number","Date of Delivery","Model","Chassis No","Engine No","Current HMR","Application","Date of Complaint & Time","Complaint Description","Decision Date & Time","DOR (Appointment Date)","Job Card Opening Date & Time","Status","Remark If delayed","Country","Dealer","Location","Type of Job","Aggregate","Sub Aggregate","Failure Statement","Observation/ L-1 Analysis","Action Taken","Parts (NPR)","Lube (NPR)","Labour (NPR)","Total (NPR)","Job Card Closing Date & Time","TAT in Hours","Mechanic Name","Remark if any"];
+    const rows=[grp.map((g,i)=>i===0?{v:"",s:2}:G(g)),hdr.map(H)];
+    jobs.forEach((j,i)=>{const r=i+3,c=j.customers||{},tr=j.tractors||{},closed=j.status==="closed";
+      const ph=String(c.phone||"").replace(/\D/g,"");
+      rows.push([I(i+1),T(c.name),T(c.address),ph?I(ph):T(""),Dd(tr.date_of_installation),T(tr.model),T(tr.chassis_no),T(tr.engine_no),I(j.hours_run),T(j.application),
+        Dt(j.complaint_at||j.date_in),T(j.problems_reported),Dt(j.decision_at),Dd(j.appointment_date),Dt(j.date_in),T(j.delay_reason?"Delayed":closed?"Closed":"Open"),T(j.delay_reason),
+        T(D.country||"Nepal"),T(D.name),T(D.location||""),T(RTYPE(j.job_type)),T(j.aggregate),T(j.sub_aggregate),T(j.failure_statement),T(j.observations),T(j.action_taken),
+        M(sumBy(parts,j.id,p=>p.is_foc||p.is_lube?0:p.qty*p.rate)),M(sumBy(parts,j.id,p=>p.is_foc||!p.is_lube?0:p.qty*p.rate)),M(sumBy(lab,j.id,l=>Number(l.amount||0))),{f:`SUM(AA${r}:AC${r})`,s:8},
+        Dt(closed?j.date_out:null),closed?{f:`(AE${r}-O${r})*24`,s:7}:{v:"",s:4},T(j.mechanics?j.mechanics.name:""),T([j.job_no,j.remarks].filter(Boolean).join(" · "))]);
+    });
+    const one=a.getMonth()===new Date(b.getTime()-1).getMonth()&&a.getFullYear()===new Date(b.getTime()-1).getFullYear();
+    const sheet=one?a.toLocaleDateString("en-GB",{month:"short"})+" "+String(a.getFullYear()).slice(2):"Report";
+    const blob=XLSX_W([{name:sheet,rows,freezeRows:2,heights:{2:38.25},
+      merges:["B1:D1","E1:J1","K1:N1","O1:Q1","R1:T1","U1:Z1","AA1:AD1","AE1:AF1"],
+      widths:[6,22,16,13,11,14,16,16,9,13,17,24,16,14,17,10,18,9,18,12,22,14,14,22,24,34,11,11,11,11,18,9,18,18]}]);
+    const fn=`${D.name} - Monthly Workshop Report - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
+    const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+    toast(t("exported"));
+  }catch(e){console.error(e);toast(t("err")+": "+e.message)}
+  finally{btn.disabled=false;btn.textContent=lbl}
 }
 async function exportReport(btn){
   const p=RP.p;btn.disabled=true;const lbl=btn.textContent;btn.textContent=t("exporting");
