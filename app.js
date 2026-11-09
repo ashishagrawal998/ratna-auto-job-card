@@ -203,7 +203,7 @@ async function guard(fn,btn){busy(btn,true);try{return await fn()}catch(e){conso
 // Context: role, dealer, staff, labour rates, who is working
 // ---------------------------------------------------------------------
 let CTX=null;
-const WHO=()=>ls.get("jobcard_who");
+const WHO=()=>(CTX&&isAdmin())?"Admin":ls.get("jobcard_who");
 async function loadCtx(){
   const [role,dealers,staff,rates]=await Promise.all([rpc("my_role"),get("dealers?select=*"),get("mechanics?select=*&order=name"),get("labour_rates?select=*&order=id")]);
   if(!role||!dealers.length)throw Object.assign(new Error(t("no_dealer")),{nodealer:true});
@@ -246,7 +246,7 @@ function chrome(){
   const items=[["home","nav_home","🏠"],["jobs","nav_jobs","🔧"],["reminders","nav_rem","🔔"],["history","nav_hist","✅"]];if(isAdmin())items.push(["reports","nav_rep","📊"],["settings","nav_set","⚙️"]);
   const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports"}[view]||view;
   nav.innerHTML=items.map(([v,k,ic])=>`<button class="${v===cur?"on":""}" onclick="go('${v}')"><i>${ic}</i>${t(k)}</button>`).join("");
-  $("#bar").innerHTML=`<span>👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button></span>
+  $("#bar").innerHTML=`<span>${isAdmin()?`👤 <b>${t("admin")}</b>`:`👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button>`}</span>
     <span class="mut">${esc(SESS&&SESS.email||"")} · ${isAdmin()?t("admin"):t("staff_login")} · <a href="#" onclick="logout();return false">${t("logout")}</a></span>`;
 }
 async function render(){
