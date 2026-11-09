@@ -14,7 +14,7 @@ const I18N={
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",p_custom:"Choose dates",rf_h:"📋 For the monthly report",f_app:"Application (work the tractor does)",f_complaint:"Complaint date & time",f_decision:"Decision date & time",f_appt:"Appointment date (DOR)",f_agg:"Aggregate",f_subagg:"Sub aggregate",f_fail:"Failure statement",f_delay:"Remark if delayed",lube:"Lube / oil",monthly:"⬇ Monthly Workshop Report",d_from:"From",d_to:"To",apply:"Show",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
-  st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
+  hello:"Namaste",tap_send:"Tap to send reminders",st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
   not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",
@@ -64,7 +64,7 @@ const I18N={
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",p_custom:"मिति छान्नुहोस्",rf_h:"📋 मासिक रिपोर्टका लागि",f_app:"प्रयोग (ट्र्याक्टरले गर्ने काम)",f_complaint:"गुनासो आएको मिति र समय",f_decision:"निर्णय मिति र समय",f_appt:"भेटघाट मिति (DOR)",f_agg:"एग्रिगेट (भाग)",f_subagg:"सब-एग्रिगेट",f_fail:"खराबीको विवरण",f_delay:"ढिलाइ भए कारण",lube:"लुब / आयल",monthly:"⬇ मासिक वर्कसप रिपोर्ट",d_from:"देखि",d_to:"सम्म",apply:"हेर्नुहोस्",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
-  st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
+  hello:"नमस्ते",tap_send:"रिमाइन्डर पठाउन थिच्नुहोस्",st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
   not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",
@@ -234,14 +234,18 @@ function chrome(){
   let saved=null;try{saved=JSON.parse(ls.get("jobcard_dealer"))}catch(e){}
   const D=CTX?CTX.dealer:(saved||{name:DEFAULT_FIRM,address:""});
   document.title=D.name+" – "+t("title");
-  $("#h-title").textContent=D.name+" – "+t("title");
-  $("#h-sub").textContent=D.address||"";
+  $("#h-title").textContent=D.name;
+  $("#h-sub").textContent=[t("title"),D.address].filter(Boolean).join(" · ");
+  const ini=(D.name||"").split(/\s+/).filter(w=>/^[A-Za-z\u0900-\u097F]/.test(w)).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"JC";
+  $("#h-logo").innerHTML=D.logo_url?`<img src="${esc(D.logo_url)}" alt="">`:esc(ini);
+  document.body.classList.toggle("inapp",!!CTX);
   document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l===LANG));
   const nav=$("#nav");
   if(!CTX){nav.style.display="none";$("#bar").style.display="none";return}
   nav.style.display="flex";$("#bar").style.display="flex";
-  const items=[["home","nav_home"],["jobs","nav_jobs"],["reminders","nav_rem"],["history","nav_hist"]];if(isAdmin())items.push(["reports","nav_rep"],["settings","nav_set"]);
-  nav.innerHTML=items.map(([v,k])=>`<button class="${v===view?"on":""}" onclick="go('${v}')">${t(k)}</button>`).join("");
+  const items=[["home","nav_home","🏠"],["jobs","nav_jobs","🔧"],["reminders","nav_rem","🔔"],["history","nav_hist","✅"]];if(isAdmin())items.push(["reports","nav_rep","📊"],["settings","nav_set","⚙️"]);
+  const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports"}[view]||view;
+  nav.innerHTML=items.map(([v,k,ic])=>`<button class="${v===cur?"on":""}" onclick="go('${v}')"><i>${ic}</i>${t(k)}</button>`).join("");
   $("#bar").innerHTML=`<span>👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button></span>
     <span class="mut">${esc(SESS&&SESS.email||"")} · ${isAdmin()?t("admin"):t("staff_login")} · <a href="#" onclick="logout();return false">${t("logout")}</a></span>`;
 }
@@ -313,17 +317,20 @@ function jobRows(list){
 async function vHome(){
   const today0=new Date();today0.setHours(0,0,0,0);
   const [jobs,closedToday,due]=await Promise.all([openJobs(),get(`job_cards?select=id&status=eq.closed&date_out=gte.${enc(today0.toISOString())}`),get("service_due?select=tractor_id")]);
+  const nM=jobs.filter(j=>j.card_kind==="MSTW").length,nJ=jobs.length-nM;
+  const td=new Date().toLocaleDateString(LANG==="ne"?"ne-NP":"en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
   return `
+  <div class="hello"><b>🙏 ${t("hello")}${WHO()?", "+esc(WHO()):""}</b><span class="mut">${esc(td)}</span></div>
   <div class="stats">
-    <div class="stat" onclick="go('jobs')"><b>${jobs.length}</b><span>${t("st_open")}</span></div>
-    <div class="stat" onclick="go('history')"><b>${closedToday.length}</b><span>${t("st_today")}</span></div>
-    <div class="stat" onclick="go('reminders')"><b>${due.length}</b><span>${t("st_due")}</span></div>
+    <div class="stat s1" onclick="go('jobs')"><i class="ic">🔧</i><b>${jobs.length}</b><span>${t("st_open")}</span>${jobs.length?`<em>${t("mstw")} ${nM} · ${t("jc")} ${nJ}</em>`:""}</div>
+    <div class="stat s2" onclick="go('history')"><i class="ic">✅</i><b>${closedToday.length}</b><span>${t("st_today")}</span></div>
+    <div class="stat s3 ${due.length?"hot":""}" onclick="go('reminders')"><i class="ic">🔔</i><b>${due.length}</b><span>${t("st_due")}</span>${due.length?`<em>${t("tap_send")}</em>`:""}</div>
   </div>
   <div class="card">
     <h2>${t("search_h")}</h2>
     <input id="q" placeholder="${t("search_ph")}" value="${esc(searchQ)}" oninput="searchQ=this.value;clearTimeout(window._st);window._st=setTimeout(doSearch,350)">
     <div id="sres" style="margin-top:6px"></div>
-    <button class="btn ghost block" style="margin-top:8px" onclick="newCustomer()">${t("new_cust_btn")}</button>
+    <button class="btn ghost block bigbtn" style="margin-top:10px" onclick="newCustomer()">${t("new_cust_btn")}</button>
   </div>
   <div class="card"><h2>${t("active_h")}</h2>${jobRows(jobs)}</div>`;
 }
