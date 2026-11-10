@@ -14,7 +14,7 @@ const I18N={
   login_h:"Sign in",email:"Email",password:"Password",signin:"Sign in",signing:"Signing in…",bad_login:"Wrong email or password",
   no_dealer:"This login is not linked to any dealer yet. Ask the admin.",logout:"Log out",net_err:"Could not reach the server. Check the internet.",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",nav_set:"Settings",nav_rep:"Reports",rp_h:"Reports",p_today:"Today",p_7:"Last 7 days",p_month:"This month",p_last:"Last month",p_custom:"Choose dates",rf_h:"📋 For the monthly report",f_app:"Application (work the tractor does)",f_complaint:"Complaint date & time",f_decision:"Decision date & time",f_appt:"Appointment date (DOR)",f_agg:"Aggregate",f_subagg:"Sub aggregate",f_fail:"Failure statement",f_delay:"Remark if delayed",lube:"Lube / oil",monthly:"⬇ Monthly Workshop Report",d_from:"From",d_to:"To",apply:"Show",r_opened:"Job cards opened",r_closed:"Job cards closed",r_open_now:"Still open",r_income:"Service income (closed jobs)",r_parts:"Parts",r_labour:"Labour",r_outside:"Outside repair",r_markup:"Extra from markup",r_wty:"Parts under warranty (not charged)",r_types:"By type of job",r_mech:"By mechanic (closed jobs)",r_jobs:"Jobs",r_avg:"Avg. time",r_top:"Top parts issued",r_entry:"Entries by staff",r_none:"No data in this period.",export:"⬇ Download Excel",exporting:"Preparing file…",exported:"Excel file downloaded",r_due:"Service due now",r_daily:"Per day",
-  hello:"Namaste",tap_send:"Tap to send reminders",st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
+  hello:"Namaste",tap_send:"Tap to send reminders",edit_line:"Edit part",bad_qty:"Quantity must be more than 0",set_parts:"Parts price list",parts_note:"Add a new part, change MRP or name, or stop a part from showing. Old job cards keep the rate they were made with.",open_parts:"Open parts price list",new_part:"+ New part",pl_ph:"Search part no. or name…",pl_inactive:"Show stopped parts too",ndp:"NDP",mrp_calc:"MRP = NDP × 3.85",dup_part:"This part number is already in the list",pl_min:"Type at least 2 letters to search",stopped:"Stopped",pl_shown:n=>"Showing "+n+" parts",need_partno:"Enter the part number",need_mrp:"Enter the MRP",part_saved:"Part saved",part_active:"Show in search",st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   who:"Entry by",who_pick:"Please select your name (not the mechanic's name)",who_need:"Please select your name first",free:"Free",n_jobs:n=>n+(n===1?" job":" jobs"),change:"Change",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",min3:"Type at least 3 letters or numbers",
   not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",
@@ -64,7 +64,7 @@ const I18N={
   login_h:"लगइन",email:"इमेल",password:"पासवर्ड",signin:"लगइन गर्नुहोस्",signing:"लगइन हुँदैछ…",bad_login:"इमेल वा पासवर्ड मिलेन",
   no_dealer:"यो लगइन कुनै डिलरसँग जोडिएको छैन। एडमिनलाई सोध्नुहोस्।",logout:"लगआउट",net_err:"सर्भरसँग जोडिन सकिएन। इन्टरनेट जाँच्नुहोस्।",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",nav_set:"सेटिङ",nav_rep:"रिपोर्ट",rp_h:"रिपोर्ट",p_today:"आज",p_7:"पछिल्ला ७ दिन",p_month:"यो महिना",p_last:"गत महिना",p_custom:"मिति छान्नुहोस्",rf_h:"📋 मासिक रिपोर्टका लागि",f_app:"प्रयोग (ट्र्याक्टरले गर्ने काम)",f_complaint:"गुनासो आएको मिति र समय",f_decision:"निर्णय मिति र समय",f_appt:"भेटघाट मिति (DOR)",f_agg:"एग्रिगेट (भाग)",f_subagg:"सब-एग्रिगेट",f_fail:"खराबीको विवरण",f_delay:"ढिलाइ भए कारण",lube:"लुब / आयल",monthly:"⬇ मासिक वर्कसप रिपोर्ट",d_from:"देखि",d_to:"सम्म",apply:"हेर्नुहोस्",r_opened:"खोलिएका जब कार्ड",r_closed:"बन्द भएका जब कार्ड",r_open_now:"अझै चालु",r_income:"सर्भिस आम्दानी (बन्द भएका जब)",r_parts:"पार्ट्स",r_labour:"ज्याला",r_outside:"बाहिरी मर्मत",r_markup:"मार्कअपबाट थप",r_wty:"वारेन्टी अन्तर्गतका पार्ट्स (शुल्क नलागेको)",r_types:"कामको प्रकार अनुसार",r_mech:"मेकानिक अनुसार (बन्द भएका जब)",r_jobs:"जब",r_avg:"औसत समय",r_top:"धेरै दिइएका पार्ट्स",r_entry:"कर्मचारी अनुसार इन्ट्री",r_none:"यो अवधिमा कुनै डाटा छैन।",export:"⬇ एक्सेल डाउनलोड",exporting:"फाइल तयार हुँदैछ…",exported:"एक्सेल फाइल डाउनलोड भयो",r_due:"अहिले सर्भिस गर्नुपर्ने",r_daily:"दिन अनुसार",
-  hello:"नमस्ते",tap_send:"रिमाइन्डर पठाउन थिच्नुहोस्",st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
+  hello:"नमस्ते",tap_send:"रिमाइन्डर पठाउन थिच्नुहोस्",edit_line:"पार्ट सम्पादन",bad_qty:"संख्या ० भन्दा बढी हुनुपर्छ",set_parts:"पार्ट्स मूल्य सूची",parts_note:"नयाँ पार्ट थप्नुहोस्, MRP वा नाम बदल्नुहोस्, वा पार्ट देखिन बन्द गर्नुहोस्। पुराना जब कार्डमा पहिलेकै दर रहन्छ।",open_parts:"पार्ट्स मूल्य सूची खोल्नुहोस्",new_part:"+ नयाँ पार्ट",pl_ph:"पार्ट नं. वा नाम खोज्नुहोस्…",pl_inactive:"बन्द गरिएका पार्ट्स पनि देखाउनुहोस्",ndp:"NDP",mrp_calc:"MRP = NDP × ३.८५",dup_part:"यो पार्ट नम्बर सूचीमा पहिल्यै छ",pl_min:"खोज्न कम्तीमा २ अक्षर लेख्नुहोस्",stopped:"बन्द",pl_shown:n=>n+" पार्ट्स देखाइएको",need_partno:"पार्ट नम्बर लेख्नुहोस्",need_mrp:"MRP लेख्नुहोस्",part_saved:"पार्ट सेभ भयो",part_active:"खोजमा देखाउनुहोस्",st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   who:"इन्ट्री गर्ने",who_pick:"कृपया आफ्नो नाम छान्नुहोस् (मेकानिकको होइन)",who_need:"पहिले आफ्नो नाम छान्नुहोस्",free:"खाली",n_jobs:n=>n+" वटा जबमा",change:"बदल्नुहोस्",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",min3:"कम्तीमा ३ अक्षर वा अंक लेख्नुहोस्",
   not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",
@@ -244,7 +244,7 @@ function chrome(){
   if(!CTX){nav.style.display="none";$("#bar").style.display="none";return}
   nav.style.display="flex";$("#bar").style.display="flex";
   const items=[["home","nav_home","🏠"],["jobs","nav_jobs","🔧"],["reminders","nav_rem","🔔"],["history","nav_hist","✅"]];if(isAdmin())items.push(["reports","nav_rep","📊"],["settings","nav_set","⚙️"]);
-  const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports"}[view]||view;
+  const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports",parts:"settings"}[view]||view;
   nav.innerHTML=items.map(([v,k,ic])=>`<button class="${v===cur?"on":""}" onclick="go('${v}')"><i>${ic}</i>${t(k)}</button>`).join("");
   $("#bar").innerHTML=`<span>${isAdmin()?`👤 <b>${t("admin")}</b>`:`👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button>`}</span>
     <span class="mut">${esc(SESS&&SESS.email||"")} · ${isAdmin()?t("admin"):t("staff_login")} · <a href="#" onclick="logout();return false">${t("logout")}</a></span>`;
@@ -253,7 +253,7 @@ async function render(){
   chrome();
   if(!CTX)return;
   const my=++rtok;const app=$("#app");
-  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports,rdetail:vRDetail,jobedit:id=>vJob(id,true)};
+  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports,rdetail:vRDetail,parts:vParts,jobedit:id=>vJob(id,true)};
   app.innerHTML=`<div class="empty">${t("loading")}</div>`;
   try{const html=await V[view](param);if(my!==rtok)return;app.innerHTML=html;after()}
   catch(e){if(my!==rtok)return;console.error(e);app.innerHTML=`<div class="card empty">${t("err")}: ${esc(e.message)}<br><br><button class="btn" onclick="render()">↻</button></div>`}
@@ -261,6 +261,7 @@ async function render(){
 function after(){
   if(view==="home"){const i=$("#q");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);if(searchQ)doSearch()}}
   if(view==="history"&&HQ)cardSearch();
+  if(view==="parts"){const i=$("#pl-q");if(i){i.focus();if(PQ)plSearch()}}
 }
 
 // ---------------------------------------------------------------------
@@ -522,7 +523,7 @@ async function vJob(id,adminEdit){
   const {j,parts,lab}=await loadJob(id);
   const closed=j.status!=="open";
   if(closed&&!(adminEdit&&isAdmin())){view="slip";return vSlip(id)}
-  const c=j.customers,tr=j.tractors,K=j.card_kind==="MSTW"?"MSTW":"JC";
+  const c=j.customers,tr=j.tractors,K=j.card_kind==="MSTW"?"MSTW":"JC";window._jp=parts;
   return `${closed?`<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>${t("closed_banner")}</span><button class="btn ok sm" onclick="go('slip',${j.id})">${t("done_edit")}</button></div>`:`<button class="back" onclick="goBack()">${t("back")}</button>`}
   <div class="card k${K}">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${esc(j.job_no)} ${kindTag(K)}</h2><span><span class="tag type">${t("jt")[j.job_type]}</span> <span class="tag ${j.status}">${closed?t("done"):t("open")}</span> <button class="btn ghost sm" onclick="editJob(${j.id})">${t("edit_details")}</button></span></div>
@@ -551,7 +552,7 @@ async function vJob(id,adminEdit){
     <button class="btn ghost sm" style="margin-top:8px" onclick="manualItem(${j.id})">${t("manual")}</button>
     <table style="margin-top:12px">
       <tr><th>${t("part")}</th><th class="num">${t("qty")}</th><th class="num">${t("rate")}</th><th class="num">${t("amount")}</th><th></th></tr>
-      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_lube?" · "+t("lube"):""}${p.is_foc?" · "+t("wty"):""}</div></td><td class="num">${Number(p.qty)}</td><td class="num"><a href="#" onclick="editRate_(${p.id},${p.rate},${p.mrp_at_issue??"null"});return false" title="${t("edit_rate")}">${rs(p.rate)} ✎</a>${p.mrp_at_issue!=null&&Number(p.rate)>Number(p.mrp_at_issue)?`<div class="mut">${t("mrp")} ${rs(p.mrp_at_issue)}</div>`:""}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td><td><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></td></tr>`).join("")
+      ${parts.length?parts.map(p=>`<tr><td>${esc(p.description)}<div class="mut">${esc(p.part_no||"—")} · ${fTime(p.issued_at)}${p.issued_by_name?" · "+esc(p.issued_by_name):""}${p.is_lube?" · "+t("lube"):""}${p.is_foc?" · "+t("wty"):""}</div></td><td class="num">${Number(p.qty)}</td><td class="num"><a href="#" onclick="editLine(${p.id});return false" title="${t("edit_line")}">${rs(p.rate)} ✎</a>${p.mrp_at_issue!=null&&Number(p.rate)>Number(p.mrp_at_issue)?`<div class="mut">${t("mrp")} ${rs(p.mrp_at_issue)}</div>`:""}</td><td class="num">${p.is_foc?t("wty"):rs(p.qty*p.rate)}</td><td><div style="display:flex;gap:4px;justify-content:flex-end"><button class="btn ghost sm" onclick="editLine(${p.id})" title="${t("edit_line")}">✎</button><button class="btn gray sm" onclick="delRow('job_card_parts',${p.id},this)">✕</button></div></td></tr>`).join("")
         :`<tr><td colspan="5" class="empty">${t("no_parts")}</td></tr>`}
     </table>
     <div class="total">${t("parts_tot")}: ${rs(partsTotal(parts))}</div>
@@ -612,6 +613,29 @@ function editRate_(id,rate,mrp){
     ${mrp!=null?`<div class="chips" style="margin-top:6px">${[5,10,15,20].map(x=>`<button class="chip" onclick="erMark(${mrp},${x})">+${x}%</button>`).join("")}<button class="chip" onclick="erMark(${mrp},0)">MRP</button></div>`:""}
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveRate_(${id},${mrp},this)">${t("save")}</button></div>`);
   $("#er").select();
+}
+function editLine(id){
+  const p=(window._jp||[]).find(x=>x.id===id);if(!p)return;
+  const mrp=p.mrp_at_issue!=null?Number(p.mrp_at_issue):null;
+  modal(`<h2>${t("edit_line")}</h2>
+    ${p.part_no?`<p style="margin:0 0 6px"><b>${esc(p.description)}</b><br><span class="mut">${esc(p.part_no)}${mrp!=null?" · "+t("mrp")+" "+rs(mrp):""}</span></p>`:`<label>${t("mi_desc")}</label><input id="el-d" value="${esc(p.description)}">`}
+    <div class="row"><div><label>${t("qty")}</label><input id="el-q" type="number" step="any" min="0.01" value="${Number(p.qty)}"></div>
+      <div><label>${t("rate")} (${t("cur")})</label><input id="er" type="number" step="any" value="${Number(p.rate)}" ${mrp!=null?`min="${mrp}"`:""}></div></div>
+    ${mrp!=null?`<div class="chips" style="margin-top:6px">${[5,10,15,20].map(x=>`<button class="chip" onclick="erMark(${mrp},${x})">+${x}%</button>`).join("")}<button class="chip" onclick="erMark(${mrp},0)">MRP</button></div>`:""}
+    <label class="chk" style="margin-top:12px"><input type="checkbox" id="el-f" ${p.is_foc?"checked":""}> ${t("foc")}</label>
+    <label class="chk" style="margin-top:8px"><input type="checkbox" id="el-l" ${p.is_lube?"checked":""}> ${t("lube")}</label>
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveLine(${id},this)">${t("save")}</button></div>`);
+  $("#el-q").select();
+}
+function saveLine(id,btn){
+  const p=(window._jp||[]).find(x=>x.id===id);if(!p)return;
+  const mrp=p.mrp_at_issue!=null?Number(p.mrp_at_issue):null;
+  const q=parseFloat($("#el-q").value),r=parseFloat($("#er").value);
+  if(!(q>0)){toast(t("bad_qty"));return}
+  if(isNaN(r)||r<0||(mrp!=null&&r<mrp)){toast(t("min_mrp")(rs(mrp??0)));return}
+  const row={qty:q,rate:Math.round(r*100)/100,is_foc:$("#el-f").checked,is_lube:$("#el-l").checked};
+  const d=$("#el-d");if(d){if(!d.value.trim()){toast(t("enter_desc"));return}row.description=d.value.trim()}
+  guard(async()=>{await patch(`job_card_parts?id=eq.${id}`,row);closeModal();toast(t("saved"));render()},btn);
 }
 function erMark(m,x){$("#er").value=Math.round(m*(1+x/100)*100)/100}
 function saveRate_(id,mrp,btn){
@@ -1094,6 +1118,8 @@ async function vSettings(){
     ${staff.map(s=>`<tr style="${s.active?"":"opacity:.5"}"><td>${esc(s.name)}</td><td>${esc(s.phone||"—")}</td><td>${t(s.role)}</td>
       <td><div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end"><button class="btn ghost sm" onclick="editStaff(${s.id})">${t("edit")}</button> <button class="btn gray sm" onclick="toggleRow('mechanics',${s.id},${!s.active},this)">${s.active?t("inactive"):t("active")}</button></div></td></tr>`).join("")}
     </table><button class="btn ghost" style="margin-top:10px" onclick="editStaff()">${t("add_staff")}</button></div>
+  <div class="card"><h2>${t("set_parts")}</h2><p class="mut" style="margin-top:0">${t("parts_note")}</p>
+    <div class="row"><button class="btn" onclick="go('parts')">${t("open_parts")}</button><button class="btn ghost" onclick="editPart()">${t("new_part")}</button></div></div>
   <div class="card"><h2>${t("set_rates")}</h2>
     <table><tr><th>${t("name_en")}</th><th>${t("name_ne")}</th><th class="num">${t("amount")}</th><th></th></tr>
     ${rates.map(r=>`<tr style="${r.active?"":"opacity:.5"}"><td>${esc(r.name_en)}</td><td>${esc(r.name_ne||"—")}</td><td class="num">${rs(r.amount)}</td>
@@ -1127,6 +1153,72 @@ function editRate(id){
 function saveRate(id,btn){
   const row={name_en:$("#lr-e").value.trim(),name_ne:$("#lr-n").value.trim()||null,amount:Number($("#lr-a").value)||0};if(!row.name_en){toast(t("enter_desc"));return}
   guard(async()=>{id?await patch(`labour_rates?id=eq.${id}`,row):await post("labour_rates",row);closeModal();toast(t("saved"));render()},btn);
+}
+// parts price list (admin)
+let PQ="",PLI=false;
+async function vParts(){
+  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
+  return `<button class="back" onclick="go('settings')">${t("back")}</button>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${t("set_parts")}</h2><button class="btn" onclick="editPart()">${t("new_part")}</button></div>
+    <p class="mut">${t("parts_note")}</p>
+    <input id="pl-q" placeholder="${t("pl_ph")}" value="${esc(PQ)}" autocomplete="off" oninput="PQ=this.value;clearTimeout(window._plt);window._plt=setTimeout(plSearch,300)">
+    <label class="chk" style="margin-top:10px"><input type="checkbox" id="pl-in" ${PLI?"checked":""} onchange="PLI=this.checked;plSearch()"> ${t("pl_inactive")}</label>
+    <div id="pl-r" style="margin-top:8px"><p class="mut">${t("pl_min")}</p></div>
+  </div>`;
+}
+let pltok=0;
+async function plSearch(){
+  const box=$("#pl-r");if(!box)return;
+  const q=clean(PQ);if(q.length<2){box.innerHTML=`<p class="mut">${t("pl_min")}</p>`;window._pl=[];return}
+  const my=++pltok;box.innerHTML=`<p class="mut">${t("loading")}</p>`;
+  try{
+    const words=q.split(/\s+/).filter(Boolean);
+    const f=words.length===1?`or=(part_no.ilike.${enc(q+"*")},description.ilike.${enc("*"+q+"*")})`
+      :`and=(${words.map(w=>`description.ilike.${enc("*"+w+"*")}`).join(",")})`;
+    const r=await get(`parts?select=part_no,description,ndp,mrp,is_lube,active&${PLI?"":"active=eq.true&"}${f}&order=part_no&limit=300`);
+    if(my!==pltok)return;
+    const ql=q.toLowerCase(),sc=p=>{const d=p.description.toLowerCase(),n=p.part_no.toLowerCase();return (n.startsWith(ql)?0:d.startsWith(ql)?1:d.includes(ql)?2:3)*1000+Math.min(d.length,999)};
+    const list=r.sort((a,b)=>sc(a)-sc(b)).slice(0,50);window._pl=list;
+    box.innerHTML=list.length?`<p class="mut" style="margin:0 0 4px">${t("pl_shown")(list.length)}</p>`+list.map((p,i)=>`
+      <div class="list-item clickable" style="${p.active?"":"opacity:.55"}" onclick="editPart(${i})">
+        <div><b>${esc(p.description)}</b>${p.is_lube?` <span class="tag">${t("lube")}</span>`:""}${p.active?"":` <span class="tag due">${t("stopped")}</span>`}
+          <div class="mut">${esc(p.part_no)}${p.ndp!=null?" · "+t("ndp")+" "+rs(p.ndp):""}</div></div>
+        <div style="text-align:right;white-space:nowrap"><b>${rs(p.mrp)}</b> ✎</div>
+      </div>`).join(""):`<div class="empty">${t("not_found").replace(/customer|ग्राहक/,"part")}<br><br><button class="btn" onclick="editPart()">${t("new_part")}</button></div>`;
+  }catch(e){if(my===pltok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
+}
+function editPart(i){
+  const isNew=i==null,p=isNew?{part_no:"",description:"",ndp:null,mrp:null,is_lube:false,active:true}:window._pl[i];
+  modal(`<h2>${isNew?t("new_part"):t("edit")+" – "+esc(p.part_no)}</h2>
+    ${isNew?`<label>${t("part_no")} *</label><input id="pe-n" autocomplete="off" style="text-transform:uppercase">`:""}
+    <label>${t("mi_desc")} *</label><input id="pe-d" value="${esc(p.description)}">
+    <div class="row"><div><label>${t("ndp")} (${t("cur")})</label><input id="pe-ndp" type="number" step="any" value="${p.ndp??""}"></div>
+      <div><label>${t("mrp")} (${t("cur")}) *</label><input id="pe-mrp" type="number" step="any" value="${p.mrp??""}"></div></div>
+    <button class="chip" style="margin-top:6px" onclick="const n=parseFloat($('#pe-ndp').value);if(n>0)$('#pe-mrp').value=Math.round(n*3.85*100)/100">${t("mrp_calc")}</button>
+    <label class="chk" style="margin-top:12px"><input type="checkbox" id="pe-l" ${p.is_lube?"checked":""}> ${t("lube")}</label>
+    <label class="chk" style="margin-top:8px"><input type="checkbox" id="pe-a" ${p.active?"checked":""}> ${t("part_active")}</label>
+    <p class="mut">${t("parts_note")}</p>
+    <div class="row" style="margin-top:10px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="savePart(${isNew?"null":i},this)">${t("save")}</button></div>`);
+  ($("#pe-n")||$("#pe-d")).focus();
+  const d=$("#pe-d");if(isNew)d.oninput=()=>{$("#pe-l").checked=/oil|grease|coolant|lube|utto/i.test(d.value)&&!/filter|seal|pump|pipe/i.test(d.value)};
+}
+function savePart(i,btn){
+  const isNew=i==null;
+  const row={description:$("#pe-d").value.trim(),ndp:parseFloat($("#pe-ndp").value),mrp:parseFloat($("#pe-mrp").value),is_lube:$("#pe-l").checked,active:$("#pe-a").checked};
+  if(isNaN(row.ndp))row.ndp=null;
+  if(!row.description){toast(t("enter_desc"));return}
+  if(!(row.mrp>0)){toast(t("need_mrp"));return}
+  row.mrp=Math.round(row.mrp*100)/100;
+  if(isNew){const n=$("#pe-n").value.trim().toUpperCase();if(!n){toast(t("need_partno"));return}row.part_no=n}
+  guard(async()=>{
+    try{
+      if(isNew){await post("parts",row);PQ=row.part_no}
+      else await patch(`parts?dealer_id=eq.${CTX.dealer.id}&part_no=eq.${enc(window._pl[i].part_no)}`,row);
+    }catch(e){if(/duplicate|unique/i.test(e.message)){toast(t("dup_part"));return}throw e}
+    closeModal();toast(t("part_saved"));
+    if(view==="parts"){const q=$("#pl-q");if(q)q.value=PQ;plSearch()}else go("parts");
+  },btn);
 }
 function toggleRow(table,id,val,btn){guard(async()=>{await patch(`${table}?id=eq.${id}`,{active:val});render()},btn)}
 function saveSms(btn){const v=$("#sf-sms").value.trim();guard(async()=>{const [d]=await patch(`dealers?id=eq.${CTX.dealer.id}`,{sms_from:v||null});CTX.dealer=d||CTX.dealer;toast(t("saved"))},btn)}
