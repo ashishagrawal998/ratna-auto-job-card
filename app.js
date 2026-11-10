@@ -22,7 +22,7 @@ const I18N={
   open:"Active",done:"Done",mech:"Mechanic",ago:"ago",parts_n:"part(s)",loading:"Loading…",saving:"Saving…",err:"Something went wrong",
   name:"Name",phone:"Phone",phone2:"Second phone",tractor:"Model",address:"Address",district:"District",engine:"Engine No.",chassis:"Tractor Sl. No.",reg:"Regn. No.",doi:"Date of Inst.",
   hours_run:"Hours run",last_srv:"Last service",next_srv:"Next service",
-  cust_rec:"Customer & tractor",ed_btn:"📝 Recent edits",ed_h:"Recent edits",ed_note:"Changes made to customers, tractors, the parts price list and closed job cards.",ed_none:"No edits in these dates.",ed_from:"From",ed_to:"To",ed_all:"All",ed_tbl:{customers:"Customer",tractors:"Tractor",parts:"Price list",job_cards:"Closed job card",job_card_parts:"Part on closed job card",job_card_labour:"Labour on closed job card"},ed_act:{add:"Added",change:"Changed",delete:"Deleted"},ed_who:"By",ed_what:"What",ed_chg:"Change",ed_dl:"⬇ Excel",ed_time:"Time",ed_ago:n=>n+" edits",edit_cust:"✎ Edit customer",set_cust:"Edit customer details",set_cust_note:"Find a customer and change name, phone, address or tractor details.",cust_saved:"Customer details saved",eng_taken:x=>"This engine no. is already on another tractor ("+x+")",next_due:"Next service date",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
+  cust_rec:"Customer & tractor",more:"More: downloads & edits",ed_btn:"📝 Recent edits",ed_h:"Recent edits",ed_note:"Changes made to customers, tractors, the parts price list and closed job cards.",ed_none:"No edits in these dates.",ed_from:"From",ed_to:"To",ed_all:"All",ed_tbl:{customers:"Customer",tractors:"Tractor",parts:"Price list",job_cards:"Closed job card",job_card_parts:"Part on closed job card",job_card_labour:"Labour on closed job card"},ed_act:{add:"Added",change:"Changed",delete:"Deleted"},ed_who:"By",ed_what:"What",ed_chg:"Change",ed_dl:"⬇ Excel",ed_time:"Time",ed_ago:n=>n+" edits",edit_cust:"✎ Edit customer",set_cust:"Edit customer details",set_cust_note:"Find a customer and change name, phone, address or tractor details.",cust_saved:"Customer details saved",eng_taken:x=>"This engine no. is already on another tractor ("+x+")",next_due:"Next service date",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
   history:"Service history",back:"‹ Back",home_b:"‹ Home",
   slot_h:"Service",date:"Date",ws:"Job / WS No.",hrs:"Hours",note:"Note",
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
@@ -72,7 +72,7 @@ const I18N={
   open:"चालु",done:"सम्पन्न",mech:"मेकानिक",ago:"अघि",parts_n:"वटा पार्ट",loading:"लोड हुँदैछ…",saving:"सेभ हुँदैछ…",err:"केही गडबड भयो",
   name:"नाम",phone:"फोन",phone2:"अर्को फोन",tractor:"मोडेल",address:"ठेगाना",district:"जिल्ला",engine:"इन्जिन नं.",chassis:"ट्र्याक्टर क्र.सं. (चेसिस)",reg:"दर्ता नं.",doi:"जडान मिति",
   hours_run:"चलेको घण्टा",last_srv:"पछिल्लो सर्भिस",next_srv:"अर्को सर्भिस",
-  cust_rec:"ग्राहक र ट्र्याक्टर",ed_btn:"📝 हालका सम्पादनहरू",ed_h:"हालका सम्पादनहरू",ed_note:"ग्राहक, ट्र्याक्टर, पार्ट्स मूल्य सूची र बन्द जब कार्डमा गरिएका परिवर्तनहरू।",ed_none:"यी मितिहरूमा कुनै सम्पादन छैन।",ed_from:"देखि",ed_to:"सम्म",ed_all:"सबै",ed_tbl:{customers:"ग्राहक",tractors:"ट्र्याक्टर",parts:"मूल्य सूची",job_cards:"बन्द जब कार्ड",job_card_parts:"बन्द जब कार्डको पार्ट",job_card_labour:"बन्द जब कार्डको ज्याला"},ed_act:{add:"थपियो",change:"बदलियो",delete:"हटाइयो"},ed_who:"गर्ने",ed_what:"के",ed_chg:"परिवर्तन",ed_dl:"⬇ Excel",ed_time:"समय",ed_ago:n=>n+" सम्पादन",edit_cust:"✎ ग्राहक विवरण सम्पादन",set_cust:"ग्राहक विवरण सम्पादन",set_cust_note:"ग्राहक खोजेर नाम, फोन, ठेगाना वा ट्र्याक्टर विवरण बदल्नुहोस्।",cust_saved:"ग्राहक विवरण सेभ भयो",eng_taken:x=>"यो इन्जिन नं. अर्को ट्र्याक्टरमा छ ("+x+")",next_due:"अर्को सर्भिस मिति",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
+  cust_rec:"ग्राहक र ट्र्याक्टर",more:"थप: डाउनलोड र सम्पादन",ed_btn:"📝 हालका सम्पादनहरू",ed_h:"हालका सम्पादनहरू",ed_note:"ग्राहक, ट्र्याक्टर, पार्ट्स मूल्य सूची र बन्द जब कार्डमा गरिएका परिवर्तनहरू।",ed_none:"यी मितिहरूमा कुनै सम्पादन छैन।",ed_from:"देखि",ed_to:"सम्म",ed_all:"सबै",ed_tbl:{customers:"ग्राहक",tractors:"ट्र्याक्टर",parts:"मूल्य सूची",job_cards:"बन्द जब कार्ड",job_card_parts:"बन्द जब कार्डको पार्ट",job_card_labour:"बन्द जब कार्डको ज्याला"},ed_act:{add:"थपियो",change:"बदलियो",delete:"हटाइयो"},ed_who:"गर्ने",ed_what:"के",ed_chg:"परिवर्तन",ed_dl:"⬇ Excel",ed_time:"समय",ed_ago:n=>n+" सम्पादन",edit_cust:"✎ ग्राहक विवरण सम्पादन",set_cust:"ग्राहक विवरण सम्पादन",set_cust_note:"ग्राहक खोजेर नाम, फोन, ठेगाना वा ट्र्याक्टर विवरण बदल्नुहोस्।",cust_saved:"ग्राहक विवरण सेभ भयो",eng_taken:x=>"यो इन्जिन नं. अर्को ट्र्याक्टरमा छ ("+x+")",next_due:"अर्को सर्भिस मिति",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
   history:"सर्भिसको इतिहास",back:"‹ फिर्ता",home_b:"‹ होम",
   slot_h:"सर्भिस",date:"मिति",ws:"जब / WS नं.",hrs:"घण्टा",note:"टिप्पणी",
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
@@ -955,12 +955,25 @@ async function repData(p,k){
 }
 function repChips(view_,extra){
   const cust=RP.p.startsWith("c:"),[ca,cb]=periodRange(RP.p);window._rpgo=()=>go(view_,extra);
-  return `<div class="chips" style="margin-bottom:6px">${[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]].map(([k,l])=>`<button class="chip ${k===RP.p?"on":""}" onclick="RP.p='${k}';go('${view_}',${extra})">${t(l)}</button>`).join("")}<button class="chip ${cust?"on":""}" onclick="document.getElementById('rpc').style.display='flex'">📅 ${t("p_custom")}</button></div>
-  <div class="row" id="rpc" style="display:${cust?"flex":"none"};margin-bottom:8px;align-items:flex-end">
+  const per=[["today","p_today"],["7","p_7"],["month","p_month"],["last","p_last"]];
+  return `<div class="rpbar">
+    <select aria-label="${t("ed_from")}" onchange="rpPick(this.value)">${per.map(([k,l])=>`<option value="${k}" ${k===RP.p?"selected":""}>${t(l)}</option>`).join("")}<option value="c" ${cust?"selected":""}>📅 ${t("p_custom")}…</option></select>
+    <select onchange="RP.k=this.value;window._rpgo()">${[["","all"],["MSTW","mstw"],["JC","jc"]].map(([k,l])=>`<option value="${k}" ${k===RP.k?"selected":""}>${t(l)}</option>`).join("")}</select>
+    ${view_==="reports"?`<button class="btn ghost" id="rp-more" title="${t("more")}" onclick="rpMore()">⋯</button>`:""}
+  </div>
+  <div class="row" id="rpc" style="display:${cust?"flex":"none"};margin:0 0 8px;align-items:flex-end">
     <div><label>${t("d_from")}</label><input type="date" id="rp-a" value="${ymd(ca)}"></div>
     <div><label>${t("d_to")}</label><input type="date" id="rp-b" value="${ymd(new Date(cb.getTime()-DAY))}"></div>
     <button class="btn" style="flex:0 0 auto" onclick="rpCustom()">${t("apply")}</button></div>
-  <div class="chips" style="margin-bottom:10px">${[["","all"],["MSTW","mstw"],["JC","jc"]].map(([k,l])=>`<button class="chip ${k===RP.k?"on":""}" onclick="RP.k='${k}';go('${view_}',${extra})">${t(l)}</button>`).join("")}</div>`;
+  <p class="mut" style="margin:0 0 10px;font-size:13px">${fDate(ca)} – ${fDate(new Date(cb.getTime()-1))}${view_==="reports"?` · 👆 ${t("r_click")}`:""}</p>`;
+}
+function rpPick(v){if(v==="c"){$("#rpc").style.display="flex";$("#rp-a").focus();return}RP.p=v;window._rpgo()}
+function rpMore(){
+  modal(`<h2>${t("more")}</h2>
+    <button class="btn block bigbtn" onclick="closeModal();toast(t('exporting'));exportMonthly({})">${t("monthly")}</button>
+    <button class="btn ghost block bigbtn" style="margin-top:10px" onclick="closeModal();toast(t('exporting'));exportReport({})">${t("export")}</button>
+    <button class="btn ghost block bigbtn" style="margin-top:10px" onclick="closeModal();go('edits')">${t("ed_btn")}</button>
+    <button class="btn gray block" style="margin-top:14px" onclick="closeModal()">${t("cancel")}</button>`);
 }
 function rpCustom(){let a=$("#rp-a").value,b=$("#rp-b").value;if(!a||!b)return;if(a>b)[a,b]=[b,a];RP.p=`c:${a}:${b}`;window._rpgo()}
 const det=(m,key)=>`go('rdetail',{m:'${m}',key:${JSON.stringify(key===undefined?"":String(key)).replace(/"/g,"&quot;")}})`;
@@ -978,8 +991,6 @@ async function vReports(){
   const tile=(n,l,m)=>`<div class="stat" onclick="${det(m)}"><b>${n}</b><span>${l} ›</span></div>`;
   const table=(head,rows)=>rows.length?`<table class="rtab"><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr class="clickable" onclick="${r.go}">${r.c.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
   return `${repChips("reports","null")}
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn ghost sm" onclick="go('edits')">${t("ed_btn")}</button><button class="btn sm" onclick="exportMonthly(this)">${t("monthly")}</button><button class="btn ghost sm" onclick="exportReport(this)">${t("export")}</button></span></div>
-  <p class="mut" style="margin:0 0 10px">👆 ${t("r_click")}</p>
   <div class="stats">${tile(opened.length,t("r_opened"),"opened")}${tile(closed.length,t("r_closed"),"closed")}${tile(openNow.length,t("r_open_now"),"open")}</div>
   <div class="card"><h2>${t("r_income")}</h2>
     <div class="total clickable" style="text-align:left;font-size:24px;margin:0 0 8px" onclick="${det("closed")}">${rs(P+L+O)} ›</div>
