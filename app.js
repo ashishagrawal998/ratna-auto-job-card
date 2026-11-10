@@ -22,7 +22,7 @@ const I18N={
   open:"Active",done:"Done",mech:"Mechanic",ago:"ago",parts_n:"part(s)",loading:"Loading…",saving:"Saving…",err:"Something went wrong",
   name:"Name",phone:"Phone",phone2:"Second phone",tractor:"Model",address:"Address",district:"District",engine:"Engine No.",chassis:"Tractor Sl. No.",reg:"Regn. No.",doi:"Date of Inst.",
   hours_run:"Hours run",last_srv:"Last service",next_srv:"Next service",
-  cust_rec:"Customer & tractor",edit_cust:"✎ Edit customer",set_cust:"Edit customer details",set_cust_note:"Find a customer and change name, phone, address or tractor details.",cust_saved:"Customer details saved",eng_taken:x=>"This engine no. is already on another tractor ("+x+")",next_due:"Next service date",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
+  cust_rec:"Customer & tractor",ed_btn:"📝 Recent edits",ed_h:"Recent edits",ed_note:"Changes made to customers, tractors, the parts price list and closed job cards.",ed_none:"No edits in these dates.",ed_from:"From",ed_to:"To",ed_all:"All",ed_tbl:{customers:"Customer",tractors:"Tractor",parts:"Price list",job_cards:"Closed job card",job_card_parts:"Part on closed job card",job_card_labour:"Labour on closed job card"},ed_act:{add:"Added",change:"Changed",delete:"Deleted"},ed_who:"By",ed_what:"What",ed_chg:"Change",ed_dl:"⬇ Excel",ed_time:"Time",ed_ago:n=>n+" edits",edit_cust:"✎ Edit customer",set_cust:"Edit customer details",set_cust_note:"Find a customer and change name, phone, address or tractor details.",cust_saved:"Customer details saved",eng_taken:x=>"This engine no. is already on another tractor ("+x+")",next_due:"Next service date",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
   history:"Service history",back:"‹ Back",home_b:"‹ Home",
   slot_h:"Service",date:"Date",ws:"Job / WS No.",hrs:"Hours",note:"Note",
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
@@ -72,7 +72,7 @@ const I18N={
   open:"चालु",done:"सम्पन्न",mech:"मेकानिक",ago:"अघि",parts_n:"वटा पार्ट",loading:"लोड हुँदैछ…",saving:"सेभ हुँदैछ…",err:"केही गडबड भयो",
   name:"नाम",phone:"फोन",phone2:"अर्को फोन",tractor:"मोडेल",address:"ठेगाना",district:"जिल्ला",engine:"इन्जिन नं.",chassis:"ट्र्याक्टर क्र.सं. (चेसिस)",reg:"दर्ता नं.",doi:"जडान मिति",
   hours_run:"चलेको घण्टा",last_srv:"पछिल्लो सर्भिस",next_srv:"अर्को सर्भिस",
-  cust_rec:"ग्राहक र ट्र्याक्टर",edit_cust:"✎ ग्राहक विवरण सम्पादन",set_cust:"ग्राहक विवरण सम्पादन",set_cust_note:"ग्राहक खोजेर नाम, फोन, ठेगाना वा ट्र्याक्टर विवरण बदल्नुहोस्।",cust_saved:"ग्राहक विवरण सेभ भयो",eng_taken:x=>"यो इन्जिन नं. अर्को ट्र्याक्टरमा छ ("+x+")",next_due:"अर्को सर्भिस मिति",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
+  cust_rec:"ग्राहक र ट्र्याक्टर",ed_btn:"📝 हालका सम्पादनहरू",ed_h:"हालका सम्पादनहरू",ed_note:"ग्राहक, ट्र्याक्टर, पार्ट्स मूल्य सूची र बन्द जब कार्डमा गरिएका परिवर्तनहरू।",ed_none:"यी मितिहरूमा कुनै सम्पादन छैन।",ed_from:"देखि",ed_to:"सम्म",ed_all:"सबै",ed_tbl:{customers:"ग्राहक",tractors:"ट्र्याक्टर",parts:"मूल्य सूची",job_cards:"बन्द जब कार्ड",job_card_parts:"बन्द जब कार्डको पार्ट",job_card_labour:"बन्द जब कार्डको ज्याला"},ed_act:{add:"थपियो",change:"बदलियो",delete:"हटाइयो"},ed_who:"गर्ने",ed_what:"के",ed_chg:"परिवर्तन",ed_dl:"⬇ Excel",ed_time:"समय",ed_ago:n=>n+" सम्पादन",edit_cust:"✎ ग्राहक विवरण सम्पादन",set_cust:"ग्राहक विवरण सम्पादन",set_cust_note:"ग्राहक खोजेर नाम, फोन, ठेगाना वा ट्र्याक्टर विवरण बदल्नुहोस्।",cust_saved:"ग्राहक विवरण सेभ भयो",eng_taken:x=>"यो इन्जिन नं. अर्को ट्र्याक्टरमा छ ("+x+")",next_due:"अर्को सर्भिस मिति",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
   history:"सर्भिसको इतिहास",back:"‹ फिर्ता",home_b:"‹ होम",
   slot_h:"सर्भिस",date:"मिति",ws:"जब / WS नं.",hrs:"घण्टा",note:"टिप्पणी",
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
@@ -255,7 +255,7 @@ function chrome(){
   if(!CTX){nav.style.display="none";$("#bar").style.display="none";return}
   nav.style.display="flex";$("#bar").style.display="flex";
   const items=[["home","nav_home","🏠"],["jobs","nav_jobs","🔧"],["reminders","nav_rem","🔔"],["history","nav_hist","✅"]];if(isAdmin())items.push(["reports","nav_rep","📊"],["settings","nav_set","⚙️"]);
-  const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports",parts:"settings"}[view]||view;
+  const cur={job:"jobs",slip:"history",jobedit:"history",customer:"home",rdetail:"reports",parts:"settings",edits:"reports"}[view]||view;
   nav.innerHTML=items.map(([v,k,ic])=>`<button class="${v===cur?"on":""}" onclick="go('${v}')"><i>${ic}</i>${t(k)}</button>`).join("");
   $("#bar").innerHTML=`<span>${isAdmin()?`👤 <b>${t("admin")}</b>`:`👤 ${t("who")}: <b>${esc(WHO()||"—")}</b> <button class="btn ghost sm" onclick="pickWho()">${t("change")}</button>`}</span>
     <span class="mut">${esc(SESS&&SESS.email||"")} · ${isAdmin()?t("admin"):t("staff_login")} · <a href="#" onclick="logout();return false">${t("logout")}</a></span>`;
@@ -264,7 +264,7 @@ async function render(){
   chrome();
   if(!CTX)return;
   const my=++rtok;const app=$("#app");
-  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports,rdetail:vRDetail,parts:vParts,jobedit:id=>vJob(id,true)};
+  const V={home:vHome,jobs:vJobs,job:vJob,slip:vSlip,reminders:vReminders,history:vHistory,customer:vCustomer,settings:vSettings,reports:vReports,rdetail:vRDetail,parts:vParts,edits:vEdits,jobedit:id=>vJob(id,true)};
   app.innerHTML=`<div class="empty">${t("loading")}</div>`;
   try{const html=await V[view](param);if(my!==rtok)return;app.innerHTML=html;after()}
   catch(e){if(my!==rtok)return;console.error(e);app.innerHTML=`<div class="card empty">${t("err")}: ${esc(e.message)}<br><br><button class="btn" onclick="render()">↻</button></div>`}
@@ -978,7 +978,7 @@ async function vReports(){
   const tile=(n,l,m)=>`<div class="stat" onclick="${det(m)}"><b>${n}</b><span>${l} ›</span></div>`;
   const table=(head,rows)=>rows.length?`<table class="rtab"><tr>${head.map((h,i)=>`<th class="${i?"num":""}">${h}</th>`).join("")}</tr>${rows.map(r=>`<tr class="clickable" onclick="${r.go}">${r.c.map((c,i)=>`<td class="${i?"num":""}">${c}</td>`).join("")}</tr>`).join("")}</table>`:`<div class="empty">${t("r_none")}</div>`;
   return `${repChips("reports","null")}
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn sm" onclick="exportMonthly(this)">${t("monthly")}</button><button class="btn ghost sm" onclick="exportReport(this)">${t("export")}</button></span></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:-4px 0 6px"><span class="mut">${fDate(a)} – ${fDate(new Date(b.getTime()-1))}</span><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn ghost sm" onclick="go('edits')">${t("ed_btn")}</button><button class="btn sm" onclick="exportMonthly(this)">${t("monthly")}</button><button class="btn ghost sm" onclick="exportReport(this)">${t("export")}</button></span></div>
   <p class="mut" style="margin:0 0 10px">👆 ${t("r_click")}</p>
   <div class="stats">${tile(opened.length,t("r_opened"),"opened")}${tile(closed.length,t("r_closed"),"closed")}${tile(openNow.length,t("r_open_now"),"open")}</div>
   <div class="card"><h2>${t("r_income")}</h2>
@@ -1168,6 +1168,46 @@ function editRate(id){
 function saveRate(id,btn){
   const row={name_en:$("#lr-e").value.trim(),name_ne:$("#lr-n").value.trim()||null,amount:Number($("#lr-a").value)||0};if(!row.name_en){toast(t("enter_desc"));return}
   guard(async()=>{id?await patch(`labour_rates?id=eq.${id}`,row):await post("labour_rates",row);closeModal();toast(t("saved"));render()},btn);
+}
+// recent edits report (admin)
+let EF=null,ET=null,ETB="";
+const ED_TYPES={"":null,customers:["customers","tractors"],parts:["parts"],job_cards:["job_cards","job_card_parts","job_card_labour"]};
+function edField(k){const m={name:t("name"),phone:t("phone"),phone_alt:t("phone2"),address:t("address"),district:t("district"),model:t("model"),engine_no:t("engine"),chassis_no:t("chassis"),reg_no:t("reg"),date_of_installation:t("doi"),description:t("part"),mrp:"MRP",ndp:"NDP",is_lube:t("lube"),active:t("part_active"),qty:t("qty"),rate:t("rate"),is_foc:t("foc"),part_no:t("part_no"),amount:t("amount")};return m[k]||k.replace(/_/g," ")}
+function edVal(v){return v===null||v===undefined||v===""?"—":v===true?"✓":v===false?"✗":typeof v==="object"?JSON.stringify(v):String(v)}
+function edLines(e){const c=e.changes||{};return Object.keys(c).map(k=>e.action==="change"?`${edField(k)}: ${edVal(c[k][0])} → ${edVal(c[k][1])}`:`${edField(k)}: ${edVal(c[k])}`)}
+async function edLoad(){
+  const a=pd(EF),b=new Date(pd(ET).getTime()+DAY),tb=ED_TYPES[ETB];
+  return await get(`audit_log?select=*&created_at=gte.${enc(a.toISOString())}&created_at=lt.${enc(b.toISOString())}${tb?`&table_name=in.(${tb.join(",")})`:""}&order=created_at.desc&limit=1000`);
+}
+async function vEdits(){
+  if(!isAdmin())return `<div class="card empty">${t("admin_only")}</div>`;
+  if(!EF){ET=ymd(new Date());EF=ymd(new Date(Date.now()-29*DAY))}
+  let rows=[],err="";try{rows=await edLoad()}catch(e){err=e.message}
+  const chip=(k,l)=>`<button class="chip ${ETB===k?"on":""}" onclick="ETB='${k}';render()">${l}</button>`;
+  return `<button class="back" onclick="go('reports')">${t("back")}</button>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${t("ed_h")}</h2>${rows.length?`<button class="btn ghost sm" onclick="edExport(this)">${t("ed_dl")}</button>`:""}</div>
+    <p class="mut">${t("ed_note")}</p>
+    <div class="row"><div><label>${t("ed_from")}</label><input type="date" value="${EF}" max="${ymd(new Date())}" onchange="if(this.value){EF=this.value;render()}"></div><div><label>${t("ed_to")}</label><input type="date" value="${ET}" max="${ymd(new Date())}" onchange="if(this.value){ET=this.value;render()}"></div></div>
+    <div class="chips" style="margin-top:10px">${chip("",t("ed_all"))}${chip("customers",t("ed_tbl").customers)}${chip("parts",t("ed_tbl").parts)}${chip("job_cards",t("ed_tbl").job_cards)}</div>
+  </div>
+  <div class="card">${err?`<p class="mut">${t("err")}: ${esc(err)}</p>`:!rows.length?`<div class="empty">${t("ed_none")}</div>`:
+    `<p class="mut" style="margin-top:0">${t("ed_ago")(rows.length)}</p>`+rows.map(e=>`<div class="list-item" style="align-items:flex-start">
+      <div style="min-width:0"><span class="tag ${e.action==="delete"?"due":e.action==="add"?"closed":"type"}">${t("ed_act")[e.action]}</span> <b>${t("ed_tbl")[e.table_name]||esc(e.table_name)}</b> · ${esc(e.row_label||e.row_key||"")}
+        <div style="margin-top:4px;font-size:14px;line-height:1.45">${edLines(e).map(l=>esc(l)).join("<br>")}</div>
+        <div class="mut" style="margin-top:3px">${fDT(e.created_at)} · ${esc(e.is_admin?t("admin"):(e.user_email||"—"))}${e.is_admin&&e.user_email?` (${esc(e.user_email)})`:""}</div></div></div>`).join("")}</div>`;
+}
+async function edExport(btn){
+  btn.disabled=true;
+  try{
+    const rows=await edLoad(),H=v=>({v,b:true}),D=CTX.dealer;
+    const data=[[H(`${D.name} – ${t("ed_h")}`)],[`${fDate(EF)} – ${fDate(ET)}`],[],
+      [H(t("ed_time")),H(t("ed_act").change),H(t("ed_what")),H(""),H(t("ed_chg")),H(t("ed_who"))],
+      ...rows.map(e=>[fDT(e.created_at),t("ed_act")[e.action],t("ed_tbl")[e.table_name]||e.table_name,e.row_label||e.row_key||"",edLines(e).join("; "),e.user_email||""])];
+    const blob=XLSX_W([{name:t("ed_h").slice(0,30),widths:[18,10,22,36,70,26],rows:data}]);
+    const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=`${D.name} - ${t("ed_h")} - ${EF} to ${ET}.xlsx`;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+  }catch(e){toast(t("err")+": "+e.message)}
+  btn.disabled=false;
 }
 // edit customer + tractor (admin)
 async function editCustomer(tid){
