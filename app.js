@@ -22,7 +22,7 @@ const I18N={
   open:"Active",done:"Done",mech:"Mechanic",ago:"ago",parts_n:"part(s)",loading:"Loading…",saving:"Saving…",err:"Something went wrong",
   name:"Name",phone:"Phone",phone2:"Second phone",tractor:"Model",address:"Address",district:"District",engine:"Engine No.",chassis:"Tractor Sl. No.",reg:"Regn. No.",doi:"Date of Inst.",
   hours_run:"Hours run",last_srv:"Last service",next_srv:"Next service",
-  cust_rec:"Customer & tractor",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
+  cust_rec:"Customer & tractor",edit_cust:"✎ Edit customer",set_cust:"Edit customer details",set_cust_note:"Find a customer and change name, phone, address or tractor details.",cust_saved:"Customer details saved",eng_taken:x=>"This engine no. is already on another tractor ("+x+")",next_due:"Next service date",open_job:n=>"Open active job "+n,start_new:"▶ Start new job card",
   history:"Service history",back:"‹ Back",home_b:"‹ Home",
   slot_h:"Service",date:"Date",ws:"Job / WS No.",hrs:"Hours",note:"Note",
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
@@ -72,7 +72,7 @@ const I18N={
   open:"चालु",done:"सम्पन्न",mech:"मेकानिक",ago:"अघि",parts_n:"वटा पार्ट",loading:"लोड हुँदैछ…",saving:"सेभ हुँदैछ…",err:"केही गडबड भयो",
   name:"नाम",phone:"फोन",phone2:"अर्को फोन",tractor:"मोडेल",address:"ठेगाना",district:"जिल्ला",engine:"इन्जिन नं.",chassis:"ट्र्याक्टर क्र.सं. (चेसिस)",reg:"दर्ता नं.",doi:"जडान मिति",
   hours_run:"चलेको घण्टा",last_srv:"पछिल्लो सर्भिस",next_srv:"अर्को सर्भिस",
-  cust_rec:"ग्राहक र ट्र्याक्टर",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
+  cust_rec:"ग्राहक र ट्र्याक्टर",edit_cust:"✎ ग्राहक विवरण सम्पादन",set_cust:"ग्राहक विवरण सम्पादन",set_cust_note:"ग्राहक खोजेर नाम, फोन, ठेगाना वा ट्र्याक्टर विवरण बदल्नुहोस्।",cust_saved:"ग्राहक विवरण सेभ भयो",eng_taken:x=>"यो इन्जिन नं. अर्को ट्र्याक्टरमा छ ("+x+")",next_due:"अर्को सर्भिस मिति",open_job:n=>"चालु जब "+n+" खोल्नुहोस्",start_new:"▶ नयाँ जब कार्ड सुरु गर्नुहोस्",
   history:"सर्भिसको इतिहास",back:"‹ फिर्ता",home_b:"‹ होम",
   slot_h:"सर्भिस",date:"मिति",ws:"जब / WS नं.",hrs:"घण्टा",note:"टिप्पणी",
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
@@ -347,9 +347,9 @@ async function vHome(){
   <div class="card"><h2>${t("active_h")}</h2>${jobRows(jobs)}</div>`;
 }
 let stok=0;
-async function doSearch(){
-  const box=$("#sres");if(!box)return;
-  const q=clean(searchQ);
+async function doSearch(boxSel="#sres",qv=searchQ,pick="go('customer',ID)"){
+  const box=$(boxSel);if(!box)return;
+  const q=clean(qv);
   if(q.length<3){box.innerHTML=q?`<p class="mut">${t("min3")}</p>`:"";return}
   const my=++stok;box.innerHTML=`<p class="mut">${t("loading")}</p>`;
   try{
@@ -360,9 +360,9 @@ async function doSearch(){
     const trs=await get(`tractors?select=id,model,engine_no,chassis_no,reg_no,next_service_due,customers(name,phone)&or=(${orq.join(",")})&limit=25`);
     if(my!==stok)return;
     box.innerHTML=trs.length?trs.map(tr=>`
-      <div class="list-item clickable" onclick="go('customer',${tr.id})">
-        <div><b>${esc(tr.customers.name)}</b> · ${esc(tr.model)}<div class="mut">📞 ${esc(tr.customers.phone||"—")} · ${t("engine")} ${esc(tr.engine_no||"—")} · ${t("chassis")} ${esc(tr.chassis_no||"—")}${tr.reg_no?" · "+t("reg")+" "+esc(tr.reg_no):""}</div></div><span>›</span>
-      </div>`).join(""):`<div class="empty">${t("not_found")}<br><br><button class="btn" onclick="newCustomer()">${t("add_new")}</button></div>`;
+      <div class="list-item clickable" onclick="${pick.replace("ID",tr.id)}">
+        <div><b>${esc(tr.customers.name)}</b> · ${esc(tr.model)}<div class="mut">📞 ${esc(tr.customers.phone||"—")} · ${t("engine")} ${esc(tr.engine_no||"—")} · ${t("chassis")} ${esc(tr.chassis_no||"—")}${tr.reg_no?" · "+t("reg")+" "+esc(tr.reg_no):""}</div></div><span>${pick.startsWith("edit")?"✎":"›"}</span>
+      </div>`).join(""):`<div class="empty">${t("not_found")}${pick.startsWith("edit")?"":`<br><br><button class="btn" onclick="newCustomer()">${t("add_new")}</button>`}</div>`;
   }catch(e){if(my===stok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
 }
 async function vJobs(){return `<div class="card"><h2>${t("active_h")}</h2>${jobRows(await openJobs())}</div>`}
@@ -412,7 +412,7 @@ async function vCustomer(id){
   const [[tr],hist,open]=await Promise.all([get(`tractors?select=*,customers(*)&id=eq.${id}`),get(`service_history?select=*&tractor_id=eq.${id}&order=service_date.desc.nullslast,id.desc`),get(`job_cards?select=id,job_no&tractor_id=eq.${id}&status=eq.open`)]);
   const c=tr.customers,d=tr.next_service_due?daysTo(tr.next_service_due):null;
   return `<button class="back" onclick="go('home')">${t("back")}</button>
-  <div class="card"><h2>${t("cust_rec")}</h2>${custBlock(c,tr,`
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${t("cust_rec")}</h2>${isAdmin()?`<button class="btn ghost sm" onclick="editCustomer(${tr.id})">${t("edit_cust")}</button>`:""}</div>${custBlock(c,tr,`
     <div><span class="mut">${t("last_srv")}</span><br>${tr.last_service_date?fDate(tr.last_service_date)+(tr.last_service_hours?" · "+tr.last_service_hours+" "+t("hrs"):""):"—"}</div>
     <div><span class="mut">${t("next_srv")}</span><br><b>${t("slot")(tr.next_service_slot,tr.model)}</b><br>${fDate(tr.next_service_due)} ${d!=null&&d<0?`<span class="tag due">${t("late")(-d)}</span>`:""}</div>`)}
     <div style="margin-top:12px">${open.length?`<button class="btn block" onclick="go('job',${open[0].id})">${t("open_job")(open[0].job_no)}</button>`
@@ -1130,6 +1130,9 @@ async function vSettings(){
     ${staff.map(s=>`<tr style="${s.active?"":"opacity:.5"}"><td>${esc(s.name)}</td><td>${esc(s.phone||"—")}</td><td>${t(s.role)}</td>
       <td><div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end"><button class="btn ghost sm" onclick="editStaff(${s.id})">${t("edit")}</button> <button class="btn gray sm" onclick="toggleRow('mechanics',${s.id},${!s.active},this)">${s.active?t("inactive"):t("active")}</button></div></td></tr>`).join("")}
     </table><button class="btn ghost" style="margin-top:10px" onclick="editStaff()">${t("add_staff")}</button></div>
+  <div class="card"><h2>${t("set_cust")}</h2><p class="mut" style="margin-top:0">${t("set_cust_note")}</p>
+    <input id="cs-q" placeholder="${t("search_ph")}" autocomplete="off" oninput="clearTimeout(window._cst);window._cst=setTimeout(()=>doSearch('#cs-r',this.value,'editCustomer(ID)'),300)">
+    <div id="cs-r" style="margin-top:8px"></div></div>
   <div class="card"><h2>${t("set_parts")}</h2><p class="mut" style="margin-top:0">${t("parts_note")}</p>
     <div class="row"><button class="btn" onclick="go('parts')">${t("open_parts")}</button><button class="btn ghost" onclick="editPart()">${t("new_part")}</button></div></div>
   <div class="card"><h2>${t("set_rates")}</h2>
@@ -1165,6 +1168,42 @@ function editRate(id){
 function saveRate(id,btn){
   const row={name_en:$("#lr-e").value.trim(),name_ne:$("#lr-n").value.trim()||null,amount:Number($("#lr-a").value)||0};if(!row.name_en){toast(t("enter_desc"));return}
   guard(async()=>{id?await patch(`labour_rates?id=eq.${id}`,row):await post("labour_rates",row);closeModal();toast(t("saved"));render()},btn);
+}
+// edit customer + tractor (admin)
+async function editCustomer(tid){
+  const [tr]=await get(`tractors?select=*,customers(*)&id=eq.${tid}`);if(!tr)return;
+  const c=tr.customers;window._ec=tr;
+  const models=MODELS.includes(tr.model)?MODELS:[tr.model,...MODELS];
+  modal(`<h2>${t("set_cust")}</h2>
+    <label>${t("name")} *</label><input id="ec-name" value="${esc(c.name||"")}">
+    <div class="row"><div><label>${t("phone")} *</label><input id="ec-phone" inputmode="tel" maxlength="10" value="${esc(c.phone||"")}"></div><div><label>${t("phone2")}</label><input id="ec-phone2" inputmode="tel" maxlength="10" value="${esc(c.phone_alt||"")}"></div></div>
+    <div class="row"><div><label>${t("address")}</label><input id="ec-addr" value="${esc(c.address||"")}"></div><div><label>${t("district")}</label><input id="ec-dist" value="${esc(c.district||"")}"></div></div>
+    <label>${t("model")}</label><select id="ec-model">${models.map(m=>`<option ${m===tr.model?"selected":""}>${esc(m)}</option>`).join("")}</select>
+    <div class="row"><div><label>${t("engine")} *</label><input id="ec-eng" style="text-transform:uppercase" value="${esc(tr.engine_no||"")}"></div><div><label>${t("chassis")}</label><input id="ec-ch" value="${esc(tr.chassis_no||"")}"></div></div>
+    <div class="row"><div><label>${t("reg")}</label><input id="ec-reg" value="${esc(tr.reg_no||"")}"></div><div><label>${t("doi")}</label><input id="ec-doi" type="date" value="${tr.date_of_installation||""}"></div></div>
+    <label>${t("next_due")} – ${t("slot")(tr.next_service_slot,tr.model)}</label><input id="ec-next" type="date" value="${tr.next_service_due||""}">
+    <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn" onclick="saveEditCustomer(this)">${t("save")}</button></div>`);
+}
+function saveEditCustomer(btn){
+  const tr=window._ec,c=tr.customers,v=k=>$("#ec-"+k).value.trim();
+  const f={name:v("name"),phone:digits(v("phone")),phone2:digits(v("phone2")),eng:v("eng").toUpperCase()};
+  if(!f.name||!f.phone){toast(t("need_np"));return}
+  // only check phone format when it was changed (old records may have other formats)
+  if((f.phone!==(c.phone||"")&&!okPhone(f.phone))||(f.phone2&&f.phone2!==(c.phone_alt||"")&&!okPhone(f.phone2))){toast(t("bad_phone"));return}
+  if(!f.eng){toast(t("need_eng"));return}
+  guard(async()=>{
+    if(f.eng!==(tr.engine_no||"").toUpperCase()){
+      const d=await get(`tractors?select=id,customers(name)&engine_no=ilike.${enc(f.eng)}&id=neq.${tr.id}&limit=1`);
+      if(d.length){toast(t("eng_taken")(d[0].customers?d[0].customers.name:"#"+d[0].id));return}
+    }
+    await patch(`customers?id=eq.${c.id}`,{name:f.name,phone:f.phone,phone_alt:f.phone2||null,address:v("addr")||null,district:v("dist")||null});
+    const trow={model:v("model"),engine_no:f.eng,chassis_no:v("ch").toUpperCase()||null,reg_no:v("reg")||null};
+    if(v("doi"))trow.date_of_installation=v("doi");
+    if(v("next"))trow.next_service_due=v("next");
+    await patch(`tractors?id=eq.${tr.id}`,trow);
+    closeModal();toast(t("cust_saved"));
+    if(view==="settings"){const q=$("#cs-q");if(q&&q.value)doSearch('#cs-r',q.value,'editCustomer(ID)')}else render();
+  },btn);
 }
 // parts price list (admin)
 let PQ="",PLI=false;
