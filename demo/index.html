@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ratna Auto – Job Card</title>
+<title>Demo Workshop – JobCardBook</title>
 <meta name="theme-color" content="#b5121b">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
@@ -103,7 +103,7 @@
 // =====================================================================
 const I18N={
  en:{
-  firm:"Ratna Auto",title:"Job Card",sub:"Padariya Chowk, Tharu Toll, Lahan-1 · Massey Ferguson",
+  firm:"Demo Workshop",title:"Job Card",sub:"Sample data · JobCardBook demo",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
   demo_note:"Demo: customers are sample data. The parts list is the real MRP list ({n} parts).",
@@ -133,7 +133,7 @@ const I18N={
   due_note:"Next service is worked out from the hour meter and the tractor's average daily running. The WhatsApp button opens a pre-written message.",
   late:d=>d+" days overdue",today:"Today",tomorrow:"Tomorrow",in_days:d=>"in "+d+" days",open_b:"Open",
   none_due:"No service due right now.",upcoming:"Coming up (next 30 days)",
-  msg:(n,m,slot,late,dt)=>`Namaste ${n} ji, your ${m} tractor ${late?"is overdue for":"is due for"} its ${slot} (${dt}). Please bring it to Ratna Auto, Padariya Chowk, Lahan-1. Thank you!`,
+  msg:(n,m,slot,late,dt)=>`Namaste ${n} ji, your ${m} tractor ${late?"is overdue for":"is due for"} its ${slot} (${dt}). Please bring it to Demo Workshop. Thank you!`,
   nc_h:"New customer & tractor",model:"Tractor model",cancel:"Cancel",save:"Save",
   need_np:"Name and phone are required",cust_added:"Customer added",
   nj_h:"New job card",hours_req:"Hour meter reading",compl_ph:"e.g. general service, brake noise",
@@ -149,7 +149,7 @@ const I18N={
   slot:s=>s.startsWith("FS")?`Free service ${s[2]} (${SLOT_H[s]} hrs)`:s.startsWith("PAID")?`Paid service ${s[4]} (${SLOT_H[s]} hrs)`:`${parseInt(s)} hrs service`
  },
  ne:{
-  firm:"रत्न अटो",title:"जब कार्ड",sub:"पडरिया चोक, थारु टोल, लहान-१ · मेसी फर्गुसन",
+  firm:"डेमो वर्कशप",title:"जब कार्ड",sub:"नमूना डेटा · JobCardBook डेमो",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
   demo_note:"डेमो: ग्राहकहरू नमुना डाटा हुन्। पार्ट्सको सूची भने वास्तविक MRP सूची हो ({n} वटा पार्ट)।",
@@ -179,7 +179,7 @@ const I18N={
   due_note:"अर्को सर्भिस आवर मिटर र ट्र्याक्टर दैनिक औसत कति चल्छ भन्ने हेरेर निकालिन्छ। WhatsApp बटन थिच्दा सन्देश पहिल्यै लेखिएर खुल्छ।",
   late:d=>d+" दिन नाघ्यो",today:"आज",tomorrow:"भोलि",in_days:d=>d+" दिनपछि",open_b:"हेर्नुहोस्",
   none_due:"अहिले कसैको सर्भिस गर्नुपर्ने छैन।",upcoming:"आउँदै गरेका (३० दिनभित्र)",
-  msg:(n,m,slot,late,dt)=>`नमस्ते ${n} ज्यू, तपाईंको ${m} ट्र्याक्टरको ${slot} गर्ने समय ${late?"नाघिसकेको छ":"भएको छ"} (${dt})। कृपया आफ्नो ट्र्याक्टर लिएर रत्न अटो, पडरिया चोक, लहान-१ मा आउनुहोला। धन्यवाद!`,
+  msg:(n,m,slot,late,dt)=>`नमस्ते ${n} ज्यू, तपाईंको ${m} ट्र्याक्टरको ${slot} गर्ने समय ${late?"नाघिसकेको छ":"भएको छ"} (${dt})। कृपया आफ्नो ट्र्याक्टर लिएर डेमो वर्कशपमा आउनुहोला। धन्यवाद!`,
   nc_h:"नयाँ ग्राहक र ट्र्याक्टर",model:"ट्र्याक्टरको मोडेल",cancel:"रद्द गर्नुहोस्",save:"सेभ गर्नुहोस्",
   need_np:"नाम र फोन नम्बर अनिवार्य छ",cust_added:"ग्राहक थपियो",
   nj_h:"नयाँ जब कार्ड",hours_req:"आवर मिटर रिडिङ",compl_ph:"जस्तै: जनरल सर्भिस, ब्रेकबाट आवाज आउने",
@@ -648,7 +648,7 @@ function copySlip(jid){
 function resetDemo(){S=seed();save();searchQ="";go("home");toast(t("reset_done"))}
 
 render();
-if("serviceWorker" in navigator&&location.protocol.startsWith("http")&&!location.hostname.endsWith("claude.ai")){void 0.catch(()=>{})}
+// demo: no service worker
 </script>
 </body>
 </html>

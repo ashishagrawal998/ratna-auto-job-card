@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JobCardBook – Digital job cards for vehicle workshops & dealers</title>
 <meta name="description" content="JobCardBook puts your workshop's job cards, parts, service reminders and reports on any phone. Built for tractor, bike and car dealers and service workshops.">
-<meta name="theme-color" content="#312e81">
+<meta name="theme-color" content="#0a0f24">
 <meta property="og:title" content="JobCardBook – Digital job cards for vehicle workshops">
 <meta property="og:description" content="Job cards, parts at MRP, service reminders and monthly reports – on any phone, in English and नेपाली.">
 <meta property="og:url" content="https://jobcardbook.com/">
@@ -140,6 +140,50 @@ footer a{color:#fff;text-decoration:none}
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.phone{transform:none}}
+
+/* ===== Dark theme ===== */
+:root{--ink:#e8ecf7;--ink2:#b9c2d9;--mut:#8a94b0;--line:rgba(255,255,255,.09);--bg:#0e1530;--surface:#131b38;--brand:#6366f1;--brand2:#4f46e5;--brand-l:rgba(99,102,241,.16);--shadow:0 20px 50px -20px rgba(0,0,0,.7)}
+body{background:#0a0f24;color:var(--ink)}
+header{background:rgba(10,15,36,.72)}
+header.scrolled{border-color:var(--line)}
+.nav ul a{color:var(--ink2)} .nav ul a:hover{color:#a5b4fc}
+.logo{color:#fff} .logo b{color:#a5b4fc}
+.hero{background:radial-gradient(800px 480px at 85% -10%,rgba(99,102,241,.35) 0,transparent 60%),radial-gradient(600px 420px at -10% 100%,rgba(236,72,153,.18) 0,transparent 55%),radial-gradient(500px 300px at 50% 120%,rgba(245,158,11,.12) 0,transparent 60%),#0a0f24}
+.pill{background:rgba(99,102,241,.16);color:#c7d2fe;border:1px solid rgba(165,180,252,.25)}
+h1 .hl{background-image:linear-gradient(90deg,#818cf8,#c084fc 55%,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.screen{color:#0f172a} .s-line{color:#334155} .tag{white-space:nowrap}
+.btn.ghost{background:rgba(255,255,255,.04);color:#fff;border:1.5px solid rgba(255,255,255,.18)}
+.btn.ghost:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)}
+.btn.primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 10px 30px -10px rgba(139,92,246,.8)}
+.btn.primary:hover{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+.alt{background:var(--bg)}
+.kicker{color:#a5b4fc}
+.card,.aud div,.step,.list li{background:var(--surface);border-color:var(--line)}
+.card:hover{border-color:rgba(165,180,252,.45);box-shadow:0 20px 40px -20px rgba(99,102,241,.45)}
+.ic,.why div span{background:rgba(99,102,241,.16)}
+.step::before{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+.float{background:#1a2347;color:#e8ecf7;border:1px solid var(--line)}
+.phone{box-shadow:0 40px 90px -30px rgba(99,102,241,.6),0 0 0 1px rgba(255,255,255,.08) inset}
+form{background:var(--surface);border-color:var(--line)}
+input,select,textarea{background:#0b1128;color:var(--ink);border-color:rgba(255,255,255,.12)}
+input::placeholder,textarea::placeholder{color:#6b7594}
+select option{background:#0b1128}
+.msg.ok{background:rgba(16,185,129,.15);color:#6ee7b7}
+.msg.err{background:rgba(239,68,68,.15);color:#fca5a5}
+footer{background:#060a1a;border-top:1px solid var(--line)}
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:22px 20px}
+@media(max-width:800px){.strip .wrap{grid-template-columns:repeat(2,1fr)}}
+.strip div{display:flex;align-items:center;gap:12px}
+.strip span.e{font-size:24px;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(99,102,241,.16);flex:none}
+.strip b{display:block;color:#fff;font-size:15px}
+.strip small{color:var(--mut);font-size:13px}
+.support{background:linear-gradient(135deg,rgba(16,185,129,.16),rgba(99,102,241,.16));border:1px solid rgba(110,231,183,.25);border-radius:22px;padding:30px;display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.support h3{margin:0 0 6px;font-size:24px;color:#fff}
+.support p{margin:0;color:var(--ink2)}
+.live{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#6ee7b7}
+.live i{width:10px;height:10px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
 </style>
 </head>
 <body>
@@ -169,37 +213,38 @@ footer a{color:#fff;text-decoration:none}
       <p class="lead">JobCardBook replaces the paper job card register. Find any customer in seconds, open a card, issue parts at the right price, close it, and remind customers when their next service is due.</p>
       <div class="cta">
         <a class="btn primary" href="#contact">Book a free demo →</a>
-        <a class="btn ghost" href="https://ratna-auto-job-card.pages.dev/demo/" target="_blank" rel="noopener">Try the live demo</a>
+        <a class="btn ghost" href="/demo/" target="_blank" rel="noopener">Try the live demo</a>
       </div>
       <ul class="ticks">
         <li>No app to install</li>
         <li>English &amp; <span class="np">नेपाली</span></li>
         <li>Works on any phone</li>
+        <li>24×7 support</li>
       </ul>
     </div>
     <div class="mock" aria-hidden="true">
       <div class="phone"><div class="screen">
-        <div class="s-top"><small>Your Workshop · Job Card</small><b>Good morning 👋</b></div>
+        <div class="s-top"><small>Demo Workshop · Job Card</small><b>Good morning 👋</b></div>
         <div class="s-body">
           <div class="s-stats">
-            <div class="s-stat"><strong>6</strong><span>Active jobs</span></div>
-            <div class="s-stat"><strong>11</strong><span>Done today</span></div>
-            <div class="s-stat"><strong style="color:#d97706">14</strong><span>Service due</span></div>
+            <div class="s-stat"><strong>5</strong><span>Active jobs</span></div>
+            <div class="s-stat"><strong>12</strong><span>Done today</span></div>
+            <div class="s-stat"><strong style="color:#d97706">8</strong><span>Service due</span></div>
           </div>
           <div class="s-card">
-            <div class="row"><b>JC-128 · R. Yadav</b><span class="tag">Showroom</span></div>
-            <div style="color:#64748b">Tractor · Free service 2 · 400 hrs</div>
-            <div class="s-line"><span>Engine oil 8.5 L</span><span>Rs 6,520</span></div>
-            <div class="s-line"><span>Oil filter</span><span>Rs 860</span></div>
-            <div class="s-line"><span>Labour</span><span>Rs 1,200</span></div>
+            <div class="row"><b>JC-101 · Demo Customer</b><span class="tag">Showroom</span></div>
+            <div style="color:#64748b">Model X · Free service 2 · 400 hrs</div>
+            <div class="s-line"><span>Engine oil</span><span>Rs 5,000</span></div>
+            <div class="s-line"><span>Oil filter</span><span>Rs 800</span></div>
+            <div class="s-line"><span>Labour</span><span>Rs 1,000</span></div>
           </div>
           <div class="s-card">
-            <div class="row"><b>HS-41 · S. Mandal</b><span class="tag g">Home service</span></div>
-            <div style="color:#64748b">Mechanic on site · started 9:40</div>
+            <div class="row"><b>HS-12 · Sample Customer</b><span class="tag g">Home service</span></div>
+            <div style="color:#64748b">Mechanic on site · started 10:00</div>
           </div>
           <div class="s-card">
             <div class="row"><b>Reminder ready</b><span class="tag b">SMS · WhatsApp</span></div>
-            <div style="color:#64748b">5 customers due next week</div>
+            <div style="color:#64748b">8 customers due next week</div>
           </div>
           <div class="s-btn">+ New job card</div>
         </div>
@@ -209,6 +254,13 @@ footer a{color:#fff;text-decoration:none}
     </div>
   </div>
 </section>
+
+<div class="strip"><div class="wrap">
+  <div><span class="e">🛟</span><div><b>24×7 support</b><small>Call, WhatsApp or email, any time</small></div></div>
+  <div><span class="e">⚙️</span><div><b>Setup done for you</b><small>We import your customers &amp; parts</small></div></div>
+  <div><span class="e">🔒</span><div><b>Secure cloud</b><small>Encrypted, role-based access</small></div></div>
+  <div><span class="e">📱</span><div><b>Any phone, any browser</b><small>No app store needed</small></div></div>
+</div></div>
 
 <section id="features" class="alt">
   <div class="wrap">
@@ -285,6 +337,19 @@ footer a{color:#fff;text-decoration:none}
   </div>
 </section>
 
+<section style="padding:0 0 88px">
+  <div class="wrap">
+    <div class="support reveal">
+      <div>
+        <span class="live"><i></i> Support online 24×7</span>
+        <h3>We're here whenever your workshop is open</h3>
+        <p>Early morning, late evening or on a festival day: reach us by phone, WhatsApp or email and get help fast.</p>
+      </div>
+      <a class="btn primary" href="#contact">Contact support →</a>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="alt">
   <div class="wrap contact">
     <div class="reveal">
@@ -295,6 +360,7 @@ footer a{color:#fff;text-decoration:none}
         <div><span>⚡</span><p><b>Free demo</b> with your own sample data.</p></div>
         <div><span>📦</span><p><b>We do the setup</b>: import your customers and parts list.</p></div>
         <div><span>🤝</span><p><b>Simple pricing</b> for single workshops and multi-branch dealers.</p></div>
+        <div><span>🛟</span><p><b>24×7 support</b> by phone, WhatsApp and email.</p></div>
       </div>
     </div>
     <form id="cf" class="reveal" novalidate>

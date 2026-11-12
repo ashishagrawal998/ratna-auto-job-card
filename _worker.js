@@ -22,6 +22,9 @@ export default {
       return new Response(res.body, { status: res.status, headers: h });
     }
     if (url.pathname.startsWith("/site/")) return env.ASSETS.fetch(request);
+    // Public demo (sample data) is also available on the product domain.
+    if (url.pathname === "/demo" ) { url.pathname = "/demo/"; return Response.redirect(url.toString(), 301); }
+    if (url.pathname.startsWith("/demo/")) return env.ASSETS.fetch(request);
     return Response.redirect("https://jobcardbook.com/", 302);
   },
 };
