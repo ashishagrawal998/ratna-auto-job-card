@@ -106,7 +106,7 @@ const I18N={
   firm:"Demo Workshop",title:"Job Card",sub:"Sample data · JobCardBook demo",
   nav_home:"Home",nav_jobs:"Active Jobs",nav_rem:"Reminders",nav_hist:"Completed",
   st_open:"Active jobs",st_today:"Completed today",st_due:"Service due",
-  demo_note:"Demo: customers are sample data. The parts list is the real MRP list ({n} parts).",
+  demo_note:"Demo: all customers, tractors, mechanics and parts here are made-up sample data ({n} sample parts).",
   search_h:"Find customer / tractor",search_ph:"Phone, engine, chassis, reg. no. or name…",
   not_found:"No customer found.",add_new:"+ Add new customer",new_cust_btn:"+ New customer",try_:"Try:",
   active_h:"Active job cards",closed_h:"Completed job cards",no_jobs:"No job cards.",
@@ -152,7 +152,7 @@ const I18N={
   firm:"डेमो वर्कशप",title:"जब कार्ड",sub:"नमूना डेटा · JobCardBook डेमो",
   nav_home:"होम",nav_jobs:"चालु जब",nav_rem:"रिमाइन्डर",nav_hist:"सम्पन्न जब",
   st_open:"चालु जब",st_today:"आज सम्पन्न",st_due:"सर्भिस गर्नुपर्ने",
-  demo_note:"डेमो: ग्राहकहरू नमुना डाटा हुन्। पार्ट्सको सूची भने वास्तविक MRP सूची हो ({n} वटा पार्ट)।",
+  demo_note:"डेमो: यहाँका सबै ग्राहक, ट्र्याक्टर, मिस्त्री र पार्ट्स नक्कली नमुना डाटा हुन् ({n} वटा नमुना पार्ट)।",
   search_h:"ग्राहक / ट्र्याक्टर खोज्नुहोस्",search_ph:"फोन, इन्जिन, चेसिस, दर्ता नं. वा नाम…",
   not_found:"कुनै ग्राहक भेटिएन।",add_new:"+ नयाँ ग्राहक थप्नुहोस्",new_cust_btn:"+ नयाँ ग्राहक",try_:"उदाहरण:",
   active_h:"चालु जब कार्डहरू",closed_h:"सम्पन्न जब कार्डहरू",no_jobs:"कुनै जब कार्ड छैन।",
@@ -208,7 +208,7 @@ const SLOT_H=Object.fromEntries(SLOTS);
 const nextSlot=h=>SLOTS.find(s=>s[1]>h)||SLOTS[SLOTS.length-1];
 const JOB_TYPES=["PDI","DSI","FS1","FS2","FS3","FS4","PAID","WTY","OTHERS"];
 const PRESET_AMT=[0,1500,2500,1200,1800];
-const MODELS=["MF 7250 DI","MF 7250 Power Up","MF 7250 NS","MF 7250 PS","MF 1035 DI","MF 8055 MagnaTrak","MF 9000 DI","MF 241 DI","MF 9500"];
+const MODELS=["Model X","Model X Plus","Model Y","Model Y Pro","Model Z","Model Z Max"];
 
 // =====================================================================
 // Dates & helpers
@@ -235,20 +235,20 @@ function planNext(tr){ // sets nextSlot / nextDue from last service
 function seed(){
   let x=7;const rnd=()=>((x=(x*16807)%2147483647)/2147483647);
   const pick=a=>a[Math.floor(rnd()*a.length)];
-  const first=["Ram","Shyam","Hari","Sita Ram","Bindeshwar","Rajendra","Mahesh","Suresh","Dinesh","Ramesh","Umesh","Kishun","Lalbabu","Shiv Narayan","Rambabu","Bijay","Sunil","Anil","Jitendra","Mohan","Ganesh","Upendra","Deepak","Bhola","Raj Kumar","Md Ishrail","Abdul"];
-  const last=["Yadav","Sah","Mahato","Mandal","Chaudhary","Singh","Kamat","Sada","Thakur","Shah","Paswan","Ray","Gupta","Mishra","Ansari"];
-  const places=[["Lahan-5","Siraha"],["Mirchaiya-3","Siraha"],["Golbazar-7","Siraha"],["Siraha-2","Siraha"],["Bastipur-1","Siraha"],["Dhangadhimai-4","Siraha"],["Kalyanpur-6","Siraha"],["Bhardaha-1","Saptari"],["Rajbiraj-9","Saptari"],["Kanchanrup-4","Saptari"],["Hanumannagar-2","Saptari"],["Bodebarsain-5","Saptari"],["Katari-3","Udayapur"],["Mithila-1","Dhanusha"]];
-  const mw=[["MF 7250 DI",14],["MF 7250 Power Up",4],["MF 7250 NS",3],["MF 7250 PS",3],["MF 1035 DI",2],["MF 8055 MagnaTrak",2],["MF 9000 DI",1],["MF 9500",1]];
-  const pickModel=()=>{let n=rnd()*30;for(const[m,w]of mw){if((n-=w)<0)return m}return "MF 7250 DI"};
-  const S={customers:[],tractors:[],history:[],jobs:[],mechanics:["Rambabu Yadav","Suresh Mahato","Dinesh Sah","Manoj Chaudhary"],nextJob:3,nextId:100};
+  const first=["Ram","Sita","Hari","Gita","Krishna","Bishnu","Sunita","Rajesh","Anita","Prakash","Sarita","Dipak","Kamala","Bikash","Laxmi","Suman","Manish","Pooja","Ramesh","Sabina"];
+  const last=["Shrestha","Maharjan","Tamang","Thapa","Gurung","KC","Adhikari","Karki","Rai","Lama","Basnet","Pandey"];
+  const places=[["Kathmandu-4","Kathmandu"],["Kathmandu-10","Kathmandu"],["Kathmandu-16","Kathmandu"],["Budhanilkantha-3","Kathmandu"],["Kirtipur-5","Kathmandu"],["Lalitpur-2","Lalitpur"],["Lalitpur-14","Lalitpur"],["Godawari-6","Lalitpur"],["Bhaktapur-7","Bhaktapur"],["Madhyapur Thimi-3","Bhaktapur"],["Suryabinayak-5","Bhaktapur"]];
+  const mw=[["Model X",12],["Model X Plus",6],["Model Y",5],["Model Y Pro",3],["Model Z",3],["Model Z Max",1]];
+  const pickModel=()=>{let n=rnd()*30;for(const[m,w]of mw){if((n-=w)<0)return m}return "Model X"};
+  const S={customers:[],tractors:[],history:[],jobs:[],mechanics:["Mechanic A","Mechanic B","Mechanic C","Mechanic D"],nextJob:3,nextId:100};
   const now=Date.now();
   for(let i=1;i<=32;i++){
     const [addr,dist]=pick(places);
-    S.customers.push({id:i,name:pick(first)+" "+pick(last),phone:"98"+String(Math.floor(10000000+rnd()*89999999)),address:addr,district:dist});
+    S.customers.push({id:i,name:pick(first)+" "+pick(last),phone:"98000000"+String(i).padStart(2,"0"),address:addr,district:dist});
     const ageDays=Math.floor(60+rnd()*1900), rate=2.2+rnd()*2.6;
     const doi=now-ageDays*DAY;
-    const tr={id:i,customerId:i,model:pickModel(),chassis:"MEA0B25DCT"+String(2600000+Math.floor(rnd()*99999)),engine:"S325"+pick(["F","R","N"])+String(10000+Math.floor(rnd()*89999)),
-      reg:rnd()<.8?`KO 1 TA ${1000+Math.floor(rnd()*8999)}`:"",doi:iso(doi),lastDate:null,lastHours:null,lastSlotHours:0};
+    const tr={id:i,customerId:i,model:pickModel(),chassis:"DEMOCH"+String(100000+Math.floor(rnd()*899999)),engine:"DEMOEN"+String(10000+Math.floor(rnd()*89999)),
+      reg:rnd()<.8?`BA 1 PA ${1000+Math.floor(rnd()*8999)}`:"",doi:iso(doi),lastDate:null,lastHours:null,lastSlotHours:0};
     // services done so far (stop before "today" by a random lag so some are due)
     const lag=Math.floor(rnd()*130)-95;
     for(const [slot,h] of SLOTS){
@@ -267,26 +267,26 @@ function seed(){
   const h4=nextSlot(Math.max(tr4.lastHours||0,tr4.lastSlotHours||0));
   S.history.push({tractorId:4,slot:h4[0],date:iso(now-40*DAY),ws:"JC-00001",hours:h4[1]+12});
   tr4.lastDate=iso(now-40*DAY);tr4.lastHours=h4[1]+12;tr4.lastSlotHours=h4[1];planNext(tr4);
-  S.jobs.push({id:1,no:"JC-00001",tractorId:4,customerId:4,mechanic:"Suresh Mahato",type:"PAID",hours:String(tr4.lastHours),nextSlot:tr4.nextSlot,nextDue:tr4.nextDue,dateIn:iso(now-40*DAY),dateOut:iso(now-40*DAY+5*3600000),status:"closed",
+  S.jobs.push({id:1,no:"JC-00001",tractorId:4,customerId:4,mechanic:"Mechanic B",type:"PAID",hours:String(tr4.lastHours),nextSlot:tr4.nextSlot,nextDue:tr4.nextDue,dateIn:iso(now-40*DAY),dateOut:iso(now-40*DAY+5*3600000),status:"closed",
     problems:"General service",observ:"Air filter dirty",action:"Service done, filters changed",remarks:"",
-    parts:[{pn:"2654408",desc:"LUB OIL FILTER WITH ORING",qty:1,rate:471.32,foc:false,at:iso(now-40*DAY)},{pn:"",desc:"Engine oil 15W40 (7 L)",qty:1,rate:5600,foc:false,at:iso(now-40*DAY)}],labour:[{k:1,amount:1500,outside:false}]});
-  S.jobs.push({id:2,no:"JC-00002",tractorId:2,customerId:2,mechanic:"Rambabu Yadav",type:"PAID",hours:String((tr2.lastHours||500)+290),dateIn:iso(now-95*60000),status:"open",
+    parts:[{pn:"D-1002",desc:"Oil filter",qty:1,rate:800,foc:false,at:iso(now-40*DAY)},{pn:"",desc:"Engine oil (7 L)",qty:1,rate:5000,foc:false,at:iso(now-40*DAY)}],labour:[{k:1,amount:1500,outside:false}]});
+  S.jobs.push({id:2,no:"JC-00002",tractorId:2,customerId:2,mechanic:"Mechanic A",type:"PAID",hours:String((tr2.lastHours||500)+290),dateIn:iso(now-95*60000),status:"open",
     problems:"Brakes weak, general service",observ:"",action:"",remarks:"",
-    parts:[{pn:"1200040S01",desc:"TAFE SUPERIOR PLUS GREASE 1KG",qty:1,rate:1477.9,foc:false,at:iso(now-70*60000)}],labour:[]});
+    parts:[{pn:"D-1040",desc:"Grease 1 kg",qty:1,rate:1000,foc:false,at:iso(now-70*60000)}],labour:[]});
   return S;
 }
 
 // =====================================================================
 // Storage
 // =====================================================================
-const KEY="jobcard_demo_v3";
+const KEY="jobcard_demo_ktm_v1";
 let S;
 try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S||!S.tractors) S=seed();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 // =====================================================================
-// Parts catalogue (real MRP list, loaded from parts.json)
+// Parts catalogue (made-up sample list, loaded from parts.json)
 // =====================================================================
 let PARTS=null,PIDX=null;
 fetch("parts.json").then(r=>r.json()).then(d=>{PARTS=d;PIDX=d.map(p=>(p[0]+" "+p[1]).toLowerCase());if(view==="home"||view==="job")render()}).catch(()=>{PARTS=[];PIDX=[]});
@@ -344,7 +344,7 @@ function vHome(){
   const res=q?S.tractors.filter(tr=>{const c=cust(tr.customerId);return [c.phone,c.name,tr.engine,tr.chassis,tr.reg].some(v=>String(v||"").toLowerCase().includes(q))}):[];
   const ex=S.tractors[5],exc=cust(ex.customerId);
   return `
-  <div class="note">${t("demo_note").replace("{n}",PARTS?PARTS.length.toLocaleString("en-IN"):"37,862")}</div>
+  <div class="note">${t("demo_note").replace("{n}",PARTS?PARTS.length.toLocaleString("en-IN"):"")}</div>
   <div class="stats">
     <div class="stat" onclick="go('jobs')"><b>${open}</b><span>${t("st_open")}</span></div>
     <div class="stat" onclick="go('history')"><b>${todayClosed}</b><span>${t("st_today")}</span></div>
