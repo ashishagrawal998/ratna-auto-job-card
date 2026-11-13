@@ -26,7 +26,7 @@ const I18N={
   history:"Service history",back:"‹ Back",home_b:"‹ Home",
   slot_h:"Service",date:"Date",ws:"Job / WS No.",hrs:"Hours",note:"Note",
   date_in:"Date & time in",date_out:"Date & time out",type_job:"Type of job",prf:"Warranty PRF No.",
-  problems:"Problems reported",observ:"Observations",action:"Action taken",remarks:"Workshop incharge remarks",entered_by:"Entered by",
+  problems:"Problems reported",observ:"Observations",action:"Action taken",remarks:"Workshop incharge remarks",entered_by:"Entered by",svc:"Service",closed_by:"Closed by",cb_pick:"Who is closing this card? *",cb_need:"Choose who is closing the card",cb_ph:"— choose —",no_svc:s=>`No TAFE Miles oil on this card, so it will not count as a service. Next service stays: ${s}`,svc_yes:"TAFE Miles oil on this card: counts as a service.",r_svc:"Service vs repair (closed jobs)",svc_only:"Service (oil changed)",rep_only:"Repair only",r_closedby:"Closed by staff",r_svcs:"Services (oil changed)",cust_cards:"Job cards",
   add_parts:"Parts issued (Material Issue Note)",search_prod:"Search part no. or description",prod_ph:"e.g. 2654408 or oil filter",
   qty:"Qty",foc:"Under warranty",wty:"Under warranty",mrp:"MRP",min_mrp:x=>"Rate cannot be below MRP ("+x+")",edit_rate:"Change rate",markup:"Increase",new_rate:"New rate",manual:"+ Item not in list",
   selected:"Selected",rate:"Rate",add_part:"+ Add part",part:"Description",part_no:"Part No.",amount:"Value",
@@ -76,7 +76,7 @@ const I18N={
   history:"सर्भिसको इतिहास",back:"‹ फिर्ता",home_b:"‹ होम",
   slot_h:"सर्भिस",date:"मिति",ws:"जब / WS नं.",hrs:"घण्टा",note:"टिप्पणी",
   date_in:"आएको मिति र समय",date_out:"गएको मिति र समय",type_job:"कामको प्रकार",prf:"वारेन्टी PRF नं.",
-  problems:"भनिएका समस्या",observ:"जाँचमा देखिएको",action:"गरिएको काम",remarks:"वर्कसप इन्चार्जको टिप्पणी",entered_by:"इन्ट्री गर्ने",
+  problems:"भनिएका समस्या",observ:"जाँचमा देखिएको",action:"गरिएको काम",remarks:"वर्कसप इन्चार्जको टिप्पणी",entered_by:"इन्ट्री गर्ने",svc:"सर्भिस",closed_by:"बन्द गर्ने",cb_pick:"यो कार्ड कसले बन्द गर्दै हुनुहुन्छ? *",cb_need:"कार्ड बन्द गर्ने व्यक्ति छान्नुहोस्",cb_ph:"— छान्नुहोस् —",no_svc:s=>`यो कार्डमा TAFE Miles तेल छैन, त्यसैले सर्भिस गनिँदैन। अर्को सर्भिस उही रहन्छ: ${s}`,svc_yes:"यो कार्डमा TAFE Miles तेल छ: सर्भिस गनिन्छ।",r_svc:"सर्भिस र मर्मत (बन्द काम)",svc_only:"सर्भिस (तेल फेरिएको)",rep_only:"मर्मत मात्र",r_closedby:"कर्मचारी अनुसार बन्द",r_svcs:"सर्भिस (तेल फेरिएको)",cust_cards:"जब कार्डहरू",
   add_parts:"दिइएका पार्ट्स (सामान निकासा)",search_prod:"पार्ट नं. वा विवरण खोज्नुहोस्",prod_ph:"जस्तै: 2654408 वा oil filter",
   qty:"संख्या",foc:"वारेन्टी अन्तर्गत",wty:"वारेन्टी अन्तर्गत",mrp:"MRP",min_mrp:x=>"दर MRP ("+x+") भन्दा कम हुन सक्दैन",edit_rate:"दर बदल्नुहोस्",markup:"बढाउनुहोस्",new_rate:"नयाँ दर",manual:"+ सूचीमा नभएको सामान",
   selected:"छानिएको",rate:"दर",add_part:"+ पार्ट थप्नुहोस्",part:"विवरण",part_no:"पार्ट नं.",amount:"रकम",
@@ -239,6 +239,8 @@ let view="home",param=null,searchQ="",rtok=0;
 function go(v,p){view=v;param=p??null;render();window.scrollTo(0,0)}
 function openCard(id,status){window._back={v:view,p:param};go(status==="open"?"job":"slip",id)}
 function goBack(){const b=window._back;window._back=null;b?go(b.v,b.p):go("home")}
+const isSvcPart=d=>/^\s*tafe\s*miles/i.test(d||"");
+const svcTag=s=>s?` <span class="tag svc">🛢 ${t("svc")}</span>`:"";
 const kindTag=k=>`<span class="tag ${k==="MSTW"?"MSTW":"JC"}">${k==="MSTW"?t("mstw"):t("jc")}</span>`;
 function chrome(){
   document.documentElement.lang=LANG;
@@ -306,7 +308,7 @@ async function doLogin(e){
 // Home + search
 // ---------------------------------------------------------------------
 async function openJobs(){
-  const jobs=await get("job_cards?select=id,job_no,card_kind,job_type,date_in,status,mechanic_id,customers(name),tractors(model),mechanics(name)&status=eq.open&order=date_in.desc");
+  const jobs=await get("job_cards?select=id,job_no,card_kind,job_type,date_in,status,is_service,mechanic_id,customers(name),tractors(model),mechanics(name)&status=eq.open&order=date_in.desc");
   return withTotals(jobs);
 }
 async function withTotals(jobs){
@@ -321,8 +323,8 @@ function jobRows(list){
   if(!list.length)return `<div class="empty">${t("no_jobs")}</div>`;
   return list.map(j=>`
     <div class="list-item clickable krow k${j.card_kind==="MSTW"?"MSTW":"JC"}" onclick="openCard(${j.id},'${j.status}')">
-      <div><b>${esc(j.job_no)}</b> ${kindTag(j.card_kind)} · ${esc(j.customers&&j.customers.name)} <span class="tag ${j.status}">${j.status==="open"?t("open"):t("done")}</span> <span class="tag type">${t("jt")[j.job_type]}</span>
-        <div class="mut">${esc(j.tractors&&j.tractors.model)} · ${t("mech")}: ${esc(j.mechanics?j.mechanics.name:"—")} · ${j.status==="open"?ago(j.date_in)+" "+t("ago"):fDate(j.date_out)}</div></div>
+      <div><b>${esc(j.job_no)}</b> ${kindTag(j.card_kind)} · ${esc(j.customers&&j.customers.name)} <span class="tag ${j.status}">${j.status==="open"?t("open"):t("done")}</span> <span class="tag type">${t("jt")[j.job_type]}</span>${svcTag(j.is_service)}
+        <div class="mut">${esc(j.tractors&&j.tractors.model)} · ${t("mech")}: ${esc(j.mechanics?j.mechanics.name:"—")} · ${j.status==="open"?ago(j.date_in)+" "+t("ago"):fDate(j.date_out)}${j.closed_by_name?` · ${t("closed_by")}: ${esc(j.closed_by_name)}`:""}</div></div>
       <div style="text-align:right"><b>${rs(j.total)}</b><div class="mut">${j.nparts||0} ${t("parts_n")}</div></div>
     </div>`).join("");
 }
@@ -366,7 +368,7 @@ async function doSearch(boxSel="#sres",qv=searchQ,pick="go('customer',ID)"){
   }catch(e){if(my===stok)box.innerHTML=`<p class="mut">${t("err")}: ${esc(e.message)}</p>`}
 }
 async function vJobs(){return `<div class="card"><h2>${t("active_h")}</h2>${jobRows(await openJobs())}</div>`}
-const JSEL="id,job_no,card_kind,job_type,date_in,date_out,status,customers(name),tractors(model),mechanics(name)";
+const JSEL="id,job_no,card_kind,job_type,date_in,date_out,status,is_service,closed_by_name,customers(name),tractors(model),mechanics(name)";
 let HQ="",HK="";
 async function vHistory(){
   const kf=HK?`&card_kind=eq.${HK}`:"";
@@ -410,6 +412,7 @@ function custBlock(c,tr,extra=""){return `
   </div>`}
 async function vCustomer(id){
   const [[tr],hist,open]=await Promise.all([get(`tractors?select=*,customers(*)&id=eq.${id}`),get(`service_history?select=*&tractor_id=eq.${id}&order=service_date.desc.nullslast,id.desc`),get(`job_cards?select=id,job_no&tractor_id=eq.${id}&status=eq.open`)]);
+  const cards=await withTotals(await get(`job_cards?select=${JSEL}&tractor_id=eq.${id}&status=neq.cancelled&order=date_in.desc&limit=30`));
   const c=tr.customers,d=tr.next_service_due?daysTo(tr.next_service_due):null;
   return `<button class="back" onclick="go('home')">${t("back")}</button>
   <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${t("cust_rec")}</h2>${isAdmin()?`<button class="btn ghost sm" onclick="editCustomer(${tr.id})">${t("edit_cust")}</button>`:""}</div>${custBlock(c,tr,`
@@ -422,7 +425,8 @@ async function vCustomer(id){
     ${hist.length?`<table><tr><th>${t("slot_h")}</th><th>${t("date")}</th><th>${t("ws")}</th><th class="num">${t("hrs")}</th></tr>
       ${hist.map(h=>h.kind==="note"?`<tr><td colspan="4" class="mut">${t("note")}: ${esc(h.raw_text)}</td></tr>`
         :`<tr><td>${t("slot")(h.slot,tr.model)}</td><td>${fDate(h.service_date)}</td><td>${esc(h.ws_no||"—")}</td><td class="num">${h.hours||"—"}</td></tr>`).join("")}</table>`:`<div class="empty">—</div>`}
-  </div>`;
+  </div>
+  ${cards.length?`<div class="card"><h2>${t("cust_cards")} (${cards.length})</h2>${jobRows(cards)}</div>`:""}`;
 }
 function newCustomer(){
   const q=clean(searchQ);
@@ -537,8 +541,8 @@ async function vJob(id,adminEdit){
   const c=j.customers,tr=j.tractors,K=j.card_kind==="MSTW"?"MSTW":"JC";window._jp=parts;
   return `${closed?`<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>${t("closed_banner")}</span><button class="btn ok sm" onclick="go('slip',${j.id})">${t("done_edit")}</button></div>`:`<button class="back" onclick="goBack()">${t("back")}</button>`}
   <div class="card k${K}">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${esc(j.job_no)} ${kindTag(K)}</h2><span><span class="tag type">${jtLabel(j.job_type,j.tractors&&j.tractors.model)}</span> <span class="tag ${j.status}">${closed?t("done"):t("open")}</span> <button class="btn ghost sm" onclick="editJob(${j.id})">${t("edit_details")}</button></span></div>
-    <p class="mut" style="margin:6px 0 10px">${t("mech")}: <b>${esc(j.mechanics?j.mechanics.name:"—")}</b> · ${t("date_in")}: ${fDT(j.date_in)} (${ago(j.date_in)} ${t("ago")}) · ${t("hours_run")}: <b>${j.hours_run??"—"}</b>${j.warranty_prf_no?` · ${t("prf")}: ${esc(j.warranty_prf_no)}`:""}${j.entered_by_name?` · ${t("entered_by")}: ${esc(j.entered_by_name)}`:""}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">${esc(j.job_no)} ${kindTag(K)}</h2><span><span class="tag type">${jtLabel(j.job_type,j.tractors&&j.tractors.model)}</span>${svcTag(parts.some(p=>isSvcPart(p.description)))} <span class="tag ${j.status}">${closed?t("done"):t("open")}</span> <button class="btn ghost sm" onclick="editJob(${j.id})">${t("edit_details")}</button></span></div>
+    <p class="mut" style="margin:6px 0 10px">${t("mech")}: <b>${esc(j.mechanics?j.mechanics.name:"—")}</b> · ${t("date_in")}: ${fDT(j.date_in)} (${ago(j.date_in)} ${t("ago")}) · ${t("hours_run")}: <b>${j.hours_run??"—"}</b>${j.warranty_prf_no?` · ${t("prf")}: ${esc(j.warranty_prf_no)}`:""}${j.entered_by_name?` · ${t("entered_by")}: ${esc(j.entered_by_name)}`:""}${j.closed_by_name?` · ${t("closed_by")}: ${esc(j.closed_by_name)}`:""}</p>
     ${custBlock(c,tr)}
     ${j.problems_reported?`<p style="margin-bottom:0"><span class="mut">${t("problems")}:</span> ${esc(j.problems_reported)}</p>`:""}
   </div>
@@ -721,26 +725,30 @@ async function closeJobDlg(jid){
   const {j,parts,lab}=await loadJob(jid);
   if(!parts.length&&!lab.length){toast(t("nothing_added"));return}
   const tr=j.tractors;
-  const S=sched(tr.model);
-  let slotDone=/^FS[1-4]$/.test(j.job_type)?j.job_type:null;
-  if(!slotDone&&j.job_type==="PAID")slotDone=j.hours_run?([...S].reverse().find(s=>s[1]<=j.hours_run+S.step/2)||[null])[0]:(tr.next_service_slot||null);
+  const S=sched(tr.model),svc=parts.some(p=>isSvcPart(p.description));
+  let slotDone=svc&&/^FS[1-4]$/.test(j.job_type)?j.job_type:null;
+  if(svc&&!slotDone&&j.job_type==="PAID")slotDone=j.hours_run?([...S].reverse().find(s=>s[1]<=j.hours_run+S.step/2)||[null])[0]:(tr.next_service_slot||null);
   const plan=planNext(tr,j.hours_run,slotDone?slotH(slotDone,tr.model):0);
-  window._close={j,plan,slotDone};
+  window._close={j,plan,slotDone,svc};
+  const who=[...(isAdmin()?["Admin"]:[]),...CTX.staff.filter(s=>s.active).sort((x,y)=>(x.role==="sales"?0:1)-(y.role==="sales"?0:1)||x.name.localeCompare(y.name)).map(s=>s.name)];
   modal(`<h2>${t("close_q")} ${esc(j.job_no)}</h2>
     <p>${parts.length} ${t("parts_n")} · ${t("total")} <b>${rs(partsTotal(parts)+labTotal(lab))}</b></p>
     <label>${t("observ")}</label><textarea id="cj-o" rows="2"></textarea>
     <label>${t("action")}</label><textarea id="cj-a" rows="2"></textarea>
     <label>${t("remarks")}</label><input id="cj-r">
     ${rfBlock(j,["aggregate","sub_aggregate","failure_statement","delay_reason"],true)}
-    <label>${t("next_auto")} – ${t("slot")(plan.slot,tr.model)}</label><input id="cj-next" type="date" value="${plan.due}">
+    ${svc?`<p class="note" style="margin:12px 0 0">🛢 ${t("svc_yes")}</p><label>${t("next_auto")} – ${t("slot")(plan.slot,tr.model)}</label><input id="cj-next" type="date" value="${plan.due}">`
+      :`<p class="note" style="margin:12px 0 0">${t("no_svc")(`${t("slot")(tr.next_service_slot,tr.model)} · ${fDate(tr.next_service_due)}`)}</p>`}
+    <label>${t("cb_pick")}</label><select id="cj-by"><option value="">${t("cb_ph")}</option>${who.map(n=>`<option>${esc(n)}</option>`).join("")}</select>
     <div class="row" style="margin-top:14px"><button class="btn gray" onclick="closeModal()">${t("cancel")}</button><button class="btn ok" onclick="doCloseJob(this)">${t("close_b")}</button></div>`);
 }
 function doCloseJob(btn){
-  const {j,plan,slotDone}=window._close;
+  const {j,plan,slotDone,svc}=window._close,by=$("#cj-by").value;
+  if(!by){toast(t("cb_need"));$("#cj-by").focus();return}
   guard(async()=>{
     await patch(`job_cards?id=eq.${j.id}`,{observations:$("#cj-o").value.trim()||null,action_taken:$("#cj-a").value.trim()||null,remarks:$("#cj-r").value.trim()||null,...readRF()});
     if(slotDone)await post("service_history",{tractor_id:j.tractor_id,slot:slotDone,slot_hours:slotH(slotDone,j.tractors&&j.tractors.model)||null,service_date:ymd(new Date()),ws_no:j.job_no,hours:j.hours_run,kind:"service",raw_text:"Job card "+j.job_no});
-    await rpc("close_job_card",{p_job_card_id:j.id,p_next_slot:plan.slot,p_next_due:$("#cj-next").value||plan.due});
+    await rpc("close_job_card",svc?{p_job_card_id:j.id,p_next_slot:plan.slot,p_next_due:$("#cj-next").value||plan.due,p_closed_by:by}:{p_job_card_id:j.id,p_closed_by:by});
     closeModal();toast(t("job_closed"));go("slip",j.id);
   },btn);
 }
@@ -772,7 +780,7 @@ async function vSlip(id){
       <tr><td class="mut">${t("reg")}</td><td>${esc(tr.reg_no||"—")}</td></tr>
       <tr><td><span class="mut">${t("date_in")}:</span> ${fDT(j.date_in)}</td><td class="mut">${t("doi")}</td><td>${fDate(tr.date_of_installation)}</td></tr>
       <tr><td><span class="mut">${t("date_out")}:</span> ${fDT(j.date_out)}</td><td class="mut">${t("hours_run")}</td><td>${j.hours_run??"—"}</td></tr>
-      <tr><td><span class="mut">${t("type_job")}:</span> <b>${jtLabel(j.job_type,j.tractors&&j.tractors.model)}</b>${j.warranty_prf_no?` · PRF ${esc(j.warranty_prf_no)}`:""}</td><td class="mut">${t("mech")}</td><td>${esc(j.mechanics?j.mechanics.name:"—")}</td></tr>
+      <tr><td><span class="mut">${t("type_job")}:</span> <b>${jtLabel(j.job_type,j.tractors&&j.tractors.model)}</b>${svcTag(parts.some(p=>isSvcPart(p.description)))}${j.warranty_prf_no?` · PRF ${esc(j.warranty_prf_no)}`:""}</td><td class="mut">${t("mech")}</td><td>${esc(j.mechanics?j.mechanics.name:"—")}</td></tr>
     </table>
     <div class="sec">${t("work_order")}</div>
     <table><tr><th>${t("problems")}</th><th>${t("observ")}</th><th>${t("action")}</th></tr>
@@ -790,7 +798,8 @@ async function vSlip(id){
       <tr><td><b>${t("grand")}</b></td><td class="num"><b>${rs(partsTotal(parts)+inn+out)}</b></td></tr>
     </table>
     ${j.remarks?`<p><span class="mut">${t("remarks")}:</span> ${esc(j.remarks)}</p>`:""}
-    ${j.status==="closed"?`<p>${t("next_date")}: <b>${t("slot")(j.next_service_slot,j.tractors&&j.tractors.model)} · ${fDate(j.next_service_due)}</b></p>`:""}
+    ${j.closed_by_name?`<p><span class="mut">${t("closed_by")}:</span> <b>${esc(j.closed_by_name)}</b></p>`:""}
+    ${j.status==="closed"&&j.next_service_due?`<p>${t("next_date")}: <b>${t("slot")(j.next_service_slot,j.tractors&&j.tractors.model)} · ${fDate(j.next_service_due)}</b></p>`:""}
     <div style="display:flex;justify-content:space-between;margin-top:34px"><span>____________________<br>${t("sign_ws")}</span><span style="text-align:right">____________________<br>${t("sign_cust")}</span></div>
     <p class="mut" style="font-size:11px">${t("not_bill")}</p>
   </div>`;
@@ -798,10 +807,10 @@ async function vSlip(id){
 function copySlip(){
   const {j,parts,lab}=window._slip,c=j.customers,tr=j.tractors;
   const txt=[`${CTX.dealer.name} – ${j.card_kind==="MSTW"?t("slip_mstw"):t("slip_jc")} ${j.job_no}`,`${t("name")}: ${c.name} (${c.phone||"-"})`,`${t("tractor")}: ${tr.model} | ${t("engine")}: ${tr.engine_no||"-"} | ${t("chassis")}: ${tr.chassis_no||"-"}`,
-    `${t("type_job")}: ${t("jt")[j.job_type]} | ${t("hours_run")}: ${j.hours_run??"-"} | ${t("mech")}: ${j.mechanics?j.mechanics.name:"-"}`,`${t("date_in")}: ${fDT(j.date_in)} | ${t("date_out")}: ${fDT(j.date_out)}`,"",
+    `${t("type_job")}: ${t("jt")[j.job_type]}${parts.some(p=>isSvcPart(p.description))?" ("+t("svc")+")":""} | ${t("hours_run")}: ${j.hours_run??"-"} | ${t("mech")}: ${j.mechanics?j.mechanics.name:"-"}`,`${t("date_in")}: ${fDT(j.date_in)} | ${t("date_out")}: ${fDT(j.date_out)}${j.closed_by_name?` | ${t("closed_by")}: ${j.closed_by_name}`:""}`,"",
     ...parts.map((p,i)=>`${i+1}. ${p.description} [${p.part_no||"-"}] x${Number(p.qty)} @ ${p.rate} = ${p.is_foc?t("wty"):Number(p.qty)*Number(p.rate)}`),
     ...lab.map(l=>`${t("labour_h")}: ${l.description} = ${l.amount}`),"",`${t("grand")}: ${partsTotal(parts)+labTotal(lab)}`,
-    j.status==="closed"?`${t("next_date")}: ${t("slot")(j.next_service_slot,j.tractors&&j.tractors.model)} – ${fDate(j.next_service_due)}`:""].join("\n");
+    j.status==="closed"&&j.next_service_due?`${t("next_date")}: ${t("slot")(j.next_service_slot,j.tractors&&j.tractors.model)} – ${fDate(j.next_service_due)}`:""].join("\n");
   navigator.clipboard.writeText(txt).then(()=>toast(t("copied"))).catch(()=>toast(t("copy_fail")));
 }
 
@@ -938,7 +947,7 @@ const fDur=ms=>{const h=ms/3600000;return h<24?h.toFixed(1)+" "+t("hr"):(h/24).t
 let RP={p:"month",k:""};
 async function repData(p,k){
   const [a,b]=periodRange(p),A=enc(a.toISOString()),B=enc(b.toISOString()),kf=k?`&card_kind=eq.${k}`:"";
-  const sel="id,job_no,card_kind,job_type,status,date_in,date_out,entered_by_name,mechanic_id,tractor_id,customers(name,phone),tractors(model),mechanics(name)";
+  const sel="id,job_no,card_kind,job_type,status,is_service,closed_by_name,date_in,date_out,entered_by_name,mechanic_id,tractor_id,customers(name,phone),tractors(model),mechanics(name)";
   const [opened,closed,openNow,due]=await Promise.all([
     get(`job_cards?select=${sel}&date_in=gte.${A}&date_in=lt.${B}&status=neq.cancelled${kf}&order=date_in`),
     get(`job_cards?select=${sel}&status=eq.closed&date_out=gte.${A}&date_out=lt.${B}${kf}&order=date_out`),
@@ -950,7 +959,7 @@ async function repData(p,k){
     const [l1,b1]=await Promise.all([get(`job_card_parts?select=*&job_card_id=in.(${q})&order=issued_at`),get(`job_card_labour?select=*&job_card_id=in.(${q})&order=id`)]);
     lines=lines.concat(l1);lab=lab.concat(b1)}
   const T={};tot.forEach(x=>T[x.job_card_id]=Number(x.parts_total||0)+Number(x.labour_total||0)+Number(x.outside_total||0));
-  Object.values(J).forEach(j=>j.total=T[j.id]||0);
+  [...opened,...closed,...openNow].forEach(j=>j.total=T[j.id]||0);  // same card can sit in several lists as separate objects
   return {a,b,opened,closed,openNow,due,tot:tot.filter(x=>cids.includes(x.job_card_id)),lines,lab,J};
 }
 function repChips(view_,extra){
@@ -1002,15 +1011,17 @@ async function vReports(){
   <div class="card"><h2>${t("r_types")}</h2>${table([t("type_job"),t("r_jobs")],count(opened,j=>j.job_type).map(([k,n])=>({c:[t("jt")[k],n+" ›"],go:det("type",k)})))}</div>
   <div class="card"><h2>${t("r_top")}</h2>${table([t("part"),t("qty"),t("amount")],Object.entries(top).sort((x,y)=>y[1].q-x[1].q).slice(0,15).map(([k,x])=>({c:[`${esc(x.d)}<div class="mut">${esc(x.pn||"—")}</div>`,x.q,rs(x.v)+" ›"],go:det("part",k)})))}</div>
   <div class="card"><h2>${t("r_daily")}</h2>${table([t("date"),t("r_opened")],daily.map(([d,n])=>({c:[fDate(d),n+" ›"],go:det("day",d)})))}</div>
+  <div class="card"><h2>${t("r_svc")}</h2>${table(["",t("r_jobs"),t("total")],[[1,t("svc_only")],[0,t("rep_only")]].map(([k,l])=>{const L=closed.filter(j=>!!j.is_service===!!k);return {c:[k?svcTag(1):l,L.length,rs(L.reduce((s,j)=>s+j.total,0))+" ›"],go:det("svc",String(k))}}))}</div>
+  <div class="card"><h2>${t("r_closedby")}</h2>${table([t("name"),t("r_jobs"),t("r_svcs")],count(closed,j=>j.closed_by_name||"—").map(([k,n])=>({c:[esc(k),n,closed.filter(j=>(j.closed_by_name||"—")===k&&j.is_service).length+" ›"],go:det("closedby",k)})))}</div>
   <div class="card"><h2>${t("r_entry")}</h2>${table([t("name"),t("r_jobs")],count(opened,j=>j.entered_by_name||"—").map(([k,n])=>({c:[esc(k),n+" ›"],go:det("entry",k)})))}</div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center"><span>${t("r_due")}: <b>${due.length}</b></span><button class="btn ghost sm" onclick="go('reminders')">${t("open_b")}</button></div>`;
 }
 // Build the record list behind one metric: {title, head, rows:[{c:[display cells], x:[excel cells], id, st}]}
 function detailOf(R,m,key){
   const N=v=>Math.round(Number(v||0)*100)/100;
-  const jobsT=(list,title)=>({title,head:[t("job_no"),t("kind"),t("date_in"),t("date_out"),t("name"),t("tractor"),t("type_job"),t("mech"),t("total")],
-    rows:list.map(j=>({id:j.id,st:j.status,c:[`<b>${esc(j.job_no)}</b>`,kindTag(j.card_kind),fDate(j.date_in),fDate(j.date_out),esc(j.customers&&j.customers.name),esc(j.tractors&&j.tractors.model),t("jt")[j.job_type],esc(j.mechanics?j.mechanics.name:"—"),rs(j.total)],
-      x:[j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),fDT(j.date_in),j.date_out?fDT(j.date_out):"",j.customers&&j.customers.name,j.tractors&&j.tractors.model,t("jt")[j.job_type],j.mechanics?j.mechanics.name:"",N(j.total)]}))});
+  const jobsT=(list,title)=>({title,head:[t("job_no"),t("kind"),t("date_in"),t("date_out"),t("name"),t("tractor"),t("type_job"),t("svc"),t("mech"),t("closed_by"),t("total")],
+    rows:list.map(j=>({id:j.id,st:j.status,c:[`<b>${esc(j.job_no)}</b>`,kindTag(j.card_kind),fDate(j.date_in),fDate(j.date_out),esc(j.customers&&j.customers.name),esc(j.tractors&&j.tractors.model),t("jt")[j.job_type],svcTag(j.is_service)||"",esc(j.mechanics?j.mechanics.name:"—"),esc(j.closed_by_name||"—"),rs(j.total)],
+      x:[j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),fDT(j.date_in),j.date_out?fDT(j.date_out):"",j.customers&&j.customers.name,j.tractors&&j.tractors.model,t("jt")[j.job_type],j.is_service?t("svc"):"",j.mechanics?j.mechanics.name:"",j.closed_by_name||"",N(j.total)]}))});
   const jn=id=>(R.J[id]||{}).job_no||"",js=id=>(R.J[id]||{}).status;
   const partsT=(list,title,withExtra)=>({title,head:[t("job_no"),t("date"),t("part_no"),t("part"),t("qty"),t("mrp"),t("rate"),t("amount"),...(withExtra?[t("extra")]:[])],
     rows:list.map(l=>{const v=l.is_foc?0:l.qty*l.rate,ex=l.mrp_at_issue!=null?(l.rate-l.mrp_at_issue)*l.qty:0;
@@ -1032,6 +1043,8 @@ function detailOf(R,m,key){
     case "part":return partsT(R.lines.filter(l=>(l.part_no||l.description)===key),`${t("part")}: ${key}`);
     case "day":return jobsT(R.opened.filter(j=>ymd(j.date_in)===key),`${t("date")}: ${fDate(key)}`);
     case "entry":return jobsT(R.opened.filter(j=>(j.entered_by_name||"—")===key),`${t("entered_by")}: ${key}`);
+    case "svc":return jobsT(R.closed.filter(j=>!!j.is_service===(key==="1")),key==="1"?t("svc_only"):t("rep_only"));
+    case "closedby":return jobsT(R.closed.filter(j=>(j.closed_by_name||"—")===key),`${t("closed_by")}: ${key}`);
   }
   return {title:"",head:[],rows:[]};
 }
@@ -1067,8 +1080,8 @@ async function exportMonthly(btn){
     const N=v=>Math.round(Number(v||0)*100)/100;
     const G=(v)=>({v,s:2}),H=(v)=>({v,s:3}),T=v=>({v:v==null?"":v,s:4}),Dd=v=>v?{d:pd(v),s:5}:{v:"",s:4},Dt=v=>v?{d:new Date(v),s:6}:{v:"",s:4},M=v=>({v:N(v),s:8}),I=v=>v==null||v===""?{v:"",s:4}:{v:Number(v),s:9};
     const sumBy=(arr,id,f)=>N(arr.filter(x=>x.job_card_id===id).reduce((s,x)=>s+f(x),0));
-    const grp=["Sr No","Customer Details","","","Tractor Details","","","","","","Customer Concern Data","","","","Visit Details","","","Dealer/Branch/Region Detail","","","Concern Details","","","","","","Revenue","","","","Closing","","Action By",""];
-    const hdr=["Sr No","Customer Name","Village","Contact Number","Date of Delivery","Model","Chassis No","Engine No","Current HMR","Application","Date of Complaint & Time","Complaint Description","Decision Date & Time","DOR (Appointment Date)","Job Card Opening Date & Time","Status","Remark If delayed","Country","Dealer","Location","Type of Job","Aggregate","Sub Aggregate","Failure Statement","Observation/ L-1 Analysis","Action Taken","Parts (NPR)","Lube (NPR)","Labour (NPR)","Total (NPR)","Job Card Closing Date & Time","TAT in Hours","Mechanic Name","Remark if any"];
+    const grp=["Sr No","Customer Details","","","Tractor Details","","","","","","Customer Concern Data","","","","Visit Details","","","Dealer/Branch/Region Detail","","","Concern Details","","","","","","Revenue","","","","Closing","","Action By","","Service / Closed by",""];
+    const hdr=["Sr No","Customer Name","Village","Contact Number","Date of Delivery","Model","Chassis No","Engine No","Current HMR","Application","Date of Complaint & Time","Complaint Description","Decision Date & Time","DOR (Appointment Date)","Job Card Opening Date & Time","Status","Remark If delayed","Country","Dealer","Location","Type of Job","Aggregate","Sub Aggregate","Failure Statement","Observation/ L-1 Analysis","Action Taken","Parts (NPR)","Lube (NPR)","Labour (NPR)","Total (NPR)","Job Card Closing Date & Time","TAT in Hours","Mechanic Name","Remark if any","Service (TAFE Miles oil)","Closed By"];
     const rows=[grp.map((g,i)=>i===0?{v:"",s:2}:G(g)),hdr.map(H)];
     jobs.forEach((j,i)=>{const r=i+3,c=j.customers||{},tr=j.tractors||{},closed=j.status==="closed";
       const ph=String(c.phone||"").replace(/\D/g,"");
@@ -1076,13 +1089,13 @@ async function exportMonthly(btn){
         Dt(j.complaint_at||j.date_in),T(j.problems_reported),Dt(j.decision_at),Dd(j.appointment_date),Dt(j.date_in),T(j.delay_reason?"Delayed":closed?"Closed":"Open"),T(j.delay_reason),
         T(D.country||"Nepal"),T(D.name),T(D.location||""),T(RTYPE(j.job_type)),T(j.aggregate),T(j.sub_aggregate),T(j.failure_statement),T(j.observations),T(j.action_taken),
         M(sumBy(parts,j.id,p=>p.is_foc||p.is_lube?0:p.qty*p.rate)),M(sumBy(parts,j.id,p=>p.is_foc||!p.is_lube?0:p.qty*p.rate)),M(sumBy(lab,j.id,l=>Number(l.amount||0))),{f:`SUM(AA${r}:AC${r})`,s:8},
-        Dt(closed?j.date_out:null),closed?{f:`(AE${r}-O${r})*24`,s:7}:{v:"",s:4},T(j.mechanics?j.mechanics.name:""),T([j.job_no,j.remarks].filter(Boolean).join(" · "))]);
+        Dt(closed?j.date_out:null),closed?{f:`(AE${r}-O${r})*24`,s:7}:{v:"",s:4},T(j.mechanics?j.mechanics.name:""),T([j.job_no,j.remarks].filter(Boolean).join(" · ")),T(j.is_service?"Service":""),T(j.closed_by_name||"")]);
     });
     const one=a.getMonth()===new Date(b.getTime()-1).getMonth()&&a.getFullYear()===new Date(b.getTime()-1).getFullYear();
     const sheet=one?a.toLocaleDateString("en-GB",{month:"short"})+" "+String(a.getFullYear()).slice(2):"Report";
     const blob=XLSX_W([{name:sheet,rows,freezeRows:2,heights:{2:38.25},
-      merges:["B1:D1","E1:J1","K1:N1","O1:Q1","R1:T1","U1:Z1","AA1:AD1","AE1:AF1"],
-      widths:[6,22,16,13,11,14,16,16,9,13,17,24,16,14,17,10,18,9,18,12,22,14,14,22,24,34,11,11,11,11,18,9,18,18]}]);
+      merges:["B1:D1","E1:J1","K1:N1","O1:Q1","R1:T1","U1:Z1","AA1:AD1","AE1:AF1","AI1:AJ1"],
+      widths:[6,22,16,13,11,14,16,16,9,13,17,24,16,14,17,10,18,9,18,12,22,14,14,22,24,34,11,11,11,11,18,9,18,18,14,18]}]);
     const fn=`${D.name} - Monthly Workshop Report - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
     const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
     toast(t("exported"));
@@ -1108,20 +1121,21 @@ async function exportReport(btn){
     const types={};jobs.filter(j=>inPer(j.date_in)).forEach(j=>types[j.job_type]=(types[j.job_type]||0)+1);
     const per=`${fDate(a)} – ${fDate(new Date(b.getTime()-1))}`;
     const summary=[[H(`${D.name} – ${t("rp_h")}`)],[per+(RP.k?" · "+(RP.k==="MSTW"?t("mstw"):t("jc")):"")],[],
-      [H(t("r_opened")),jobs.filter(j=>inPer(j.date_in)).length],[H(t("r_closed")),closed.length],[],
+      [H(t("r_opened")),jobs.filter(j=>inPer(j.date_in)).length],[H(t("r_closed")),closed.length],[t("svc_only"),closed.filter(j=>j.is_service).length],[t("rep_only"),closed.filter(j=>!j.is_service).length],[],
       [H(t("r_income"))],[t("r_parts"),sum(cT,x=>x.parts_total)],[t("r_labour"),sum(cT,x=>x.labour_total)],[t("r_outside"),sum(cT,x=>x.outside_total)],
       [H(t("total")),sum(cT,x=>Number(x.parts_total)+Number(x.labour_total)+Number(x.outside_total))],
       [t("r_markup"),sum(cP.filter(l=>!l.is_foc&&l.mrp_at_issue!=null),l=>(l.rate-l.mrp_at_issue)*l.qty)],[t("r_wty"),sum(cP.filter(l=>l.is_foc),l=>l.qty*l.rate)],[],
       [H(t("r_mech")),H(t("r_jobs")),H(t("total")),H(t("r_avg")+" ("+t("hr")+")")],
       ...Object.entries(mech).sort((x,y)=>y[1].n-x[1].n).map(([k,v])=>[k,v.n,N(v.v),N(v.ms/v.n/3600000)]),[],
-      [H(t("r_types")),H(t("r_jobs"))],...Object.entries(types).map(([k,n])=>[t("jt")[k],n])];
-    const jobRows=[[t("job_no"),t("kind"),t("date_in"),t("date_out"),"Status",t("type_job"),t("name"),t("phone"),t("address"),t("tractor"),t("engine"),t("chassis"),t("reg"),t("mech"),t("hours_run"),t("entered_by"),t("r_parts"),t("r_labour"),t("r_outside"),t("total"),t("problems"),t("observ"),t("action"),t("remarks")].map(H),
+      [H(t("r_types")),H(t("r_jobs"))],...Object.entries(types).map(([k,n])=>[t("jt")[k],n]),[],
+      [H(t("r_closedby")),H(t("r_jobs")),H(t("r_svcs"))],...Object.entries(closed.reduce((m,j)=>{const k=j.closed_by_name||"—";(m[k]=m[k]||[0,0])[0]++;if(j.is_service)m[k][1]++;return m},{})).sort((x,y)=>y[1][0]-x[1][0]).map(([k,v])=>[k,v[0],v[1]])];
+    const jobRows=[[t("job_no"),t("kind"),t("date_in"),t("date_out"),"Status",t("type_job"),t("svc"),t("name"),t("phone"),t("address"),t("tractor"),t("engine"),t("chassis"),t("reg"),t("mech"),t("hours_run"),t("entered_by"),t("closed_by"),t("r_parts"),t("r_labour"),t("r_outside"),t("total"),t("problems"),t("observ"),t("action"),t("remarks")].map(H),
       ...jobs.map(j=>{const x=T[j.id]||{},c=j.customers||{},tr=j.tractors||{};const P=N(x.parts_total),L=N(x.labour_total),O=N(x.outside_total);
-        return [j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),dt(j.date_in),dt(j.date_out),j.status==="open"?t("open"):t("done"),t("jt")[j.job_type],c.name,c.phone,c.address,tr.model,tr.engine_no,tr.chassis_no,tr.reg_no,j.mechanics?j.mechanics.name:"",j.hours_run??"",j.entered_by_name,P,L,O,N(P+L+O),j.problems_reported,j.observations,j.action_taken,j.remarks]})];
+        return [j.job_no,j.card_kind==="MSTW"?t("mstw"):t("jc"),dt(j.date_in),dt(j.date_out),j.status==="open"?t("open"):t("done"),t("jt")[j.job_type],j.is_service?t("svc"):"",c.name,c.phone,c.address,tr.model,tr.engine_no,tr.chassis_no,tr.reg_no,j.mechanics?j.mechanics.name:"",j.hours_run??"",j.entered_by_name,j.closed_by_name||"",P,L,O,N(P+L+O),j.problems_reported,j.observations,j.action_taken,j.remarks]})];
     const partRows=[[t("job_no"),t("date"),t("part_no"),t("part"),t("qty"),t("mrp"),t("rate"),t("amount"),t("foc"),t("entered_by")].map(H),
       ...parts.map(l=>[(J[l.job_card_id]||{}).job_no,dt(l.issued_at),l.part_no||"",l.description,N(l.qty),l.mrp_at_issue!=null?N(l.mrp_at_issue):"",N(l.rate),l.is_foc?0:N(l.qty*l.rate),l.is_foc?"✓":"",l.issued_by_name||""])];
     const labRows=[[t("job_no"),t("lab_desc"),t("amount"),t("outside")].map(H),...lab.map(l=>[(J[l.job_card_id]||{}).job_no,l.description,N(l.amount),l.is_outside?"✓":""])];
-    const blob=XLSX_W([{name:t("rp_h"),widths:[34,14,14,14],rows:summary},{name:"Job cards",widths:[11,10,18,18,9,20,24,13,22,16,16,16,14,18,9,16,11,11,11,11,30,30,30,24],rows:jobRows},
+    const blob=XLSX_W([{name:t("rp_h"),widths:[34,14,14,14],rows:summary},{name:"Job cards",widths:[11,10,18,18,9,20,10,24,13,22,16,16,16,14,18,9,16,16,11,11,11,11,30,30,30,24],rows:jobRows},
       {name:"Parts",widths:[11,18,16,40,7,11,11,11,14,16],rows:partRows},{name:"Labour",widths:[11,34,11,14],rows:labRows}]);
     const fn=`${D.name} - ${t("rp_h")} - ${ymd(a)} to ${ymd(new Date(b.getTime()-1))}.xlsx`;
     const u=URL.createObjectURL(blob),el=document.createElement("a");el.href=u;el.download=fn;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
