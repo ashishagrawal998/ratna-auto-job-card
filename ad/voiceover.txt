@@ -1,0 +1,19 @@
+JobCardBook – Nepali voiceover script (energetic, friendly; ~2.5 words per second)
+
+=== 20-second version ===
+[0–3 s]   अझै पनि कागजको रजिस्टरमा काम?
+[3–7 s]   अब JobCardBook — वर्कशपको सबै काम, तपाईंको मोबाइलमै!
+[7–10 s]  नम्बर टाइप गर्नुहोस्, ग्राहक एकै सेकेन्डमा!
+[10–13 s] जब कार्ड, पार्ट्स र ज्याला — सधैं सही MRP मा।
+[13–16 s] सर्भिस रिमाइन्डर एक ट्यापमा, रिपोर्ट Excel मा।
+[16–20 s] jobcardbook.com — २४ घण्टा सपोर्ट, नि:शुल्क डेमो। आजै सुरु गर्नुहोस्!
+
+=== 15-second version ===
+[0–2.5 s]  अझै कागजको रजिस्टर?
+[2.5–5.5 s] अब सबै काम मोबाइलमै — JobCardBook!
+[5.5–8 s]  ग्राहक एक सेकेन्डमा खोज्नुहोस्।
+[8–11 s]   जब कार्ड, पार्ट्स, सही MRP।
+[11–15 s]  jobcardbook.com — नि:शुल्क डेमो, आजै सुरु गर्नुहोस्!
+
+Notes for recording: say "JobCardBook" as "जब-कार्ड-बुक". Keep the music at about -20 dB under the voice
+(see README, "Adding a voice").

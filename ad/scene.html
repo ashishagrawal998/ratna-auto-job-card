@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<title>JobCardBook ad</title>
+<!--
+  JobCardBook promo – animated scene, rendered frame by frame by render.js.
+  URL options:  ?mode=v (1080x1920) | h (1920x1080)   &cut=20 | 15   &t=<seconds> (preview one moment)
+  All data shown here is made up. Edit TEXT below to change wording, COLORS for the palette.
+-->
+<style>
+@font-face{font-family:Mukta;src:url(fonts/Mukta-Regular.ttf);font-weight:400}
+@font-face{font-family:Mukta;src:url(fonts/Mukta-SemiBold.ttf);font-weight:600}
+@font-face{font-family:Mukta;src:url(fonts/Mukta-Bold.ttf);font-weight:700}
+@font-face{font-family:Mukta;src:url(fonts/Mukta-ExtraBold.ttf);font-weight:800}
+:root{--bg:#0a0f24;--indigo:#6366f1;--violet:#8b5cf6;--pink:#f472b6;--amber:#f59e0b;--green:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:Mukta,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--bg)}
+.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.55;will-change:transform}
+.abs{position:absolute;will-change:transform,opacity}
+/* captions */
+#cap{position:absolute;text-align:center;font-weight:800;line-height:1.15;letter-spacing:-.5px;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+#cap .u{display:block;height:10px;border-radius:6px;margin:22px auto 0;background:linear-gradient(90deg,var(--indigo),var(--violet),var(--pink))}
+/* brand bug */
+#bug{display:flex;align-items:center;gap:16px;font-weight:800}
+#bug .w b{color:#a5b4fc}
+/* paper */
+.paper{position:absolute;background:#efe3c2;border-radius:10px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);
+  background-image:linear-gradient(90deg,transparent 88px,#e57373 88px,#e57373 92px,transparent 92px),repeating-linear-gradient(180deg,transparent 0 62px,#9fb3c8 62px 64px);
+  color:#2b3a55;font-weight:600;overflow:hidden}
+.paper .ln{position:absolute;left:110px;font-size:38px;white-space:nowrap;transform:rotate(-1deg)}
+.paper .x{position:absolute;height:5px;background:#b91c1c;border-radius:3px;opacity:.85}
+.paper .stain{position:absolute;width:190px;height:190px;border-radius:50%;border:16px solid rgba(120,72,30,.22)}
+/* phone */
+#phone{background:#f8fafc;border-radius:84px;padding:22px;box-shadow:0 60px 120px -40px rgba(99,102,241,.75),0 0 0 2px rgba(255,255,255,.6) inset}
+#screen{position:relative;width:100%;height:100%;border-radius:64px;overflow:hidden;background:#eef2f7}
+.notch{position:absolute;top:18px;left:50%;width:150px;height:34px;margin-left:-75px;border-radius:20px;background:#0f172a;z-index:5}
+.scr{position:absolute;inset:0;color:#0f172a}
+.top{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:80px 40px 34px}
+.top small{font-size:26px;opacity:.85;font-weight:600}
+.top h4{font-size:44px;font-weight:800;line-height:1.1;margin-top:4px}
+.pad{padding:26px 28px;display:flex;flex-direction:column;gap:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat{background:#fff;border-radius:26px;padding:22px 8px;text-align:center;box-shadow:0 6px 18px -10px rgba(15,23,42,.35)}
+.stat b{display:block;font-size:64px;line-height:1;font-weight:800;color:#6366f1}
+.stat span{font-size:24px;color:#64748b;font-weight:600}
+.card{background:#fff;border-radius:26px;padding:24px 26px;box-shadow:0 6px 18px -10px rgba(15,23,42,.35)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card .t{font-size:32px;font-weight:700}
+.card .s{font-size:25px;color:#64748b;font-weight:600}
+.tag{font-size:22px;font-weight:800;padding:4px 14px;border-radius:12px;background:#fef3c7;color:#92400e;white-space:nowrap}
+.tag.g{background:#d1fae5;color:#065f46}.tag.b{background:#eef2ff;color:#3730a3}
+.search{background:#fff;border:3px solid #6366f1;border-radius:24px;padding:20px 24px;font-size:34px;font-weight:700;display:flex;align-items:center;gap:14px}
+.caret{display:inline-block;width:3px;height:40px;background:#6366f1}
+.line{display:flex;justify-content:space-between;font-size:29px;font-weight:600;color:#334155;padding:14px 0;border-top:2px dashed #e2e8f0}
+.total{display:flex;justify-content:space-between;font-size:36px;font-weight:800;padding-top:14px;border-top:3px solid #0f172a}
+.btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:800;font-size:30px;text-align:center;border-radius:22px;padding:20px}
+.chat{background:#e7ddd3;position:absolute;inset:0;top:190px;padding:30px 26px}
+.bub{background:#dcf8c6;border-radius:26px 26px 6px 26px;padding:22px 24px;font-size:28px;font-weight:600;color:#0f172a;box-shadow:0 4px 10px -6px rgba(0,0,0,.4);margin-left:60px}
+.bub small{display:block;text-align:right;font-size:20px;color:#64748b;margin-top:6px}
+.wa{display:flex;align-items:center;gap:12px;background:#075e54;color:#fff;padding:78px 28px 26px;font-size:32px;font-weight:700}
+.wa i{width:56px;height:56px;border-radius:50%;background:#cbd5e1;display:grid;place-items:center;font-style:normal;color:#075e54;font-weight:800}
+/* report card */
+#report{background:#131b38;border:2px solid rgba(255,255,255,.12);border-radius:40px;padding:34px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
+#report h5{font-size:36px;font-weight:800;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.bars{display:flex;align-items:flex-end;gap:18px;height:260px;border-bottom:3px solid rgba(255,255,255,.2)}
+.bar{flex:1;border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#a78bfa,#6366f1)}
+.xls{width:84px;height:84px;border-radius:18px;background:#16a34a;display:grid;place-items:center;font-weight:800;font-size:40px;color:#fff;box-shadow:0 10px 24px -8px rgba(22,163,74,.8)}
+/* CTA */
+.badge{display:inline-flex;align-items:center;gap:12px;font-weight:800;border-radius:999px;padding:16px 30px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.22)}
+.url{font-weight:800;letter-spacing:.5px}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(167,139,250,.55),transparent 60%);opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="b1" style="background:#6366f1"></div>
+  <div class="blob" id="b2" style="background:#8b5cf6"></div>
+  <div class="blob" id="b3" style="background:#f472b6"></div>
+
+  <!-- scene 1: paper register -->
+  <div id="paperA" class="paper abs"></div>
+  <div id="paperB" class="paper abs"></div>
+
+  <!-- brand bug / logo -->
+  <div id="bug" class="abs">
+    <svg id="logoSvg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#6366f1"/><rect x="17" y="13" width="30" height="38" rx="5" fill="#fff"/><path d="M24 25h16M24 32h16M24 39h9" stroke="#6366f1" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="45" r="9" fill="#f59e0b"/><path d="M41 45l3 3 5-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="w">JobCard<b>Book</b></div>
+  </div>
+
+  <!-- phone -->
+  <div id="phone" class="abs"><div id="screen">
+    <div class="notch"></div>
+    <!-- home -->
+    <div class="scr" id="sHome">
+      <div class="top"><small>डेमो वर्कशप · जब कार्ड</small><h4>नमस्ते 👋</h4></div>
+      <div class="pad">
+        <div class="stats">
+          <div class="stat"><b id="n1">0</b><span>सक्रिय काम</span></div>
+          <div class="stat"><b id="n2">0</b><span>आज सकियो</span></div>
+          <div class="stat"><b id="n3" style="color:#d97706">0</b><span>सर्भिस बाँकी</span></div>
+        </div>
+        <div class="card hc" id="h1"><div class="row"><span class="t">JC-101 · राम बहादुर</span><span class="tag">शोरुम</span></div><div class="s">Model X · नि:शुल्क सर्भिस २</div></div>
+        <div class="card hc" id="h2"><div class="row"><span class="t">HS-12 · हरि प्रसाद</span><span class="tag g">घर सेवा</span></div><div class="s">मिस्त्री साइटमा पुगे</div></div>
+        <div class="card hc" id="h3"><div class="row"><span class="t">रिमाइन्डर तयार</span><span class="tag b">SMS · WhatsApp</span></div><div class="s">अर्को हप्ता ८ जना ग्राहक</div></div>
+        <div class="btn hc" id="h4">+ नयाँ जब कार्ड</div>
+      </div>
+    </div>
+    <!-- search -->
+    <div class="scr" id="sSearch">
+      <div class="top"><small>ग्राहक / ट्र्याक्टर खोज्नुहोस्</small><h4>खोज</h4></div>
+      <div class="pad">
+        <div class="search">🔎 <span id="typed"></span><span class="caret" id="caret"></span></div>
+        <div class="card" id="cust">
+          <div class="row"><span class="t" style="font-size:38px">राम बहादुर</span><span class="tag g">✓ भेटियो</span></div>
+          <div class="s" style="margin-top:6px">📞 98XXXXXXXX</div>
+          <div class="s">🚜 Model X · इन्जिन DEMO-001</div>
+          <div class="line" style="margin-top:12px"><span>अर्को सर्भिस</span><span style="color:#6366f1">नि:शुल्क सर्भिस २</span></div>
+          <div class="line"><span>पछिल्लो सर्भिस</span><span>३ महिना अघि</span></div>
+        </div>
+        <div class="btn" id="startBtn">▶ नयाँ जब कार्ड खोल्नुहोस्</div>
+      </div>
+    </div>
+    <!-- job card -->
+    <div class="scr" id="sJob">
+      <div class="top"><small>जब कार्ड</small><h4>JC-101 · राम बहादुर</h4></div>
+      <div class="pad">
+        <div class="card">
+          <div class="row" style="margin-bottom:6px"><span class="t">पार्ट्स र ज्याला</span><span class="tag g" id="mrp">✓ सही MRP</span></div>
+          <div class="line jl" id="j1"><span>इन्जिन आयल</span><span>रु 5,000</span></div>
+          <div class="line jl" id="j2"><span>आयल फिल्टर</span><span>रु 800</span></div>
+          <div class="line jl" id="j3"><span>ज्याला</span><span>रु 1,000</span></div>
+          <div class="total"><span>जम्मा</span><span id="tot">रु 0</span></div>
+        </div>
+        <div class="card" id="nextSv"><div class="row"><span class="s">अर्को सर्भिस</span><span class="t" style="font-size:30px;color:#6366f1">४०० घण्टा</span></div></div>
+        <div class="btn" id="doneBtn">✔ काम सकियो</div>
+      </div>
+    </div>
+    <!-- reminder -->
+    <div class="scr" id="sRem">
+      <div class="wa"><i>सी</i>सीता देवी</div>
+      <div class="chat">
+        <div class="bub" id="bub">नमस्ते सीता देवी जी 🙏<br>तपाईंको ट्र्याक्टरको सर्भिस अर्को हप्ता छ। डेमो वर्कशपमा आउनुहोला।<small>१०:३० ✓✓</small></div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- report card -->
+  <div id="report" class="abs">
+    <h5><span>📊 मासिक रिपोर्ट</span><span class="xls" id="xls">X</span></h5>
+    <div class="bars"><div class="bar" id="r1"></div><div class="bar" id="r2"></div><div class="bar" id="r3"></div><div class="bar" id="r4"></div><div class="bar" id="r5"></div></div>
+  </div>
+
+  <!-- CTA -->
+  <div id="cta" class="abs" style="text-align:center">
+    <div id="ctaLogo" style="display:flex;align-items:center;justify-content:center;gap:24px;font-weight:800">
+      <svg viewBox="0 0 64 64" id="ctaSvg"><rect width="64" height="64" rx="16" fill="#6366f1"/><rect x="17" y="13" width="30" height="38" rx="5" fill="#fff"/><path d="M24 25h16M24 32h16M24 39h9" stroke="#6366f1" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="45" r="9" fill="#f59e0b"/><path d="M41 45l3 3 5-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>JobCard<b style="color:#a5b4fc">Book</b></span>
+    </div>
+    <div class="url" id="url">jobcardbook.com</div>
+    <div id="badges" style="display:flex;gap:22px;justify-content:center;flex-wrap:wrap">
+      <span class="badge" id="bd1">🛟 २४×७ सपोर्ट</span>
+      <span class="badge" id="bd2">✨ नि:शुल्क डेमो</span>
+    </div>
+  </div>
+
+  <div id="cap"><span id="capText"></span><span class="u" id="capU"></span></div>
+  <div id="flash"></div>
+</div>
+
+<script>
+// ---------------------------------------------------------------- settings
+const Q = new URLSearchParams(location.search);
+const MODE = Q.get("mode") || "v";            // v = 1080x1920, h = 1920x1080
+const CUT = Q.get("cut") || "20";             // 20 or 15 seconds
+const W = MODE === "v" ? 1080 : 1920, H = MODE === "v" ? 1920 : 1080;
+const TEXT = {
+  s1: "अझै कागजको रजिस्टर?",
+  s2: "अब सबै काम मोबाइलमै",
+  s3: "ग्राहक एक सेकेन्डमा खोज्नुहोस्",
+  s4: "जब कार्ड, पार्ट्स, सही MRP",
+  s5: "सर्भिस रिमाइन्डर र रिपोर्ट",
+  s6: "आजै सुरु गर्नुहोस्!",
+};
+// scene start/end in seconds
+const SC = CUT === "15"
+  ? { s1:[0,2.5], s2:[2.5,5.5], s3:[5.5,8], s4:[8,11], s5:null, s6:[11,15], end:15 }
+  : { s1:[0,3],   s2:[3,7],     s3:[7,10],  s4:[10,13], s5:[13,16], s6:[16,20], end:20 };
+window.SCENES = SC;
+
+// ---------------------------------------------------------------- helpers
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = p => 1 - Math.pow(1 - p, 3);
+const eInOut = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const back = p => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); };
+const spring = p => p >= 1 ? 1 : 1 - Math.exp(-7 * p) * Math.cos(9 * p);
+const css = (el, o) => { for (const k in o) el.style[k] = o[k]; };
+const inScene = (t, s, pad = 0) => s && t >= s[0] - pad && t < s[1] + pad;
+const npNum = n => String(n).replace(/\d/g, d => "०१२३४५६७८९"[d]);
+
+// ---------------------------------------------------------------- layout
+const V = MODE === "v";
+document.body.style.width = W + "px"; document.body.style.height = H + "px";
+const L = V ? {
+  cap: { x: 540, y: 300, w: 980, size: 92 },
+  bug: { x: 540, y: 150, size: 56 },
+  phone: { x: 540, y: 1220, w: 640, h: 1280 },
+  paper: { x: 540, y: 1140, w: 760, h: 980 },
+  report: { x: 540, y: 1460, w: 780 },
+  cta: { y: 860, logo: 120, url: 76, badge: 44 },
+} : {
+  cap: { x: 560, y: 470, w: 900, size: 96 },
+  bug: { x: 300, y: 120, size: 50 },
+  phone: { x: 1420, y: 560, w: 500, h: 990 },
+  paper: { x: 1380, y: 560, w: 640, h: 820 },
+  report: { x: 1050, y: 760, w: 600 },
+  cta: { y: 230, logo: 120, url: 72, badge: 42 },
+};
+
+// static sizes
+css($("cap"), { left: (L.cap.x - L.cap.w / 2) + "px", width: L.cap.w + "px", fontSize: L.cap.size + "px" });
+if (!V) css($("cap"), { textAlign: "left", left: (L.cap.x - L.cap.w / 2) + "px" });
+if (!V) $("capU").style.margin = "22px 0 0";
+css($("bug"), { fontSize: L.bug.size + "px" });
+$("logoSvg").setAttribute("width", L.bug.size * 1.25); $("logoSvg").setAttribute("height", L.bug.size * 1.25);
+css($("phone"), { width: L.phone.w + "px", height: L.phone.h + "px" });
+const phoneScale = V ? 1 : L.phone.w / 640;
+// the screen UI is designed for a 640px-wide phone; scale it for other sizes
+css($("screen"), { width: "596px", height: (596 * L.phone.h / L.phone.w) + "px", transform: `scale(${phoneScale})`, transformOrigin: "0 0" });
+if (!V) css($("phone"), { padding: (22 * phoneScale) + "px", borderRadius: (84 * phoneScale) + "px" });
+for (const id of ["paperA", "paperB"]) css($(id), { width: L.paper.w + "px", height: L.paper.h + "px" });
+css($("report"), { width: L.report.w + "px" });
+css($("ctaLogo"), { fontSize: L.cta.logo * .8 + "px" });
+$("ctaSvg").setAttribute("width", L.cta.logo); $("ctaSvg").setAttribute("height", L.cta.logo);
+css($("url"), { fontSize: L.cta.url + "px", marginTop: "26px", background: "linear-gradient(90deg,#a5b4fc,#f0abfc)", webkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" });
+css($("badges"), { marginTop: "44px", fontSize: L.cta.badge + "px" });
+css($("cta"), { left: "0px", width: W + "px", top: L.cta.y + "px" });
+for (const [id, s, x, y] of [["b1", 900, -.2, -.15], ["b2", 800, .6, .5], ["b3", 700, -.1, .75]]) css($(id), { width: s + "px", height: s + "px", left: (x * W) + "px", top: (y * H) + "px" });
+
+// paper contents (made-up handwriting)
+const lines = ["राम — सर्भिस ?", "हरि — पार्ट्स ... बाँकी", "सीता — फोन नम्बर ??", "गोपाल — ३ महिना ...", "??? — बिल कहाँ ?", "मिस्त्री — कुन काम ?", "ग्राहक — फेरि खोज्नु"];
+for (const id of ["paperA", "paperB"]) {
+  const p = $(id);
+  lines.forEach((tx, i) => { const d = document.createElement("div"); d.className = "ln"; d.style.top = (70 + i * 124) + "px"; d.textContent = tx; p.appendChild(d); });
+  [[160, 2, 320], [300, 4, 260], [520, 1, 420]].forEach(([l, r, w]) => { const x = document.createElement("div"); x.className = "x"; css(x, { left: l + "px", top: (98 + r * 124) + "px", width: w + "px", transform: "rotate(-4deg)" }); p.appendChild(x); });
+  const st = document.createElement("div"); st.className = "stain"; css(st, { right: "40px", bottom: "60px" }); p.appendChild(st);
+}
+// torn halves (zig-zag clip)
+const zig = side => { const pts = []; const n = 14; for (let i = 0; i <= n; i++) { const y = i / n * 100, x = 50 + (i % 2 ? 4 : -4); pts.push(`${x}% ${y}%`); } return side === "A" ? `polygon(0 0,${pts.join(",")},0 100%)` : `polygon(100% 0,${pts.join(",")},100% 100%)`; };
+$("paperA").style.clipPath = zig("A"); $("paperB").style.clipPath = zig("B");
+
+// ---------------------------------------------------------------- render one moment
+const place = (el, cx, cy, extra = "") => { el.style.left = "0px"; el.style.top = "0px"; el.style.transform = `translate(${cx - el.offsetWidth / 2}px,${cy - el.offsetHeight / 2}px) ${extra}`; };
+let lastCap = "";
+
+window.render = function (t) {
+  const end = SC.end;
+  // background drift
+  $("b1").style.transform = `translate(${Math.sin(t * .35) * 80}px,${Math.cos(t * .3) * 60}px)`;
+  $("b2").style.transform = `translate(${Math.cos(t * .28) * 90}px,${Math.sin(t * .33) * 70}px)`;
+  $("b3").style.transform = `translate(${Math.sin(t * .4 + 1) * 70}px,${Math.cos(t * .25) * 90}px)`;
+
+  // ---- caption
+  let key = null;
+  for (const k of ["s1", "s2", "s3", "s4", "s5", "s6"]) if (inScene(t, SC[k])) key = k;
+  const s = SC[key];
+  if (key !== lastCap) { $("capText").textContent = TEXT[key]; lastCap = key; }
+  const pin = eOut(prog(t, s[0] + .1, s[0] + .55)), pout = key === "s6" ? 0 : prog(t, s[1] - .3, s[1]);
+  let capY = L.cap.y;
+  if (key === "s6") capY = V ? 1470 : 880;
+  const capX = (!V && key === "s6") ? W / 2 : L.cap.x;
+  if (!V) { css($("cap"), { textAlign: key === "s6" ? "center" : "left", width: (key === "s6" ? 1400 : L.cap.w) + "px" }); $("capU").style.margin = key === "s6" ? "22px auto 0" : "22px 0 0"; }
+  if (key === "s1" && !V) capY = 540;
+  css($("cap"), { opacity: pin * (1 - pout), left: "0px", top: "0px", transform: `translate(${capX - (key === "s6" && !V ? 700 : L.cap.w / 2)}px,${capY - $("cap").offsetHeight / 2 + (1 - pin) * 50 - pout * 30}px)` });
+  $("capU").style.width = (eOut(prog(t, s[0] + .35, s[0] + .9)) * (V ? 340 : 300)) + "px";
+
+  // ---- scene 1: paper register shakes and tears
+  const s1 = SC.s1;
+  const tear = eInOut(prog(t, s1[1] - .9, s1[1] + .1));
+  const appear = eOut(prog(t, 0, .5));
+  const shake = t > s1[0] + .9 && t < s1[1] - .8 ? Math.sin(t * 60) * 6 * prog(t, s1[0] + .9, s1[1] - .9) : 0;
+  const py = L.paper.y + (1 - appear) * 120;
+  for (const [id, dir] of [["paperA", -1], ["paperB", 1]]) {
+    const el = $(id);
+    el.style.opacity = t < s1[1] + .2 ? appear * (1 - tear) : 0;
+    place(el, L.paper.x + dir * tear * (V ? 360 : 420) + shake, py + tear * 140, `rotate(${dir * tear * 16 - 2}deg)`);
+  }
+
+  // ---- brand bug
+  const bugIn = eOut(prog(t, SC.s2[0] + .9, SC.s2[0] + 1.4));
+  const bugOut = prog(t, SC.s6[0] - .2, SC.s6[0] + .2);
+  // big logo reveal at start of scene 2
+  const s2 = SC.s2, lr = prog(t, s2[0], s2[0] + .5), lmove = eInOut(prog(t, s2[0] + .7, s2[0] + 1.3));
+  const bigScale = 2.2 - lmove * 1.2;
+  const bx = L.bug.x + (W / 2 - L.bug.x) * (1 - lmove), by = L.bug.y + (H * .5 - L.bug.y) * (1 - lmove);
+  const bugOp = t < s2[0] ? 0 : (t < s2[0] + 1.3 ? spring(lr) : 1) * (1 - bugOut);
+  css($("bug"), { opacity: clamp(bugOp) });
+  place($("bug"), bx, by, `scale(${t < s2[0] + .7 ? bigScale * (0.6 + .4 * spring(lr)) : bigScale})`);
+
+  // ---- phone
+  const phoneIn = back(clamp(prog(t, s2[0] + 1.1, s2[0] + 1.9)));
+  const phoneOut = eInOut(prog(t, SC.s6[0] - .1, SC.s6[0] + .5));
+  const pOn = t >= s2[0] + 1.1 && t < SC.s6[0] + .6;
+  $("phone").style.opacity = pOn ? 1 : 0;
+  const tilt = Math.sin(t * 1.3) * 1.2;
+  place($("phone"), L.phone.x + phoneOut * (V ? 0 : 600), L.phone.y + (1 - phoneIn) * (H * .9) + phoneOut * H, `rotate(${tilt}deg)`);
+
+  // screens inside the phone: which one is shown
+  const scr = [["sHome", s2[0], SC.s3[0]], ["sSearch", SC.s3[0], SC.s4[0]], ["sJob", SC.s4[0], SC.s5 ? SC.s5[0] : SC.s6[0]], ["sRem", SC.s5 ? SC.s5[0] : 99, SC.s6[0] + 1]];
+  for (const [id, a, b] of scr) {
+    const pi = eOut(prog(t, a - .05, a + .35)), po = prog(t, b - .05, b + .3);
+    const on = t >= a - .05 && t < b + .3;
+    css($(id), { opacity: on ? (id === "sHome" ? 1 - po : pi * (1 - po)) : 0, transform: `translateX(${(1 - pi) * 120 * (id === "sHome" ? 0 : 1) - po * 120}px)` });
+  }
+  // home: counters and cards
+  const c = eOut(prog(t, s2[0] + 1.6, s2[0] + 2.6));
+  $("n1").textContent = npNum(Math.round(5 * c)); $("n2").textContent = npNum(Math.round(12 * c)); $("n3").textContent = npNum(Math.round(8 * c));
+  ["h1", "h2", "h3", "h4"].forEach((id, i) => { const p = back(clamp(prog(t, s2[0] + 1.8 + i * .22, s2[0] + 2.25 + i * .22))); css($(id), { opacity: clamp(p * 1.5), transform: `translateY(${(1 - p) * 60}px)` }); });
+
+  // search: typing and result
+  const s3 = SC.s3, q = "98XXXXXXXX";
+  const nType = Math.floor(clamp(prog(t, s3[0] + .35, s3[0] + 1.25)) * q.length);
+  $("typed").textContent = q.slice(0, nType);
+  $("caret").style.opacity = (Math.floor(t * 3) % 2 || nType < q.length) ? 1 : 0;
+  const cp = spring(prog(t, s3[0] + 1.35, s3[0] + 2.0));
+  css($("cust"), { opacity: clamp(prog(t, s3[0] + 1.3, s3[0] + 1.5)), transform: `scale(${.85 + .15 * cp})` });
+  css($("startBtn"), { opacity: prog(t, s3[0] + 1.9, s3[0] + 2.2) });
+
+  // job card lines and total
+  const s4 = SC.s4;
+  ["j1", "j2", "j3"].forEach((id, i) => { const p = eOut(prog(t, s4[0] + .45 + i * .32, s4[0] + .8 + i * .32)); css($(id), { opacity: p, transform: `translateX(${(1 - p) * 80}px)` }); });
+  const tp = eOut(prog(t, s4[0] + .6, s4[0] + 1.9));
+  $("tot").textContent = "रु " + Math.round(6800 * tp).toLocaleString("en-IN");
+  css($("mrp"), { opacity: prog(t, s4[0] + 1.5, s4[0] + 1.7), transform: `scale(${.7 + .3 * spring(prog(t, s4[0] + 1.5, s4[0] + 2))})` });
+  css($("nextSv"), { opacity: prog(t, s4[0] + 1.9, s4[0] + 2.2) });
+  css($("doneBtn"), { opacity: prog(t, s4[0] + 2.1, s4[0] + 2.4) });
+
+  // reminder + report (20 s only)
+  const s5 = SC.s5;
+  if (s5) {
+    const bp = spring(prog(t, s5[0] + .3, s5[0] + .9));
+    css($("bub"), { opacity: clamp(prog(t, s5[0] + .3, s5[0] + .45)), transform: `scale(${.6 + .4 * bp})`, transformOrigin: "100% 100%" });
+    const rp = back(clamp(prog(t, s5[0] + 1.2, s5[0] + 1.8)));
+    const rOut = prog(t, s5[1] - .2, s5[1] + .2);
+    $("report").style.opacity = t > s5[0] + 1.2 && t < s5[1] + .3 ? clamp(rp) * (1 - rOut) : 0;
+    place($("report"), L.report.x, L.report.y + (1 - rp) * 200, `rotate(${-2 + rp * 2}deg)`);
+    [40, 62, 55, 80, 96].forEach((h, i) => { const p = eOut(prog(t, s5[0] + 1.5 + i * .12, s5[0] + 2.1 + i * .12)); $("r" + (i + 1)).style.height = (h * p * 2.6) + "px"; });
+    css($("xls"), { transform: `scale(${spring(prog(t, s5[0] + 2.1, s5[0] + 2.6))})` });
+  } else $("report").style.opacity = 0;
+
+  // ---- CTA
+  const s6 = SC.s6, cin = spring(prog(t, s6[0] + .3, s6[0] + 1.1));
+  $("cta").style.opacity = t > s6[0] + .3 ? clamp(prog(t, s6[0] + .3, s6[0] + .6)) : 0;
+  $("cta").style.transform = `scale(${.7 + .3 * cin})`;
+  $("url").style.opacity = prog(t, s6[0] + .8, s6[0] + 1.1);
+  [["bd1", 1.1], ["bd2", 1.35]].forEach(([id, d]) => { const p = back(clamp(prog(t, s6[0] + d, s6[0] + d + .45))); css($(id), { opacity: clamp(p), transform: `translateY(${(1 - p) * 40}px)` }); });
+  $("flash").style.opacity = Math.max(0, 1 - Math.abs(t - (s6[0] + .45)) / .35) * .9;
+
+  // gentle fade at the very end
+  $("stage").style.opacity = 1 - prog(t, end - .35, end) * .0;
+};
+// UI pop times (used by the music script for click sounds)
+window.EVENTS = () => { const e = []; const S = SC;
+  e.push(S.s2[0] + .2, S.s2[0] + 1.3, S.s2[0] + 1.8, S.s2[0] + 2.02, S.s2[0] + 2.24, S.s2[0] + 2.46, S.s3[0] + 1.4, S.s4[0] + .5, S.s4[0] + .82, S.s4[0] + 1.14, S.s4[0] + 1.55);
+  if (S.s5) e.push(S.s5[0] + .35, S.s5[0] + 1.25, S.s5[0] + 2.15);
+  e.push(S.s6[0] + 1.15, S.s6[0] + 1.4); return e; };
+const pt = parseFloat(Q.get("t")); if (!isNaN(pt)) document.fonts.ready.then(() => render(pt));
+</script>
+</body>
+</html>
