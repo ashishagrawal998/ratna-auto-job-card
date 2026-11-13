@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<title>JobCardBook promo</title>
+<!--
+  JobCardBook promo animation. Every frame is a pure function of time:
+  window.renderFrame(seconds). Nothing here uses CSS animations or timers,
+  so render.js can capture it frame by frame.
+  URL params: ?layout=v|h  &cut=20|15  &t=<seconds> (preview a still)  &play=1 (live preview)
+  ALL DATA SHOWN IS DUMMY. Do not paste real customer data into this file.
+-->
+<style>
+:root{
+  /* ---- colours: change here ---- */
+  --navy:#0a0f24; --indigo:#6366f1; --violet:#8b5cf6; --pink:#f472b6;
+  --indigo-d:#4f46e5; --amber:#f59e0b; --ok:#10b981;
+  --ink:#0f172a; --ink2:#334155; --mut:#64748b; --line:#e2e8f0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;overflow:hidden}
+body{font-family:"Noto Sans Devanagari","Mukta","Noto Sans",sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:relative;overflow:hidden;background:var(--navy);color:#fff}
+.abs{position:absolute;left:0;top:0}
+.lat{font-family:"Noto Sans","Noto Sans Devanagari",sans-serif}
+
+/* background */
+.blob{position:absolute;border-radius:50%;will-change:transform}
+#grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1.5px,transparent 1.6px);background-size:54px 54px}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(4,6,18,.75) 100%)}
+#dim{position:absolute;inset:0;background:rgba(8,10,22,.6)}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(199,210,254,.9),rgba(139,92,246,.25) 45%,transparent 70%);opacity:0}
+.dot{position:absolute;border-radius:50%;background:#c7d2fe;box-shadow:0 0 14px 4px rgba(165,180,252,.55)}
+
+/* captions */
+.cap{position:absolute;font-weight:800;line-height:1.32;letter-spacing:-.5px;display:flex;flex-wrap:wrap;align-content:center;gap:0 .28em;text-shadow:0 6px 30px rgba(5,8,25,.6)}
+.cap span{display:inline-block;padding:.08em 0;white-space:nowrap}
+.cap .hl{background-image:linear-gradient(90deg,#a5b4fc,#c084fc 55%,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.12em .04em;margin:-.04em -.04em;text-shadow:none;filter:drop-shadow(0 6px 22px rgba(139,92,246,.45))}
+.cap .warn{background-image:linear-gradient(90deg,#fcd34d,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.12em .04em;margin:-.04em -.04em;text-shadow:none}
+
+/* brand mark */
+#brand{position:absolute;left:0;top:0;display:flex;align-items:center;gap:16px;font-weight:800;font-size:46px;letter-spacing:-1px;white-space:nowrap;transform-origin:50% 50%}
+#brand svg{width:64px;height:64px;filter:drop-shadow(0 8px 24px rgba(99,102,241,.7))}
+#brand b,.endword b{color:#a5b4fc}
+
+/* scene 1: paper register */
+#bookWrap{position:absolute;left:0;top:0;width:620px;height:760px;transform-origin:50% 50%}
+.sheet{position:absolute;inset:0;background:#e9dfc6;border-radius:6px;box-shadow:0 20px 50px -18px rgba(0,0,0,.7)}
+.book{position:absolute;inset:0;background:#f4ead3;border-radius:8px;overflow:hidden;
+  background-image:linear-gradient(90deg,transparent 78px,rgba(220,38,38,.55) 78px,rgba(220,38,38,.55) 81px,transparent 81px),repeating-linear-gradient(180deg,transparent 0,transparent 51px,rgba(37,99,235,.28) 51px,rgba(37,99,235,.28) 53px);
+  background-position:0 0,0 96px}
+.book .hdr{position:absolute;left:0;right:0;top:0;height:92px;background:#e4d6b4;border-bottom:3px solid #b9a67c}
+.book .ring{position:absolute;width:150px;height:150px;border-radius:50%;border:9px solid rgba(120,72,20,.22);right:54px;bottom:96px}
+.book .smudge{position:absolute;border-radius:50%;background:radial-gradient(rgba(30,41,90,.32),transparent 70%)}
+.book svg{position:absolute;inset:0;width:100%;height:100%}
+.half{position:absolute;inset:0;transform-origin:50% 60%}
+.scrap{position:absolute;background:#f4ead3;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+
+/* phone */
+#phoneWrap{position:absolute;left:0;top:0;width:400px;height:820px;transform-origin:50% 0}
+.phone{position:absolute;inset:0;border-radius:58px;padding:12px;background:linear-gradient(145deg,#ffffff,#e6e9f5 60%,#ffffff);
+  box-shadow:0 0 0 1.5px rgba(255,255,255,.9) inset,0 0 0 1px rgba(15,23,42,.18),0 60px 120px -30px rgba(99,102,241,.75),0 30px 60px -20px rgba(0,0,0,.6)}
+#glow{position:absolute;left:-160px;top:40px;width:720px;height:760px;border-radius:50%;background:radial-gradient(closest-side,rgba(139,92,246,.55),rgba(99,102,241,.22) 55%,transparent)}
+.screen{position:relative;width:376px;height:796px;border-radius:46px;overflow:hidden;background:#f1f5f9;color:var(--ink);font-size:14px}
+.island{position:absolute;left:50%;top:12px;width:104px;height:28px;margin-left:-52px;border-radius:16px;background:#0b1020;z-index:5}
+.top{position:absolute;left:0;right:0;top:0;height:132px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:56px 20px 0;z-index:3;box-shadow:0 6px 18px -8px rgba(79,70,229,.6)}
+.top small{display:block;font-size:12px;opacity:.85;font-weight:600;letter-spacing:.2px}
+.top b{display:block;font-size:23px;line-height:1.35}
+.top .lang{position:absolute;right:18px;top:68px;display:flex;background:rgba(255,255,255,.2);border-radius:20px;padding:3px;font-size:12px}
+.top .lang i{font-style:normal;padding:3px 10px;border-radius:14px}
+.top .lang i.on{background:#fff;color:#4f46e5;font-weight:700}
+.stat{position:absolute;top:16px;font-size:13px;font-weight:700;color:#fff;z-index:6}
+.views{position:absolute;left:0;right:0;top:132px;bottom:66px;overflow:hidden}
+.view{position:absolute;inset:0;padding:14px 14px 0}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:66px;background:#fff;border-top:1px solid var(--line);display:flex;z-index:3;padding-bottom:8px}
+.tabs div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10.5px;color:#94a3b8;font-weight:600}
+.tabs svg{width:21px;height:21px}
+.tabs div.on{color:#4f46e5}
+h4{margin:14px 2px 8px;font-size:13px;color:var(--mut);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.st{background:#fff;border-radius:16px;padding:12px 4px 10px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.08)}
+.st strong{display:block;font-size:30px;line-height:1.15;color:#4f46e5;font-family:"Noto Sans",sans-serif}
+.st span{display:block;color:var(--mut);font-size:11px;line-height:1.35;font-weight:600}
+.c{background:#fff;border-radius:16px;padding:12px 14px;box-shadow:0 1px 3px rgba(15,23,42,.08);margin-bottom:9px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.row b{font-size:15.5px}
+.sub{color:var(--mut);font-size:12.5px}
+.ln{display:flex;justify-content:space-between;align-items:center;color:var(--ink2);border-top:1px dashed var(--line);padding-top:7px;margin-top:7px;font-size:13px}
+.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;background:#fef3c7;color:#92400e;white-space:nowrap}
+.tag.g{background:#d1fae5;color:#065f46}.tag.b{background:#eef2ff;color:#3730a3}
+.btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:14px;text-align:center;padding:12px;font-weight:700;font-size:14.5px;box-shadow:0 10px 22px -10px rgba(99,102,241,.9)}
+.btn.ok{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 10px 22px -10px rgba(16,185,129,.9)}
+.sbox{background:#fff;border-radius:16px;border:2px solid #6366f1;box-shadow:0 0 0 5px rgba(99,102,241,.16);padding:13px 14px;display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;font-family:"Noto Sans","Noto Sans Devanagari",sans-serif;height:56px}
+.sbox svg{width:22px;height:22px;flex:none}
+.sbox .ph{color:#94a3b8;font-weight:500;font-size:14.5px;font-family:"Noto Sans Devanagari",sans-serif}
+.sbox .cur{width:2.5px;height:24px;background:#4f46e5;margin-left:-6px}
+.chips{display:flex;gap:7px;margin:11px 0 12px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;background:#fff;color:var(--ink2);border:1px solid var(--line)}
+.chip.on{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.skel{height:64px;border-radius:16px;background:linear-gradient(90deg,#e2e8f0,#eef2f7,#e2e8f0);margin-bottom:9px}
+.av{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#f472b6);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px;flex:none}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin:11px 0 13px;border-top:1px dashed var(--line);padding-top:11px}
+.kv span{display:block;color:var(--mut);font-size:11px;font-weight:600}
+.kv b{font-size:14px}
+.mrp{display:inline-block;margin-left:7px;font-size:10px;font-weight:800;color:#065f46;background:#d1fae5;border-radius:6px;padding:2px 6px;font-family:"Noto Sans",sans-serif}
+.item{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 3px rgba(15,23,42,.08);font-size:14.5px;font-weight:600}
+.item em{font-style:normal;font-weight:800;font-family:"Noto Sans","Noto Sans Devanagari",sans-serif}
+.total{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#312e81,#4f46e5 60%,#7c3aed);color:#fff;border-radius:16px;padding:14px 16px;margin:10px 0 9px;font-weight:700;font-size:15px;box-shadow:0 14px 26px -14px rgba(79,70,229,.95)}
+.total em{font-style:normal;font-size:25px;font-weight:800;font-family:"Noto Sans","Noto Sans Devanagari",sans-serif}
+.send{display:flex;gap:6px;align-items:center}
+.sm{font-size:11.5px;font-weight:800;padding:7px 10px;border-radius:10px;background:#eef2ff;color:#3730a3;font-family:"Noto Sans","Noto Sans Devanagari",sans-serif;white-space:nowrap}
+.sm.g{background:#22c55e;color:#fff;display:flex;align-items:center;gap:4px;position:relative}
+.sm svg{width:14px;height:14px}
+.rip{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px;border-radius:50%;border:3px solid #22c55e;opacity:0}
+.chart{display:flex;align-items:flex-end;gap:11px;height:190px;padding:10px 6px 0;border-bottom:2px solid var(--line)}
+.chart div{flex:1;border-radius:9px 9px 0 0;background:linear-gradient(180deg,#8b5cf6,#6366f1);transform-origin:50% 100%}
+.chart div.hi{background:linear-gradient(180deg,#f472b6,#8b5cf6)}
+.months{display:flex;gap:11px;padding:5px 6px 0;font-size:10px;color:var(--mut);font-weight:600;text-align:center}
+.months span{flex:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+
+/* floaters around the phone */
+.fl{position:absolute;transform-origin:50% 50%;white-space:nowrap}
+.fchip{background:#1a2347;border:1.5px solid rgba(165,180,252,.4);color:#e8ecf7;border-radius:18px;padding:11px 16px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px;box-shadow:0 20px 40px -14px rgba(0,0,0,.75),0 0 30px -6px rgba(99,102,241,.7)}
+.fchip svg{width:22px;height:22px;flex:none}
+#fBubble{width:318px;white-space:normal;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border-radius:22px 22px 22px 6px;padding:14px 16px 10px;font-size:16.5px;line-height:1.5;font-weight:600;box-shadow:0 26px 50px -16px rgba(0,0,0,.75),0 0 40px -6px rgba(34,197,94,.75);transform-origin:10% 100%}
+#fBubble small{display:flex;justify-content:space-between;align-items:center;font-size:12px;opacity:.92;margin-top:6px;font-weight:700}
+#fXls{width:118px;height:140px;border-radius:16px;background:linear-gradient(160deg,#22c55e,#15803d);box-shadow:0 26px 50px -16px rgba(0,0,0,.75),0 0 40px -6px rgba(34,197,94,.7);padding:14px 12px;color:#fff;font:800 17px "Noto Sans",sans-serif;text-align:center}
+#fXls i{display:block;height:62px;border-radius:7px;margin-bottom:9px;background:#fff;background-image:linear-gradient(#bbf7d0 0 0),linear-gradient(90deg,transparent 31px,#86efac 31px,#86efac 33px,transparent 33px,transparent 62px,#86efac 62px,#86efac 64px,transparent 64px),repeating-linear-gradient(180deg,transparent 0,transparent 14px,#86efac 14px,#86efac 16px);background-size:100% 15px,100% 100%,100% 100%;background-repeat:no-repeat,no-repeat,repeat}
+
+/* end card */
+#end{position:absolute;left:0;top:0;width:1080px;height:1500px;display:flex;flex-direction:column;align-items:center;justify-content:center;transform-origin:50% 50%}
+#endIcon{position:relative;width:236px;height:236px;margin-bottom:26px}
+#endIcon svg{width:100%;height:100%;filter:drop-shadow(0 26px 60px rgba(99,102,241,.9))}
+.ringfx{position:absolute;left:50%;top:50%;width:236px;height:236px;margin:-118px;border-radius:50%;border:4px solid rgba(165,180,252,.8);opacity:0}
+.endword{font:800 104px/1.15 "Noto Sans",sans-serif;letter-spacing:-3px}
+#endHead{position:relative;font-size:108px;margin:44px 0 46px;justify-content:center}
+#url{font:800 62px/1 "Noto Sans",sans-serif;letter-spacing:-.5px;padding:30px 54px;border-radius:999px;background:linear-gradient(135deg,#6366f1,#8b5cf6 55%,#f472b6);box-shadow:0 26px 60px -18px rgba(139,92,246,.95),0 0 0 2px rgba(255,255,255,.25) inset;display:flex;align-items:center;gap:20px;position:relative;overflow:hidden}
+#url svg{width:58px;height:58px}
+#shine{position:absolute;top:0;bottom:0;width:150px;left:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent)}
+#badges{display:flex;gap:26px;margin-top:54px}
+.badge{display:flex;align-items:center;gap:14px;font-size:46px;font-weight:800;padding:20px 34px;border-radius:26px;background:rgba(255,255,255,.07);border:2px solid rgba(165,180,252,.35);white-space:nowrap;box-shadow:0 20px 40px -18px rgba(0,0,0,.7)}
+.badge svg{width:46px;height:46px}
+.badge.g{border-color:rgba(110,231,183,.5);background:rgba(16,185,129,.14);color:#a7f3d0}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg" class="abs" style="inset:0">
+    <div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+    <div id="grid"></div><div id="dots"></div><div id="dim"></div><div id="flash"></div><div id="vig"></div>
+  </div>
+
+  <!-- scene 1 -->
+  <div id="bookWrap"></div>
+  <div class="cap" id="cap1"><span>अझै</span><span class="warn">कागजको</span><span class="warn">रजिस्टर?</span></div>
+
+  <!-- phone (scenes 2-5) -->
+  <div id="phoneWrap">
+    <div id="glow"></div>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="stat lat" style="left:30px">9:41</div>
+      <div class="stat" style="right:28px;top:20px;display:flex;gap:5px;align-items:flex-end">
+        <i style="width:4px;height:6px;background:#fff;border-radius:1px"></i><i style="width:4px;height:9px;background:#fff;border-radius:1px"></i><i style="width:4px;height:12px;background:#fff;border-radius:1px"></i>
+        <i style="width:24px;height:12px;border:1.5px solid #fff;border-radius:4px;margin-left:5px;background:linear-gradient(90deg,#fff 70%,transparent 70%)"></i>
+      </div>
+      <div class="top"><small class="lat">JobCardBook</small><b>डेमो वर्कशप</b>
+        <div class="lang"><i class="on">ने</i><i class="lat">EN</i></div></div>
+
+      <div class="views">
+        <!-- home -->
+        <div class="view" id="vHome">
+          <div class="stats">
+            <div class="st"><strong id="n1">0</strong><span>चालु जब</span></div>
+            <div class="st"><strong id="n2">0</strong><span>आज सम्पन्न</span></div>
+            <div class="st"><strong id="n3">0</strong><span>सर्भिस बाँकी</span></div>
+          </div>
+          <h4>चालु जब कार्डहरू</h4>
+          <div class="c hc"><div class="row"><b>राम बहादुर</b><span class="tag">चालु</span></div><div class="sub"><span class="lat">Model X · 98XXXXXXXX</span></div><div class="ln"><span>जनरल सर्भिस</span><b class="lat">रु 5,000</b></div></div>
+          <div class="c hc"><div class="row"><b>सीता देवी</b><span class="tag g">सम्पन्न</span></div><div class="sub"><span class="lat">Model Y · 98XXXXXXXX</span></div><div class="ln"><span>पार्ट्स र ज्याला</span><b class="lat">रु 1,000</b></div></div>
+          <div class="c hc"><div class="row"><b>हरि प्रसाद</b><span class="tag b">घर सर्भिस</span></div><div class="sub"><span class="lat">Model X · 98XXXXXXXX</span></div><div class="ln"><span>ज्याला</span><b class="lat">रु 800</b></div></div>
+          <div class="btn" style="margin-top:12px">＋ नयाँ जब कार्ड</div>
+        </div>
+        <!-- search -->
+        <div class="view" id="vSearch">
+          <div class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span id="typed"></span><i class="cur" id="cur"></i><span class="ph" id="ph">फोन, इन्जिन वा चेसिस नं</span></div>
+          <div class="chips"><span class="chip on">फोन</span><span class="chip">इन्जिन नं</span><span class="chip">चेसिस नं</span></div>
+          <div id="skels" style="position:absolute;left:14px;right:14px"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+          <div class="c" id="res" style="position:relative;padding:15px;border:2px solid #a5b4fc;box-shadow:0 22px 40px -18px rgba(99,102,241,.75)">
+            <div class="row" style="justify-content:flex-start;gap:12px"><div class="av">रा</div>
+              <div style="flex:1"><b style="font-size:18px">राम बहादुर</b><div class="sub lat" style="font-size:14px">98XXXXXXXX</div></div>
+              <span class="tag g">✓ भेटियो</span></div>
+            <div class="kv"><div><span>मोडेल</span><b class="lat">Model X</b></div><div><span>चलेको घण्टा</span><b class="lat">1,000</b></div>
+              <div><span>इन्जिन नं</span><b class="lat">ENG-XXXX</b></div><div><span>चेसिस नं</span><b class="lat">CHS-XXXX</b></div></div>
+            <div class="btn">नयाँ जब कार्ड सुरु गर्नुहोस्</div>
+          </div>
+        </div>
+        <!-- job card -->
+        <div class="view" id="vJob">
+          <div class="c" style="margin-bottom:4px"><div class="row"><b>जब कार्ड <span class="lat">#001</span></b><span class="tag b">शोरुम</span></div><div class="sub">राम बहादुर · <span class="lat">Model X</span></div></div>
+          <h4 style="margin-top:11px">पार्ट्स</h4>
+          <div class="item ji"><span>फिल्टर सेट<span class="mrp">MRP ✓</span></span><em>रु 5,000</em></div>
+          <div class="item ji"><span>इन्जिन आयल<span class="mrp">MRP ✓</span></span><em>रु 1,000</em></div>
+          <h4 style="margin-top:11px">ज्याला</h4>
+          <div class="item ji"><span>जनरल सर्भिस</span><em>रु 800</em></div>
+          <div class="total" id="tot"><span>कुल जम्मा</span><em id="totN">रु 0</em></div>
+          <div class="c" id="next" style="padding:10px 14px"><div class="row"><span style="font-weight:700;font-size:13.5px">अर्को सर्भिस</span><span class="tag b" style="font-size:12px"><span class="lat">250</span> घण्टा पछि</span></div></div>
+          <div class="btn ok" id="closeBtn">जब कार्ड बन्द गर्नुहोस्</div>
+        </div>
+        <!-- reminders -->
+        <div class="view" id="vRem">
+          <h4 style="margin-top:2px">सर्भिस गर्नुपर्ने ग्राहक</h4>
+          <div class="c"><div class="row"><div><b>राम बहादुर</b><div class="sub"><span class="lat">Model X</span> · सर्भिस आज</div></div>
+            <div class="send"><span class="sm">SMS</span><span class="sm g" id="sendBtn"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.3 1.1 4.400 2.900 5.900L4 21l4.300-1.700c1.200.4 2.400.6 3.700.6 5.500 0 10-3.800 10-8.400S17.500 3 12 3z"/></svg><span id="sendTxt">पठाउनुहोस्</span><i class="rip" id="rip"></i></span></div></div></div>
+          <div class="c"><div class="row"><div><b>सीता देवी</b><div class="sub"><span class="lat">Model Y</span> · २ दिन बाँकी</div></div>
+            <div class="send"><span class="sm">SMS</span><span class="sm g"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.3 1.1 4.400 2.900 5.900L4 21l4.300-1.700c1.200.4 2.400.6 3.700.6 5.500 0 10-3.800 10-8.400S17.500 3 12 3z"/></svg>पठाउनुहोस्</span></div></div></div>
+          <div class="c"><div class="row"><div><b>हरि प्रसाद</b><div class="sub"><span class="lat">Model X</span> · ५ दिन बाँकी</div></div>
+            <div class="send"><span class="sm">SMS</span><span class="sm g"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.3 1.1 4.400 2.900 5.900L4 21l4.300-1.700c1.200.4 2.400.6 3.700.6 5.500 0 10-3.800 10-8.400S17.500 3 12 3z"/></svg>पठाउनुहोस्</span></div></div></div>
+        </div>
+        <!-- report -->
+        <div class="view" id="vRep">
+          <h4 style="margin-top:2px">मासिक रिपोर्ट</h4>
+          <div class="two"><div class="st"><strong id="r1">0</strong><span>कुल जब</span></div><div class="st"><strong id="r2">0</strong><span>सम्पन्न</span></div></div>
+          <div class="c" style="padding:12px 12px 10px">
+            <div class="chart" id="chart"><div></div><div></div><div></div><div></div><div></div><div class="hi"></div></div>
+            <div class="months"><span>बैशाख</span><span>जेठ</span><span>असार</span><span>साउन</span><span>भदौ</span><span>असोज</span></div>
+          </div>
+          <div class="btn ok" style="margin-top:4px"><span class="lat">XLSX</span> डाउनलोड</div>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>होम</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>खोज</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>जब कार्ड</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4zM10 21h4"/></svg>रिमाइन्डर</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>रिपोर्ट</div>
+      </div>
+    </div></div>
+
+    <!-- floaters -->
+    <div class="fl fchip" id="fSearch" style="left:-70px;top:575px"><svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2.4" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="#fcd34d"/></svg>तुरुन्तै भेटिन्छ</div>
+    <div class="fl fchip" id="fMrp" style="left:232px;top:655px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#10b981"/><path d="M7 12.500l3.500 3.500L17 9" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>सधैं सही <span class="lat">MRP</span></span></div>
+    <div class="fl" id="fBubble" style="left:-66px;top:470px">नमस्ते राम बहादुर जी, तपाईंको <span class="lat">Model X</span> को सर्भिस गर्ने समय भयो।<small><span>— डेमो वर्कशप</span><span class="lat">✓✓</span></small></div>
+    <div class="fl" id="fXls" style="left:318px;top:300px"><i></i>XLSX</div>
+  </div>
+
+  <div class="cap" id="cap2"><span>अब</span><span>सबै</span><span>काम</span><span class="hl">मोबाइलमै</span></div>
+  <div class="cap" id="cap3"><span>ग्राहक</span><span class="hl">एक</span><span class="hl">सेकेन्डमा</span><span>खोज्नुहोस्</span></div>
+  <div class="cap" id="cap4"><span>जब</span><span>कार्ड,</span><span>पार्ट्स,</span><i style="flex-basis:100%;height:0"></i><span class="hl">सही</span><span class="hl lat">MRP</span></div>
+  <div class="cap" id="cap5"><span>सर्भिस</span><span class="hl">रिमाइन्डर</span><span>र</span><span class="hl">रिपोर्ट</span></div>
+
+  <div id="brand" class="lat"></div>
+
+  <!-- scene 6 -->
+  <div id="end">
+    <div id="endIcon"><i class="ringfx" id="ring1"></i><i class="ringfx" id="ring2"></i></div>
+    <div class="endword" id="endWord">JobCard<b>Book</b></div>
+    <div class="cap" id="endHead"><span>आजै</span><span class="hl">सुरु</span><span class="hl">गर्नुहोस्!</span></div>
+    <div id="url"><i id="shine"></i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.500"/><path d="M2.500 12h19M12 2.500c3 3.200 3 15.800 0 19M12 2.500c-3 3.200-3 15.800 0 19"/></svg>jobcardbook.com</div>
+    <div id="badges">
+      <div class="badge g"><svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0116 0v2"/><rect x="2.500" y="13" width="4.500" height="7" rx="2" fill="#6ee7b7"/><rect x="17" y="13" width="4.500" height="7" rx="2" fill="#6ee7b7"/></svg>२४×७ सपोर्ट</div>
+      <div class="badge"><svg viewBox="0 0 24 24" fill="#c4b5fd"><path d="M12 2l2.400 6.600L21 11l-6.600 2.400L12 20l-2.400-6.600L3 11l6.600-2.400z"/><circle cx="19" cy="4.500" r="1.800"/><circle cx="5" cy="19" r="1.500"/></svg>नि:शुल्क डेमो</div>
+    </div>
+  </div>
+</div>
+
+<script src="timeline.js"></script>
+<script>
+(function(){
+var Q = new URLSearchParams(location.search);
+var LAYOUT = Q.get('layout') === 'h' ? 'h' : 'v';
+var CUT = Q.get('cut') === '15' ? '15' : '20';
+var T = TL.resolve(CUT);
+
+/* ---- layout slots: tweak positions/sizes per format here ---- */
+var LAY = {
+  v: { W:1080, H:1920, cap:{x:60,y:215,w:960,h:330,fs:88,align:'center'}, cap1:{x:60,y:250,w:960,h:330,fs:112},
+       phone:{cx:540,top:582,s:1.6}, mark:{cx:540,cy:128}, brandBig:{cx:540,cy:900,s:2.5},
+       book:{cx:540,cy:1180,s:1.1}, end:{cx:540,cy:960,s:1} },
+  h: { W:1920, H:1080, cap:{x:130,y:330,w:860,h:460,fs:100,align:'left'}, cap1:{x:130,y:330,w:860,h:460,fs:116},
+       phone:{cx:1420,top:54,s:1.19}, mark:{cx:-1,cy:112,x:130}, brandBig:{cx:960,cy:520,s:3.2},
+       book:{cx:1400,cy:545,s:0.92}, end:{cx:960,cy:540,s:1} }
+};
+var L = LAY[LAYOUT], W = L.W, H = L.H;
+var $ = function(id){return document.getElementById(id);};
+var stage = $('stage'); stage.style.width = W+'px'; stage.style.height = H+'px';
+
+/* ---- math helpers ---- */
+function clamp(x,a,b){return x<a?a:x>b?b:x;}
+function seg(t,a,b){return clamp((t-a)/(b-a),0,1);}
+function lerp(a,b,p){return a+(b-a)*p;}
+function eo(p){return 1-Math.pow(1-p,3);}            // ease out
+function ei(p){return p*p*p;}                        // ease in
+function eio(p){return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;}
+function spr(t){return t<=0?0:1-Math.exp(-7*t)*Math.cos(11*t);}   // spring with overshoot, t in seconds
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var r=Math.imul(seed^seed>>>15,1|seed);r=r+Math.imul(r^r>>>7,61|r)^r;return((r^r>>>14)>>>0)/4294967296;};}
+function num(n){return Math.round(n).toLocaleString('en-US');}
+function pop(el,u,from){ // pop-in: fade + spring scale
+  el.style.opacity = seg(u,0,.12);
+  el.style.transform = 'scale('+lerp(from==null?.55:from,1,spr(u))+')';
+}
+function rise(el,u,dy){ el.style.opacity = seg(u,0,.18); el.style.transform='translateY('+((1-spr(u))*(dy||40))+'px)'; }
+
+/* ---- one-time DOM building ---- */
+var LOGO = '<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#4f46e5"/><rect x="17" y="13" width="30" height="38" rx="5" fill="#fff"/><path d="M24 25h16M24 32h16M24 39h9" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="45" r="9" fill="#f59e0b"/><path d="M41 45l3 3 5-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+$('brand').innerHTML = LOGO + '<span>JobCard<b>Book</b></span>';
+$('endIcon').insertAdjacentHTML('beforeend', LOGO);
+
+// background blobs
+[['b1',1300,'rgba(99,102,241,.55)'],['b2',1100,'rgba(244,114,182,.30)'],['b3',1200,'rgba(139,92,246,.42)']].forEach(function(b){
+  var e=$(b[0]); e.style.width=e.style.height=b[1]+'px'; e.style.left=e.style.top=(-b[1]/2)+'px';
+  e.style.background='radial-gradient(closest-side,'+b[2]+',transparent)';
+});
+var dots=[], r0=rng(7);
+for(var i=0;i<16;i++){var d=document.createElement('i');d.className='dot';var sz=3+r0()*5;d.style.width=d.style.height=sz+'px';$('dots').appendChild(d);dots.push({e:d,x:r0()*W,y:r0()*H,v:20+r0()*50,ph:r0()*6.28,a:.25+r0()*.5});}
+
+// scene 1: messy register, built twice (left/right torn halves)
+(function(){
+  var r=rng(42), rows='', y, i;
+  for(i=0;i<12;i++){
+    y=140+i*53; var x=96+r()*10, len=170+r()*330, d='M'+x+' '+y, n=Math.floor(len/14);
+    for(var j=1;j<=n;j++) d+=' q7 '+((r()-.5)*26).toFixed(1)+' 14 '+((r()-.5)*7).toFixed(1);
+    var red=(i===3||i===8);
+    rows+='<path class="scr" pathLength="1" d="'+d+'" stroke="'+(red?'#b91c1c':'#1e2a6b')+'" stroke-width="'+(3+r()*1.6).toFixed(1)+'" fill="none" stroke-linecap="round" opacity=".85"/>';
+    if(i===2||i===6||i===9) rows+='<path class="scr" pathLength="1" d="M'+(x-6)+' '+(y-4)+' l'+(len*.8).toFixed(0)+' '+((r()-.5)*14).toFixed(0)+'" stroke="#b91c1c" stroke-width="4" fill="none" stroke-linecap="round"/>';
+    if(i%2===0) rows+='<path class="scr" pathLength="1" d="M20 '+(y-6)+' q10 -14 20 0 t20 0" stroke="#1e2a6b" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  }
+  rows+='<path class="scr" pathLength="1" d="M110 60 q40 -30 80 0 t80 0 t80 0 t60 -6" stroke="#1e2a6b" stroke-width="6" fill="none" stroke-linecap="round"/>';
+  rows+='<path class="scr" pathLength="1" d="M400 470 l150 120 M550 470 l-150 120" stroke="#b91c1c" stroke-width="6" fill="none" stroke-linecap="round"/>';
+  var inner='<div class="hdr"></div><div class="ring"></div><div class="smudge" style="left:250px;top:300px;width:120px;height:70px"></div><div class="smudge" style="left:120px;top:560px;width:90px;height:60px"></div><svg viewBox="0 0 620 760">'+rows+'</svg>';
+  var pts=[], rr=rng(9);
+  for(i=0;i<=25;i++) pts.push([(50+(rr()-.5)*9+Math.sin(i*.5)*5).toFixed(1), i*4]);
+  var lp='0% 0%,'+pts.map(function(p){return p[0]+'% '+p[1]+'%';}).join(',')+',0% 100%';
+  var rp='100% 0%,'+pts.map(function(p){return p[0]+'% '+p[1]+'%';}).join(',')+',100% 100%';
+  var h='<div class="sheet" id="sh1"></div><div class="sheet" id="sh2" style="background:#efe4c8"></div>';
+  h+='<div class="half" id="halfL"><div class="book" style="clip-path:polygon('+lp+')">'+inner+'</div></div>';
+  h+='<div class="half" id="halfR"><div class="book" style="clip-path:polygon('+rp+')">'+inner+'</div></div>';
+  for(i=0;i<10;i++) h+='<i class="scrap"></i>';
+  $('bookWrap').innerHTML=h;
+})();
+var scr=[].slice.call(document.querySelectorAll('.scr')), nScr=scr.length/2;
+var scraps=[].slice.call(document.querySelectorAll('.scrap')).map(function(e,i){var r=rng(100+i);var w=14+r()*26;e.style.width=w+'px';e.style.height=(10+r()*22)+'px';e.style.left='300px';return{e:e,y:60+r()*640,vx:(r()-.5)*900,vy:-200-r()*500,rot:(r()-.5)*900};});
+
+// captions layout
+function placeCap(el,c,fs){el.style.left=c.x+'px';el.style.top=c.y+'px';el.style.width=c.w+'px';el.style.height=c.h+'px';el.style.fontSize=(fs||c.fs)+'px';el.style.justifyContent=(L.cap.align==='center'?'center':'flex-start');}
+placeCap($('cap1'),L.cap1); ['cap2','cap3','cap4','cap5'].forEach(function(id){placeCap($(id),L.cap);});
+function capAnim(el,uin,uout,stag){ // uin: seconds since appear; uout: seconds since exit began
+  var w=el.children, i, o=1-seg(uout,0,.22);
+  el.style.opacity = uin<0?0:o;
+  el.style.transform='translateY('+(-30*eo(seg(uout,0,.22)))+'px)';
+  for(i=0;i<w.length;i++){var u=uin-i*(stag||.075); w[i].style.opacity=seg(u,0,.16); w[i].style.transform='translateY('+((1-spr(u))*46)+'px) scale('+lerp(.9,1,spr(u))+')';}
+}
+
+var hc=[].slice.call(document.querySelectorAll('.hc')), ji=[].slice.call(document.querySelectorAll('.ji'));
+var bars=[].slice.call($('chart').children), barH=[.42,.55,.5,.7,.82,1];
+var tabs=[].slice.call($('tabs').children);
+var views=['vHome','vSearch','vJob','vRem','vRep'].map($);
+$('skels').style.top=$('res').offsetTop+'px';
+var brandW=$('brand').offsetWidth, brandH=$('brand').offsetHeight;
+if(L.mark.cx<0) L.mark.cx=L.mark.x+brandW/2;
+var endEls=[$('endWord'),$('url')], badges=[].slice.call(document.querySelectorAll('.badge'));
+
+/* ---- scene-local clocks ---- */
+function locals(t){
+  var u={s1:-99,s2:-99,s3:-99,s4:-99,s5:-99,s6:-99};
+  T.scenes.forEach(function(s){u[s.id]=(t-s.start)*s.k;});
+  return u;
+}
+var has5 = T.scenes.some(function(s){return s.id==='s5';});
+var s2start = T.scenes[1].start;
+
+/* ================= the frame function ================= */
+window.renderFrame = function(t){
+  var u=locals(t), u1=u.s1,u2=u.s2,u3=u.s3,u4=u.s4,u5=u.s5,u6=u.s6, i, p;
+  var N=TL.nominal;
+
+  /* background */
+  $('b1').style.transform='translate('+(W*.82+Math.sin(t*.5)*W*.1)+'px,'+(H*.12+Math.cos(t*.4)*H*.06)+'px)';
+  $('b2').style.transform='translate('+(W*.08+Math.cos(t*.45)*W*.1)+'px,'+(H*.9+Math.sin(t*.38)*H*.06)+'px)';
+  $('b3').style.transform='translate('+(W*.5+Math.sin(t*.33+2)*W*.25)+'px,'+(H*.55+Math.cos(t*.3)*H*.12)+'px)';
+  $('dim').style.opacity=1-seg(t,s2start-.1,s2start+.5);
+  $('flash').style.opacity=Math.max(.55*Math.exp(-Math.max(0,t-s2start)*5)*(t>=s2start?1:0), u6>=0?.5*Math.exp(-u6*4):0);
+  dots.forEach(function(d){var y=((d.y-d.v*t)%H+H)%H; d.e.style.transform='translate('+(d.x+Math.sin(t*.8+d.ph)*20)+'px,'+y+'px)'; d.e.style.opacity=d.a*(.6+.4*Math.sin(t*1.7+d.ph));});
+
+  /* scene 1: register */
+  var bw=$('bookWrap');
+  if(u1<N.s1+.2){
+    bw.style.display='';
+    var inP=spr(u1-.05), tear=seg(u1,1.7,2.75), te=eo(tear), sh=u1>1.55&&u1<1.75?Math.sin(u1*90)*5:0;
+    bw.style.opacity=seg(u1,.05,.3);
+    bw.style.transform='translate('+(L.book.cx-310+sh)+'px,'+(L.book.cy-380+(1-inP)*120)+'px) scale('+L.book.s*lerp(.85,1,inP)+') rotate('+(-4+Math.sin(t*1.3)*.7)+'deg)';
+    $('sh1').style.transform='rotate('+(7+te*30)+'deg) translate('+(18+te*260)+'px,'+(10+ei(tear)*700)+'px)';
+    $('sh2').style.transform='rotate('+(-5-te*26)+'deg) translate('+(-14-te*240)+'px,'+(16+ei(tear)*760)+'px)';
+    $('sh1').style.opacity=$('sh2').style.opacity=1-seg(tear,.45,.95);
+    $('halfL').style.transform='translate('+(-te*190)+'px,'+(ei(tear)*520)+'px) rotate('+(-te*24)+'deg)';
+    $('halfR').style.transform='translate('+(te*210)+'px,'+(ei(tear)*440)+'px) rotate('+(te*20)+'deg)';
+    $('halfL').style.opacity=$('halfR').style.opacity=1-seg(tear,.5,1);
+    $('halfL').style.filter=$('halfR').style.filter=tear>0?'drop-shadow(0 '+(30*te)+'px '+(40*te)+'px rgba(0,0,0,'+(.55*te)+'))':'none';
+    for(i=0;i<scr.length;i++){var k=i%nScr; scr[i].style.strokeDasharray='1 1'; scr[i].style.strokeDashoffset=1-seg(u1,.15+k*.022,.5+k*.022);}
+    var ts=u1-1.7;
+    scraps.forEach(function(s){ if(ts<0){s.e.style.opacity=0;return;} s.e.style.opacity=1-seg(ts,.5,1); s.e.style.transform='translate('+(s.vx*ts*.6)+'px,'+(s.y+s.vy*ts*.5+900*ts*ts)+'px) rotate('+(s.rot*ts)+'deg)';});
+  } else bw.style.display='none';
+  capAnim($('cap1'),u1-.25,u1-(N.s1-.3),.1);
+
+  /* brand mark: big in centre at start of scene 2, then docks to the top */
+  var br=$('brand'), dock=eio(seg(u2,1.15,1.75)), bin=spr(u2-.08);
+  var bcx=lerp(L.brandBig.cx,L.mark.cx,dock), bcy=lerp(L.brandBig.cy,L.mark.cy,dock), bs=lerp(L.brandBig.s,1,dock)*lerp(.4,1,bin);
+  br.style.opacity=seg(u2,.05,.2)*(1-seg(u6,0,.25));
+  br.style.transform='translate('+(bcx-brandW/2)+'px,'+(bcy-brandH/2)+'px) scale('+bs+')';
+
+  /* phone */
+  var pw=$('phoneWrap'), px_=Math.max(0,u2-1.35), pin=1-Math.exp(-6*px_)*Math.cos(4.5*px_), pout=ei(seg(u6,0,.45));
+  if(u2>1.2 && u6<.6){
+    pw.style.display='';
+    var py=L.phone.top+(1-pin)*H*.75+pout*H*.9+Math.sin(t*1.5)*6;
+    pw.style.opacity=seg(u2,1.35,1.55)*(1-seg(u6,.15,.45));
+    pw.style.transform='translate('+(L.phone.cx-200)+'px,'+py+'px) scale('+L.phone.s+') perspective(1600px) rotateY('+(Math.sin(t*.7)*4)+'deg) rotateZ('+(Math.sin(t*.55+1)*.9)+'deg)';
+    $('glow').style.opacity=.75+.25*Math.sin(t*2);
+    // which view is showing
+    var vp=eio(seg(u3,0,.4))+eio(seg(u4,0,.4))+(has5?eio(seg(u5,0,.4))+eio(seg(u5,1.5,1.9)):0);
+    views.forEach(function(v,idx){var dx=idx-vp; v.style.display=Math.abs(dx)<1?'':'none'; v.style.transform='translateX('+(dx*100)+'%)'; v.style.opacity=1-Math.min(1,Math.abs(dx))*.5;});
+    var act=Math.round(vp); tabs.forEach(function(e,idx){e.className=idx===act?'on':'';});
+
+    // home
+    var c=eo(seg(u2,1.9,2.9));
+    $('n1').textContent=num(12*c); $('n2').textContent=num(8*c); $('n3').textContent=num(5*c);
+    hc.forEach(function(e,idx){rise(e,u2-(2.2+idx*.2),50);});
+    // search
+    var n=clamp(Math.floor((u3-.4)/.1+1.0001),0,10);
+    $('typed').textContent='98XXXXXXXX'.slice(0,n);
+    $('ph').style.display=n?'none':''; $('cur').style.opacity=(n<10||Math.floor(u3*3)%2===0)?1:0; $('cur').style.marginLeft=n?'-6px':'0';
+    $('skels').style.opacity=seg(u3,1.0,1.2)*(1-seg(u3,1.5,1.6))*(.6+.4*Math.sin(u3*14));
+    pop($('res'),u3-1.55,.7);
+    // job card
+    ji[0] && rise(ji[0],u4-.5,36); rise(ji[1],u4-.85,36); rise(ji[2],u4-1.2,36);
+    rise($('tot'),u4-1.3,30);
+    $('totN').textContent='रु '+num(6800*eo(seg(u4,1.4,2.3)));
+    $('tot').style.transform+=' scale('+(1+.06*Math.exp(-Math.max(0,u4-2.3)*6)*(u4>2.3?1:0))+')';
+    rise($('next'),u4-2.5,24); $('closeBtn').style.opacity=seg(u4,.3,.6);
+    // reminders
+    var rp=seg(u5,.6,1.1); $('rip').style.opacity=u5>.6?(1-rp):0; $('rip').style.transform='scale('+(.3+rp*1.6)+')';
+    $('sendBtn').style.transform='scale('+(1-.12*Math.sin(Math.PI*seg(u5,.5,.75)))+')';
+    $('sendTxt').textContent=u5>.75?'✓ पठाइयो':'पठाउनुहोस्';
+    // report
+    var rc=eo(seg(u5,1.7,2.5)); $('r1').textContent=num(120*rc); $('r2').textContent=num(100*rc);
+    bars.forEach(function(e,idx){e.style.height=(barH[idx]*100)+'%'; e.style.transform='scaleY('+Math.max(.02,spr((u5-1.7-idx*.07)*.9))+')';});
+
+    // floaters
+    var f=$('fSearch'); pop(f,u3-.7); f.style.opacity*=(1-seg(u3,N.s3-.3,N.s3-.05)); f.style.transform+=' translateY('+(Math.sin(t*2)*5)+'px) rotate(-4deg)';
+    f=$('fMrp'); pop(f,u4-1.0); f.style.opacity*=(1-seg(u4,N.s4-.3,N.s4-.05)); f.style.transform+=' translateY('+(Math.sin(t*2+1)*5)+'px) rotate(4deg)';
+    f=$('fBubble'); pop(f,u5-.8,.3); f.style.opacity*=(1-seg(u5,1.45,1.7)); f.style.transform+=' translateY('+(Math.sin(t*2)*4-seg(u5,1.45,1.7)*40)+'px)';
+    f=$('fXls'); pop(f,u5-2.2,.3); f.style.opacity*=(1-seg(u5,N.s5-.25,N.s5)); f.style.transform+=' translateY('+(Math.sin(t*2+2)*5)+'px) rotate(7deg)';
+  } else pw.style.display='none';
+
+  /* captions for scenes 2-5 */
+  capAnim($('cap2'),u2-1.55,u2-(N.s2-.25));
+  capAnim($('cap3'),u3-.1,u3-(N.s3-.25));
+  capAnim($('cap4'),u4-.1,u4-(N.s4-.25));
+  capAnim($('cap5'),u5-.1,u5-(N.s5-.25));
+
+  /* scene 6: end card */
+  var en=$('end');
+  if(u6>-.05){
+    en.style.display='';
+    en.style.transform='translate('+(L.end.cx-540)+'px,'+(L.end.cy-750)+'px) scale('+(L.end.s*(1+.012*u6))+')';
+    var ic=$('endIcon'); ic.style.opacity=seg(u6,0,.1); ic.style.transform='scale('+lerp(.2,1,spr(u6))+') rotate('+((1-spr(u6))*-25)+'deg)';
+    [['ring1',.05],['ring2',.3]].forEach(function(r){var q=seg(u6,r[1],r[1]+.9); $(r[0]).style.opacity=u6>r[1]?(1-q)*.8:0; $(r[0]).style.transform='scale('+(1+q*2.4)+')';});
+    rise($('endWord'),u6-.22,50);
+    capAnim($('endHead'),u6-.5,-1,.1);
+    pop($('url'),u6-.9,.6);
+    $('shine').style.transform='translateX('+lerp(-200,900,seg(u6,1.9,2.7))+'px)';
+    pop(badges[0],u6-1.2,.5); pop(badges[1],u6-1.4,.5);
+  } else en.style.display='none';
+};
+
+document.fonts.ready.then(function(){
+  window.renderFrame(parseFloat(Q.get('t')||'0'));
+  window.READY=true;
+  if(Q.get('play')){var t0=performance.now();(function loop(){window.renderFrame(((performance.now()-t0)/1000)%T.dur);requestAnimationFrame(loop);})();
+    var sc=Math.min(innerWidth/W,innerHeight/H);stage.style.transformOrigin='0 0';stage.style.transform='scale('+sc+')';}
+});
+})();
+</script>
+</body>
+</html>
